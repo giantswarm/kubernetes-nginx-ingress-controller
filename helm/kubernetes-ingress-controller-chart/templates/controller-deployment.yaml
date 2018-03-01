@@ -9,7 +9,7 @@ metadata:
     prometheus.io/port: '10254'
     prometheus.io/scrape: 'true'
 spec:
-  replicas: {{len .Cluster.Workers}}
+  replicas: {{ .Values.controller.replicas }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
