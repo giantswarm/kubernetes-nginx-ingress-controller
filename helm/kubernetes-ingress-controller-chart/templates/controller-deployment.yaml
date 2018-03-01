@@ -1,10 +1,10 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nginx-ingress-controller
+  name: {{ .Values.controller.name }}
   namespace: kube-system
   labels:
-    k8s-app: nginx-ingress-controller
+    k8s-app: {{ .Values.controller.name }}
   annotations:
     prometheus.io/port: '10254'
     prometheus.io/scrape: 'true'
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        k8s-app: nginx-ingress-controller
+        k8s-app: {{ .Values.controller.name }}
       annotations:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
@@ -32,9 +32,9 @@ spec:
                   - key: k8s-app
                     operator: In
                     values:
-                    - nginx-ingress-controller
+                    - {{ .Values.controller.name }}
               topologyKey: kubernetes.io/hostname
-      serviceAccountName: nginx-ingress-controller
+      serviceAccountName: {{ .Values.controller.name }}
       initContainers:
       - command:
         - sh
@@ -46,7 +46,7 @@ spec:
         securityContext:
           privileged: true
       containers:
-      - name: nginx-ingress-controller
+      - name: {{ .Values.controller.name }}
         image: quay.io/giantswarm/nginx-ingress-controller:0.11.0
         args:
         - /nginx-ingress-controller
