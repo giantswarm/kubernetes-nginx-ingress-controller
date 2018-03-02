@@ -47,7 +47,7 @@ spec:
           privileged: true
       containers:
       - name: {{ .Values.controller.name }}
-        image: quay.io/giantswarm/nginx-ingress-controller:0.11.0
+        image: "{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
         args:
         - /nginx-ingress-controller
         - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
