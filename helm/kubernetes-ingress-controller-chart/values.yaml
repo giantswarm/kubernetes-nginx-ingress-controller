@@ -14,6 +14,11 @@ controller:
     repository: quay.io/giantswarm/nginx-ingress-controller
     tag: 0.11.0
 
+  service:
+    nodePorts:
+      http: 30010
+      https: 30011
+
   resources:
     requests:
       cpu: 500m
