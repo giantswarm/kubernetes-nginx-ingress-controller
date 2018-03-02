@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.defaultBackend.name }}
-        image: gcr.io/google_containers/defaultbackend:1.0
+        image: "{{ .Values.defaultBackend.image.repository }}:{{ .Values.defaultBackend.image.tag }}"
         livenessProbe:
           httpGet:
             path: /healthz
