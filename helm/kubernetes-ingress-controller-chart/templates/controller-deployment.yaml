@@ -6,7 +6,7 @@ metadata:
   labels:
     k8s-app: {{ .Values.controller.name }}
   annotations:
-    prometheus.io/port: '10254'
+    prometheus.io/port: '{{ .Values.controller.port }}'
     prometheus.io/scrape: 'true'
 spec:
   replicas: {{ .Values.controller.replicas }}
@@ -66,7 +66,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 10254
+            port: {{ .Values.controller.port }}
             scheme: HTTP
         resources:
           requests:
@@ -75,7 +75,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 10254
+            port: {{ .Values.controller.port }}
             scheme: HTTP
           initialDelaySeconds: 10
           timeoutSeconds: 1
