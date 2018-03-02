@@ -25,9 +25,4 @@ spec:
         ports:
         - containerPort: {{ .Values.defaultBackend.port }}
         resources:
-          limits:
-            cpu: 10m
-            memory: 20Mi
-          requests:
-            cpu: 10m
-            memory: 20Mi
+{{ toYaml .Values.defaultBackend.resources | indent 10 }}
