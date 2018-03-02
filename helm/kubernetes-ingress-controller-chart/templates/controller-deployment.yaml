@@ -29,10 +29,10 @@ spec:
             podAffinityTerm:
               labelSelector:
                 matchExpressions:
-                  - key: k8s-app
-                    operator: In
-                    values:
-                    - {{ .Values.controller.name }}
+                - key: k8s-app
+                  operator: In
+                  values:
+                  - {{ .Values.controller.name }}
               topologyKey: kubernetes.io/hostname
       serviceAccountName: {{ .Values.controller.name }}
       initContainers:
@@ -69,9 +69,7 @@ spec:
             port: {{ .Values.controller.port }}
             scheme: HTTP
         resources:
-          requests:
-            memory: "350Mi"
-            cpu: "500m"
+{{ toYaml .Values.defaultBackend.resources | indent 10 }}
         livenessProbe:
           httpGet:
             path: /healthz
