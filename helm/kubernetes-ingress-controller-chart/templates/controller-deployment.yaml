@@ -50,7 +50,7 @@ spec:
         image: "{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
         args:
         - /nginx-ingress-controller
-        - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
+        - --default-backend-service=$(POD_NAMESPACE)/{{ .Values.defaultBackend.name }}
         - --configmap=$(POD_NAMESPACE)/ingress-nginx
         - --enable-ssl-passthrough
         - --annotations-prefix=nginx.ingress.kubernetes.io

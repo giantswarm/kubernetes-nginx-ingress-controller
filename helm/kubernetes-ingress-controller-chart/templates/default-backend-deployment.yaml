@@ -1,19 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: default-http-backend
+  name: {{ .Values.defaultBackend.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    k8s-app: default-http-backend
+    k8s-app: {{ .Values.defaultBackend.name }}
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        k8s-app: default-http-backend
+        k8s-app: {{ .Values.defaultBackend.name }}
     spec:
       containers:
-      - name: default-http-backend
+      - name: {{ .Values.defaultBackend.name }}
         image: gcr.io/google_containers/defaultbackend:1.0
         livenessProbe:
           httpGet:
