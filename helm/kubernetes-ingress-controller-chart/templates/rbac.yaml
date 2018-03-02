@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: nginx-ingress-controller
-  namespace: kube-system
+  namespace: {{ .Values.namespace }}
 roleRef:
   kind: ClusterRole
   name: nginx-ingress-controller
@@ -15,11 +15,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: nginx-ingress-controller
-  namespace: kube-system
+  namespace: {{ .Values.namespace }}
 subjects:
 - kind: ServiceAccount
   name: nginx-ingress-controller
-  namespace: kube-system
+  namespace: {{ .Values.namespace }}
 roleRef:
   kind: Role
   name: nginx-ingress-role
@@ -29,7 +29,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
   name: nginx-ingress-controller
-  namespace: kube-system
+  namespace: {{ .Values.namespace }}
 rules:
 - apiGroups:
   - ""
@@ -82,7 +82,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
   name: nginx-ingress-role
-  namespace: kube-system
+  namespace: {{ .Values.namespace }}
 rules:
 - apiGroups:
   - ""
