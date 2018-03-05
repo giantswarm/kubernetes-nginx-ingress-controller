@@ -36,6 +36,8 @@ spec:
               topologyKey: kubernetes.io/hostname
       serviceAccountName: {{ .Values.controller.name }}
       initContainers:
+      # Overall performance improvements
+      # See https://github.com/kubernetes/ingress-nginx/issues/1939
       - command:
         - sh
         - -c
@@ -78,6 +80,7 @@ spec:
           initialDelaySeconds: 10
           timeoutSeconds: 1
         lifecycle:
+          # Enable graceful shutdowns and rolling updates with zero-downtime
           preStop:
             exec:
               command:
