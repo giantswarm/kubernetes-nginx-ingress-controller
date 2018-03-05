@@ -36,7 +36,7 @@ Deployment to Guest Clusters will be handled by [chart-operator](https://github.
 | `controller.service.nodePorts.http`  | Sets the nodePort that maps to the Ingress' port 80     | `30010`                                       |
 | `controller.service.nodePorts.https` | Sets the nodePort that maps to the Ingress' port 443    | `30011`                                       |
 | `defaultBackend.name`                | The name of the default backend component               | `default-http-backend`                        |
-| `defaultBackend.image.repository`    | The default backend container image repository          | `k8s.gcr.io/defaultbackend`                   |
-| `defaultBackend.image.tag`           | The default backend container image tag                 | `1.0`                                         |
+| `defaultBackend.image.repository`    | The default backend container image repository          | `quay.io/giantswarm/defaultbackend`           |
+| `defaultBackend.image.tag`           | The default backend container image tag                 | `1.2`                                         |
 | `defaultBackend.replicaCount`        | The desired number of default backend pods              | `2`                                           |
 | `defaultBackend.resources`           | The default backend pod resource requests & limits      | `cpu:10m memory:20Mi`                         |
