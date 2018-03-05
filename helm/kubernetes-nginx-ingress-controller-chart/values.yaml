@@ -31,8 +31,8 @@ defaultBackend:
   replicas: 2
 
   image:
-    repository: gcr.io/google_containers/defaultbackend
-    tag: 1.0
+    repository: quay.io/giantswarm/defaultbackend
+    tag: 1.2
 
   resources:
     limits:
