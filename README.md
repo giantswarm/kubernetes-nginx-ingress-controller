@@ -30,7 +30,7 @@ Deployment to Guest Clusters will be handled by [chart-operator](https://github.
 |--------------------------------------|---------------------------------------------------------|-----------------------------------------------|
 | `controller.image.repository`        | The controller container image repository               | `quay.io/giantswarm/nginx-ingress-controller` |
 | `controller.image.tag`               | The controller container image tag                      | `0.11.0`                                      |
-| `controller.replicaCount`            | The desired number of controller pods                   | `1`                                           |
+| `controller.replicaCount`            | The desired number of controller pods                   | `3`                                           |
 | `controller.resources`               | The controller pod resource requests & limits           | `cpu:500m memory:350Mi`                       |
 | `controller.metricsPort`             | Sets the metricsport used for metrics and health checks | `10254`                                       |
 | `controller.service.nodePorts.http`  | Sets the nodePort that maps to the Ingress' port 80     | `30010`                                       |
