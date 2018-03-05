@@ -8,7 +8,7 @@ controller:
   name: nginx-ingress-controller
   port: 10254
 
-  replicas: 1
+  replicas: 3
 
   image:
     repository: quay.io/giantswarm/nginx-ingress-controller
