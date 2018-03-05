@@ -6,7 +6,7 @@ namespace: kube-system
 
 controller:
   name: nginx-ingress-controller
-  port: 10254
+  metricsPort: 10254
 
   replicas: 3
 

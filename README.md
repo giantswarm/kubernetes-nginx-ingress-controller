@@ -26,16 +26,17 @@ Deployment to Guest Clusters will be handled by [chart-operator](https://github.
 
 ## Configuration
 
-| Parameter                            | Description                                          | Default                                       |
-|--------------------------------------|------------------------------------------------------|-----------------------------------------------|
-| `controller.image.repository`        | The controller container image repository            | `quay.io/giantswarm/nginx-ingress-controller` |
-| `controller.image.tag`               | The controller container image tag                   | `0.11.0`                                      |
-| `controller.replicaCount`            | The desired number of controller pods                | `1`                                           |
-| `controller.resources`               | The controller pod resource requests & limits        | `cpu:500m memory:350Mi`                       |
-| `controller.service.nodePorts.http`  | Sets the nodePort that maps to the Ingress' port 80  | `30010`                                       |
-| `controller.service.nodePorts.https` | Sets the nodePort that maps to the Ingress' port 443 | `30011`                                       |
-| `defaultBackend.name`                | The name of the default backend component            | `default-http-backend`                        |
-| `defaultBackend.image.repository`    | The default backend container image repository       | `k8s.gcr.io/defaultbackend`                   |
-| `defaultBackend.image.tag`           | The default backend container image tag              | `1.0`                                         |
-| `defaultBackend.replicaCount`        | The desired number of default backend pods           | `2`                                           |
-| `defaultBackend.resources`           | The default backend pod resource requests & limits   | `cpu:10m memory:20Mi`                         |
+| Parameter                            | Description                                             | Default                                       |
+|--------------------------------------|---------------------------------------------------------|-----------------------------------------------|
+| `controller.image.repository`        | The controller container image repository               | `quay.io/giantswarm/nginx-ingress-controller` |
+| `controller.image.tag`               | The controller container image tag                      | `0.11.0`                                      |
+| `controller.replicaCount`            | The desired number of controller pods                   | `1`                                           |
+| `controller.resources`               | The controller pod resource requests & limits           | `cpu:500m memory:350Mi`                       |
+| `controller.metricsPort`             | Sets the metricsport used for metrics and health checks | `10254`                                       |
+| `controller.service.nodePorts.http`  | Sets the nodePort that maps to the Ingress' port 80     | `30010`                                       |
+| `controller.service.nodePorts.https` | Sets the nodePort that maps to the Ingress' port 443    | `30011`                                       |
+| `defaultBackend.name`                | The name of the default backend component               | `default-http-backend`                        |
+| `defaultBackend.image.repository`    | The default backend container image repository          | `k8s.gcr.io/defaultbackend`                   |
+| `defaultBackend.image.tag`           | The default backend container image tag                 | `1.0`                                         |
+| `defaultBackend.replicaCount`        | The desired number of default backend pods              | `2`                                           |
+| `defaultBackend.resources`           | The default backend pod resource requests & limits      | `cpu:10m memory:20Mi`                         |
