@@ -28,6 +28,7 @@ Deployment to Guest Clusters will be handled by [chart-operator](https://github.
 
 | Parameter                            | Description                                             | Default                                       |
 |--------------------------------------|---------------------------------------------------------|-----------------------------------------------|
+| `controller.name`                    | The name of the ingress controller                      | `nginx-ingress-controller`                    |
 | `controller.image.repository`        | The controller container image repository               | `quay.io/giantswarm/nginx-ingress-controller` |
 | `controller.image.tag`               | The controller container image tag                      | `0.11.0`                                      |
 | `controller.replicaCount`            | The desired number of controller pods                   | `3`                                           |
