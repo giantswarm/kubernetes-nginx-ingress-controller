@@ -1,0 +1,95 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Values.controller.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    k8s-app: {{ .Values.controller.name }}
+  annotations:
+    prometheus.io/port: '{{ .Values.controller.metricsPort }}'
+    prometheus.io/scrape: 'true'
+spec:
+  replicas: {{ .Values.controller.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: {{ .Values.controller.name }}
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: k8s-app
+                  operator: In
+                  values:
+                  - {{ .Values.controller.name }}
+              topologyKey: kubernetes.io/hostname
+      serviceAccountName: {{ .Values.controller.name }}
+      initContainers:
+      # Overall performance improvements
+      # See https://github.com/kubernetes/ingress-nginx/issues/1939
+      - command:
+        - sh
+        - -c
+        - sysctl -w net.core.somaxconn=32768; sysctl -w net.ipv4.ip_local_port_range="1024 65535"
+        image: alpine:3.6
+        imagePullPolicy: IfNotPresent
+        name: sysctl
+        securityContext:
+          privileged: true
+      containers:
+      - name: {{ .Values.controller.name }}
+        image: "{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
+        args:
+        - /nginx-ingress-controller
+        - --default-backend-service=$(POD_NAMESPACE)/{{ .Values.defaultBackend.name }}
+        - --configmap=$(POD_NAMESPACE)/ingress-nginx
+        - --enable-ssl-passthrough
+        - --annotations-prefix=nginx.ingress.kubernetes.io
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.controller.metricsPort }}
+            scheme: HTTP
+        resources:
+{{ toYaml .Values.defaultBackend.resources | indent 10 }}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.controller.metricsPort }}
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+        lifecycle:
+          # Enable graceful shutdowns and rolling updates with zero-downtime
+          preStop:
+            exec:
+              command:
+              - sleep
+              - "15"
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        - name: https
+          containerPort: 443
+          protocol: TCP
