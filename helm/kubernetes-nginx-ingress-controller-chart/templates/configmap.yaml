@@ -6,5 +6,6 @@ metadata:
   labels:
     k8s-app: {{ .Values.controller.name }}
 data:
+  # Increase hash table size to allow more server names for stability reasons
   server-name-hash-bucket-size: "1024"
   server-name-hash-max-size: "1024"
