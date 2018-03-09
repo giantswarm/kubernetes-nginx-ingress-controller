@@ -71,7 +71,7 @@ spec:
             port: {{ .Values.controller.metricsPort }}
             scheme: HTTP
         resources:
-{{ toYaml .Values.defaultBackend.resources | indent 10 }}
+{{ toYaml .Values.controller.resources | indent 10 }}
         livenessProbe:
           httpGet:
             path: /healthz
