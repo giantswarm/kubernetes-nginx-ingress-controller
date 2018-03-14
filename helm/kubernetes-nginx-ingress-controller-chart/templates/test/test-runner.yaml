@@ -9,7 +9,7 @@ spec:
   # Bash automated testing systen
   # https://github.com/bats-core/bats-core
   - name: test-framework
-    image: dduportal/bats:0.4.0
+    image: quay.io/giantswarm/bats:0.4.0
     command:
     - "bash"
     - "-c"
