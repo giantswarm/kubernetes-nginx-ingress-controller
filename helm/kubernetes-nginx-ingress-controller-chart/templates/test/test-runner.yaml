@@ -6,7 +6,7 @@ metadata:
     "helm.sh/hook": test-success
 spec:
   initContainers:
-  # Bash automated testing systen
+  # Bash automated testing system
   # https://github.com/bats-core/bats-core
   - name: test-framework
     image: quay.io/giantswarm/bats:0.4.0
