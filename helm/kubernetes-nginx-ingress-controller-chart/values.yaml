@@ -44,3 +44,8 @@ defaultBackend:
     requests:
       cpu: 10m
       memory: 20Mi
+
+test:
+  image:
+    repository: quay.io/giantswarm/alpine-testing
+    tag: 0.1.0

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.controller.name }}-tests
+data:
+  run.sh: |-
+    @test "Testing default backend is reachable through ingress-controller" {
+      response=$(curl -I {{ .Values.controller.name }}.{{ .Values.namespace }} 2> /dev/null | head -n 1 | cut -d$' ' -f2)
+      [ "$response" -eq 404 ]
+    }
