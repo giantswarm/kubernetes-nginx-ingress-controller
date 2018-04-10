@@ -18,6 +18,11 @@ jobs:
         name: Publish chart to CNR using a temporary channel for testing
         command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}
 
+    - persist_to_workspace:
+        root: .
+        paths:
+        - ./architect
+
   e2eTest:
     machine: true
     working_directory: /home/circleci/.go_workspace/src/github.com/giantswarm/kubernetes-nginx-ingress-controller
@@ -47,6 +52,9 @@ jobs:
     machine: true
     steps:
     - checkout
+
+    - attach_workspace:
+        at: .
 
     - run: ./architect deploy
 
