@@ -20,7 +20,8 @@ var (
 func TestMain(m *testing.M) {
 	var v int
 	var err error
-	f, err = framework.NewHost()
+
+	f, err = framework.NewHost(framework.HostConfig{})
 	if err != nil {
 		log.Printf("unexpected error: %v\n", err)
 		os.Exit(1)
