@@ -46,7 +46,7 @@ func TestMain(m *testing.M) {
 func TestHelm(t *testing.T) {
 	channel := os.Getenv("CIRCLE_SHA1")
 
-	err := framework.HelmCmd(fmt.Sprintf("registry install quay.io/giantswarm/kubernetes-nginx-ingress-controller-chart:%s -n test-deploy -- --wait", channel))
+	err := framework.HelmCmd(fmt.Sprintf("registry install --wait quay.io/giantswarm/kubernetes-nginx-ingress-controller-chart:%s -n test-deploy", channel))
 	if err != nil {
 		t.Errorf("unexpected error during installation of the chart: %v", err)
 	}
