@@ -23,12 +23,12 @@ func TestMain(m *testing.M) {
 
 	f, err = framework.NewHost(framework.HostConfig{})
 	if err != nil {
-		log.Printf("unexpected error: %v\n", err)
-		os.Exit(1)
+		panic(err.Error())
 	}
 
-	if err := f.Setup(); err != nil {
-		log.Printf("unexpected error: %v\n", err)
+	err = f.CreateNamespace("giantswarm")
+	if err != nil {
+		log.Printf("%#v\n", err)
 		v = 1
 	}
 
