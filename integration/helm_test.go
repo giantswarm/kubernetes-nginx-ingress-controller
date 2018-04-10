@@ -51,7 +51,7 @@ func TestHelm(t *testing.T) {
 		t.Errorf("unexpected error during installation of the chart: %v", err)
 	}
 
-	err = framework.HelmCmd("test --debug --cleanup test-deploy")
+	err = framework.HelmCmd("test --debug test-deploy")
 	if err != nil {
 		t.Errorf("unexpected error during test of the chart: %v", err)
 	}
