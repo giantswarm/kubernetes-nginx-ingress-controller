@@ -14,10 +14,6 @@ jobs:
 
     - run: ./architect build
 
-    - run:
-        name: Publish chart to CNR using a temporary channel for testing
-        command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}
-
     - persist_to_workspace:
         root: .
         paths:
@@ -28,6 +24,9 @@ jobs:
     working_directory: /home/circleci/.go_workspace/src/github.com/giantswarm/kubernetes-nginx-ingress-controller
     steps:
     - checkout
+
+    - attach_workspace:
+        at: .
 
     - run:
         name: Get e2e-harness binary
@@ -41,11 +40,17 @@ jobs:
 
     - run: ./e2e-harness setup --remote=false
 
+    - run:
+        name: Publish chart to CNR using a temporary channel for testing
+        command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}
+
     - run: ./e2e-harness test
 
     - run:
         name: Finish with cleanup, no matter if the test succeeded or not
-        command: ./e2e-harness teardown
+        command: |
+          ./architect unpublish --channels=${CIRCLE_SHA1}
+          ./e2e-harness teardown
         when: always
 
   deploy:
