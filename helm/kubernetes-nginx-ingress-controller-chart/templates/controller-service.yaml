@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.controller.name }}
   namespace: {{ .Values.namespace }}
   labels:
+    giantswarm.io/service-type: "managed"
     k8s-app: {{ .Values.controller.name }}
 spec:
   type: NodePort

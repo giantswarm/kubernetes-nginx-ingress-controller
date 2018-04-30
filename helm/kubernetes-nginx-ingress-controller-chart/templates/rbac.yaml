@@ -2,6 +2,9 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.controller.name }}
+  labels:
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.name }}
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.controller.name }}
@@ -16,6 +19,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.controller.name }}
   namespace: {{ .Values.namespace }}
+  labels:
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.name }}
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.controller.name }}
@@ -30,6 +36,9 @@ kind: ClusterRole
 metadata:
   name: {{ .Values.controller.name }}
   namespace: {{ .Values.namespace }}
+  labels:
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.name }}
 rules:
 - apiGroups:
   - ""
@@ -83,6 +92,9 @@ kind: Role
 metadata:
   name: nginx-ingress-role
   namespace: {{ .Values.namespace }}
+  labels:
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.name }}
 rules:
 - apiGroups:
   - ""

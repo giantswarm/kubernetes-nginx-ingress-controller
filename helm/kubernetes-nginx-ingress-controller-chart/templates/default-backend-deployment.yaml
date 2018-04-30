@@ -4,12 +4,14 @@ metadata:
   name: {{ .Values.defaultBackend.name }}
   namespace: {{ .Values.namespace }}
   labels:
+    giantswarm.io/service-type: "managed"
     k8s-app: {{ .Values.defaultBackend.name }}
 spec:
   replicas: {{ .Values.defaultBackend.replicas }}
   template:
     metadata:
       labels:
+        giantswarm.io/service-type: "managed"
         k8s-app: {{ .Values.defaultBackend.name }}
     spec:
       containers:
