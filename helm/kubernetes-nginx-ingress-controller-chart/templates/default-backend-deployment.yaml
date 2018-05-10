@@ -1,4 +1,4 @@
-apiVersion: v1/apps
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.defaultBackend.name }}
