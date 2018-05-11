@@ -1,0 +1,18 @@
+# Default values for ingress-controller migration chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+name: ingress-controller-migration
+namespace: kube-system
+
+image:
+    repository: quay.io/giantswarm/k8s-migrator
+    tag: latest
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 75Mi
+  requests:
+    cpu: 50m
+    memory: 75Mi

@@ -58,6 +58,7 @@ func TestHelm(t *testing.T) {
 	if err != nil {
 		t.Errorf("unexpected error during installation of the chart: %v", err)
 	}
+	defer framework.HelmCmd("delete test-deploy --purge")
 
 	err = checkDeployment("nginx-ingress-controller", 3)
 	if err != nil {
@@ -75,6 +76,219 @@ func TestHelm(t *testing.T) {
 	}
 }
 
+// TestMigration ensures that previously deployed resources are properly
+// removed.
+// It installs a chart with the same resources as nginx-ingress-controller with
+// appropriate labels so that we can query for them. Then installs the
+// nginx-ingress-controller chart and checks that the previous resources are
+// removed and the ones for nginx-ingress-controller are in place.
+func TestMigration(t *testing.T) {
+	// Install legacy resources.
+	err := framework.HelmCmd("install /e2e/fixtures/resources-chart -n resources")
+	if err != nil {
+		t.Fatalf("could not install resources chart: %v", err)
+	}
+	defer framework.HelmCmd("delete resources --purge")
+
+	// Check legacy resources are present.
+	err = checkResourcesPresent("kind=legacy")
+	if err != nil {
+		t.Fatalf("could check legacy resources present: %v", err)
+	}
+	// Check managed resources are not present.
+	err = checkResourcesNotPresent("giantswarm.io/service-type=managed")
+	if err != nil {
+		t.Fatalf("could check managed resources not present: %v", err)
+	}
+
+	// Install kubernetes-nginx-ingress-controller-chart.
+	channel := os.Getenv("CIRCLE_SHA1")
+	err = framework.HelmCmd(fmt.Sprintf("registry install --wait quay.io/giantswarm/kubernetes-nginx-ingress-controller-chart:%s -n test-deploy", channel))
+	if err != nil {
+		t.Fatalf("could not install kubernetes-nginx-ingress-controller-chart: %v", err)
+	}
+	defer framework.HelmCmd("delete test-deploy --purge")
+
+	// Check legacy resources are not present.
+	err = checkResourcesNotPresent("kind=legacy")
+	if err != nil {
+		t.Fatalf("could check legacy resources present: %v", err)
+	}
+	// Check managed resources are present.
+	err = checkResourcesPresent("giantswarm.io/service-type=managed")
+	if err != nil {
+		t.Fatalf("could check managed resources not present: %v", err)
+	}
+}
+
+func checkResourcesPresent(labelSelector string) error {
+	c := f.K8sClient()
+	controllerListOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("k8s-app=nginx-ingress-controller,%s", labelSelector),
+	}
+	backendListOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("k8s-app=default-http-backend,%s", labelSelector),
+	}
+
+	d, err := c.Extensions().Deployments(resourceNamespace).List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(d.Items) != 1 {
+		return microerror.Newf("unexpected number of deployments, want 1, got %d", len(d.Items))
+	}
+
+	d, err := c.Extensions().Deployments(resourceNamespace).List(backendListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(d.Items) != 1 {
+		return microerror.Newf("unexpected number of deployments, want 1, got %d", len(d.Items))
+	}
+
+	r, err := c.Rbac().ClusterRoles().List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(r.Items) != 1 {
+		return microerror.Newf("unexpected number of roles, want 1, got %d", len(r.Items))
+	}
+
+	rb, err := c.Rbac().ClusterRoleBindings().List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(rb.Items) != 1 {
+		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(rb.Items))
+	}
+
+	r, err := c.Rbac().Roles().List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(r.Items) != 1 {
+		return microerror.Newf("unexpected number of roles, want 1, got %d", len(r.Items))
+	}
+
+	rb, err := c.Rbac().RoleBindings().List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(rb.Items) != 1 {
+		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(rb.Items))
+	}
+
+	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(s.Items) != 1 {
+		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
+	}
+
+	s, err := c.Core().Services(resourceNamespace).List(backendListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(s.Items) != 1 {
+		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
+	}
+
+	sa, err := c.Core().ServiceAccounts(resourceNamespace).List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(sa.Items) != 1 {
+		return microerror.Newf("unexpected number of serviceaccountss, want 1, got %d", len(sa.Items))
+	}
+
+	return nil
+}
+
+func checkResourcesNotPresent(labelSelector string) error {
+	c := f.K8sClient()
+	controllerListOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("k8s-app=nginx-ingress-controller,%s", labelSelector),
+	}
+	backendListOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("k8s-app=default-http-backend,%s", labelSelector),
+	}
+
+	d, err := c.Extensions().Deployments(resourceNamespace).List(controllerListOptions)
+	if err == nil && len(d.Items) > 0 {
+		return microerror.New("expected error querying for deployments didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	d, err := c.Extensions().Deployments(resourceNamespace).List(backendListOptions)
+	if err == nil && len(d.Items) > 0 {
+		return microerror.New("expected error querying for deployments didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	r, err := c.Rbac().ClusterRoles().List(controllerListOptions)
+	if err == nil && len(r.Items) > 0 {
+		return microerror.New("expected error querying for roles didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	rb, err := c.Rbac().ClusterRoleBindings().List(controllerListOptions)
+	if err == nil && len(rb.Items) > 0 {
+		return microerror.New("expected error querying for rolebindings didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	r, err := c.Rbac().Roles().List(controllerListOptions)
+	if err == nil && len(r.Items) > 0 {
+		return microerror.New("expected error querying for roles didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	rb, err := c.Rbac().RoleBindings().List(controllerListOptions)
+	if err == nil && len(rb.Items) > 0 {
+		return microerror.New("expected error querying for rolebindings didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
+	if err == nil && len(s.Items) > 0 {
+		return microerror.New("expected error querying for services didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	s, err := c.Core().Services(resourceNamespace).List(backendListOptions)
+	if err == nil && len(s.Items) > 0 {
+		return microerror.New("expected error querying for services didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	sa, err := c.Core().ServiceAccounts(resourceNamespace).List(controllerListOptions)
+	if err == nil && len(sa.Items) > 0 {
+		return microerror.New("expected error querying for serviceaccounts didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
 // checkDeployment ensures that key properties of the deployment are correct.
 func checkDeployment(name string, replicas int) error {
 	expectedMatchLabels := map[string]string{
@@ -88,12 +302,12 @@ func checkDeployment(name string, replicas int) error {
 	c := f.K8sClient()
 	ds, err := c.Apps().Deployments(resourceNamespace).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
-		return microerror.Newf("could not find daemonset: '%s' %v", name, err)
+		return microerror.Newf("could not find deployment: '%s' %v", name, err)
 	} else if err != nil {
-		return microerror.Newf("unexpected error getting daemonset: %v", err)
+		return microerror.Newf("unexpected error getting deployment: %v", err)
 	}
 
-	// Check daemonset labels.
+	// Check deployment labels.
 	if !reflect.DeepEqual(expectedLabels, ds.ObjectMeta.Labels) {
 		return microerror.Newf("expected labels: %v got: %v", expectedLabels, ds.ObjectMeta.Labels)
 	}
