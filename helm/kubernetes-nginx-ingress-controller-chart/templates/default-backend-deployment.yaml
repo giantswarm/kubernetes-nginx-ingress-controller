@@ -10,7 +10,7 @@ spec:
   replicas: {{ .Values.defaultBackend.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      k8s-app: {{ .Values.defaultBackend.name }}
   template:
     metadata:
       labels:
