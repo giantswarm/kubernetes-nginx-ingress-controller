@@ -138,15 +138,31 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of deployments, want 1, got %d", len(d.Items))
 	}
 
-	d, err := c.Extensions().Deployments(resourceNamespace).List(backendListOptions)
+	db, err := c.Extensions().Deployments(resourceNamespace).List(backendListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
-	if len(d.Items) != 1 {
-		return microerror.Newf("unexpected number of deployments, want 1, got %d", len(d.Items))
+	if len(db.Items) != 1 {
+		return microerror.Newf("unexpected number of deployments, want 1, got %d", len(db.Items))
 	}
 
-	r, err := c.Rbac().ClusterRoles().List(controllerListOptions)
+	cr, err := c.Rbac().ClusterRoles().List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(cr.Items) != 1 {
+		return microerror.Newf("unexpected number of roles, want 1, got %d", len(cr.Items))
+	}
+
+	crb, err := c.Rbac().ClusterRoleBindings().List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(crb.Items) != 1 {
+		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(crb.Items))
+	}
+
+	r, err := c.Rbac().Roles(resourceNamespace).List(controllerListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -154,23 +170,7 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of roles, want 1, got %d", len(r.Items))
 	}
 
-	rb, err := c.Rbac().ClusterRoleBindings().List(controllerListOptions)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-	if len(rb.Items) != 1 {
-		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(rb.Items))
-	}
-
-	r, err := c.Rbac().Roles().List(controllerListOptions)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-	if len(r.Items) != 1 {
-		return microerror.Newf("unexpected number of roles, want 1, got %d", len(r.Items))
-	}
-
-	rb, err := c.Rbac().RoleBindings().List(controllerListOptions)
+	rb, err := c.Rbac().RoleBindings(resourceNamespace).List(controllerListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -186,12 +186,12 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
 	}
 
-	s, err := c.Core().Services(resourceNamespace).List(backendListOptions)
+	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
-	if len(s.Items) != 1 {
-		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
+	if len(sb.Items) != 1 {
+		return microerror.Newf("unexpected number of services, want 1, got %d", len(sb.Items))
 	}
 
 	sa, err := c.Core().ServiceAccounts(resourceNamespace).List(controllerListOptions)
@@ -222,31 +222,31 @@ func checkResourcesNotPresent(labelSelector string) error {
 		return microerror.Mask(err)
 	}
 
-	d, err := c.Extensions().Deployments(resourceNamespace).List(backendListOptions)
-	if err == nil && len(d.Items) > 0 {
+	db, err := c.Extensions().Deployments(resourceNamespace).List(backendListOptions)
+	if err == nil && len(db.Items) > 0 {
 		return microerror.New("expected error querying for deployments didn't happen")
 	}
 	if !apierrors.IsNotFound(err) {
 		return microerror.Mask(err)
 	}
 
-	r, err := c.Rbac().ClusterRoles().List(controllerListOptions)
-	if err == nil && len(r.Items) > 0 {
+	cr, err := c.Rbac().ClusterRoles().List(controllerListOptions)
+	if err == nil && len(cr.Items) > 0 {
 		return microerror.New("expected error querying for roles didn't happen")
 	}
 	if !apierrors.IsNotFound(err) {
 		return microerror.Mask(err)
 	}
 
-	rb, err := c.Rbac().ClusterRoleBindings().List(controllerListOptions)
-	if err == nil && len(rb.Items) > 0 {
+	crb, err := c.Rbac().ClusterRoleBindings().List(controllerListOptions)
+	if err == nil && len(crb.Items) > 0 {
 		return microerror.New("expected error querying for rolebindings didn't happen")
 	}
 	if !apierrors.IsNotFound(err) {
 		return microerror.Mask(err)
 	}
 
-	r, err := c.Rbac().Roles().List(controllerListOptions)
+	r, err := c.Rbac().Roles(resourceNamespace).List(controllerListOptions)
 	if err == nil && len(r.Items) > 0 {
 		return microerror.New("expected error querying for roles didn't happen")
 	}
@@ -254,7 +254,7 @@ func checkResourcesNotPresent(labelSelector string) error {
 		return microerror.Mask(err)
 	}
 
-	rb, err := c.Rbac().RoleBindings().List(controllerListOptions)
+	rb, err := c.Rbac().RoleBindings(resourceNamespace).List(controllerListOptions)
 	if err == nil && len(rb.Items) > 0 {
 		return microerror.New("expected error querying for rolebindings didn't happen")
 	}
@@ -270,8 +270,8 @@ func checkResourcesNotPresent(labelSelector string) error {
 		return microerror.Mask(err)
 	}
 
-	s, err := c.Core().Services(resourceNamespace).List(backendListOptions)
-	if err == nil && len(s.Items) > 0 {
+	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
+	if err == nil && len(sb.Items) > 0 {
 		return microerror.New("expected error querying for services didn't happen")
 	}
 	if !apierrors.IsNotFound(err) {
