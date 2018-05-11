@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.controller.name }}
@@ -11,6 +11,9 @@ metadata:
     prometheus.io/scrape: 'true'
 spec:
   replicas: {{ .Values.controller.replicas }}
+  selector:
+    matchLabels:
+      k8s-app: {{ .Values.controller.name }}
   strategy:
     type: RollingUpdate
     rollingUpdate:

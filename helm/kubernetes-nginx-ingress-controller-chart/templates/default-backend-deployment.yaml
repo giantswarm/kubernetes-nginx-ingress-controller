@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.defaultBackend.name }}
@@ -8,6 +8,9 @@ metadata:
     k8s-app: {{ .Values.defaultBackend.name }}
 spec:
   replicas: {{ .Values.defaultBackend.replicas }}
+  selector:
+    matchLabels:
+      k8s-app: {{ .Values.defaultBackend.name }}
   template:
     metadata:
       labels:
