@@ -93,12 +93,12 @@ func TestMigration(t *testing.T) {
 	// Check legacy resources are present.
 	err = checkResourcesPresent("kind=legacy")
 	if err != nil {
-		t.Fatalf("could check legacy resources present: %v", err)
+		t.Fatalf("legacy resources present: %v", err)
 	}
 	// Check managed resources are not present.
 	err = checkResourcesNotPresent("giantswarm.io/service-type=managed")
 	if err != nil {
-		t.Fatalf("could check managed resources not present: %v", err)
+		t.Fatalf("managed resources not present: %v", err)
 	}
 
 	// Install kubernetes-nginx-ingress-controller-chart.
@@ -112,12 +112,12 @@ func TestMigration(t *testing.T) {
 	// Check legacy resources are not present.
 	err = checkResourcesNotPresent("kind=legacy")
 	if err != nil {
-		t.Fatalf("could check legacy resources present: %v", err)
+		t.Fatalf("legacy resources present: %v", err)
 	}
 	// Check managed resources are present.
 	err = checkResourcesPresent("giantswarm.io/service-type=managed")
 	if err != nil {
-		t.Fatalf("could check managed resources not present: %v", err)
+		t.Fatalf("managed resources not present: %v", err)
 	}
 }
 

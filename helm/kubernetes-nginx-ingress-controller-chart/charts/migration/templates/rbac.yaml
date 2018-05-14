@@ -11,7 +11,7 @@ metadata:
     giantswarm.io/service-type: "managed"
 rules:
 - apiGroups:
-  - apps
+  - extensions
   resources:
   - deployments
   verbs:

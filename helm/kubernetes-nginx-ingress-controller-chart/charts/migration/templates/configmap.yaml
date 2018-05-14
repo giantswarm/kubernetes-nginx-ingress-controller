@@ -74,7 +74,7 @@ data:
             "name": "nginx-ingress-controller",
             "namespace": "kube-system",
             "matchLabels": {
-                "app": "nginx-ingress-controller"
+                "k8s-app": "nginx-ingress-controller"
             },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
