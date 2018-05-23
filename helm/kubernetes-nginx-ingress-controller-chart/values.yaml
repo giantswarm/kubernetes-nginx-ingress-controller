@@ -14,6 +14,11 @@ controller:
     repository: quay.io/giantswarm/nginx-ingress-controller
     tag: 0.11.0
 
+  initContainer:
+    image:
+      repository: quay.io/giantswarm/alpine
+      tag: 3.7
+
   service:
     nodePorts:
       http: 30010
