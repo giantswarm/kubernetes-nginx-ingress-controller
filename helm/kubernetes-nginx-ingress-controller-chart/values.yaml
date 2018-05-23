@@ -45,6 +45,11 @@ defaultBackend:
       cpu: 10m
       memory: 20Mi
 
+initContainer:
+  image:
+    repository: quay.io/giantswarm/alpine
+    tag: 3.7
+
 test:
   image:
     repository: quay.io/giantswarm/alpine-testing
