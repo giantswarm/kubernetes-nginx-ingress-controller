@@ -48,7 +48,7 @@ spec:
         - sh
         - -c
         - sysctl -w net.core.somaxconn=32768; sysctl -w net.ipv4.ip_local_port_range="1024 65535"
-        image: "{{ .Values.controller.initContainer.image.repository }}:{{ .Values.initContainer.controller.image.tag }}"
+        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
         imagePullPolicy: IfNotPresent
         name: sysctl
         securityContext:
