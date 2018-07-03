@@ -6,8 +6,9 @@ name: ingress-controller-migration
 namespace: kube-system
 
 image:
-    repository: quay.io/giantswarm/k8s-migrator
-    tag: latest
+  registry: quay.io
+  repository: giantswarm/k8s-migrator
+  tag: latest
 
 resources:
   limits:
