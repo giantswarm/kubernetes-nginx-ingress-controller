@@ -22,7 +22,7 @@ spec:
       name: tools
   containers:
   - name: {{ .Values.controller.name }}-test
-    image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
+    image: "{{ .Values.test.image.registry }}/{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
     imagePullPolicy: IfNotPresent
     command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
     volumeMounts:

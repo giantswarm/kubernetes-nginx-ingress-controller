@@ -48,14 +48,14 @@ spec:
         - sh
         - -c
         - sysctl -w net.core.somaxconn=32768; sysctl -w net.ipv4.ip_local_port_range="1024 65535"
-        image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+        image: "{{ .Values.initContainer.image.registry }}/{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
         imagePullPolicy: IfNotPresent
         name: sysctl
         securityContext:
           privileged: true
       containers:
       - name: {{ .Values.controller.name }}
-        image: "{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
+        image: "{{ .Values.controller.image.registry }}/{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
         args:
         - /nginx-ingress-controller
         - --default-backend-service=$(POD_NAMESPACE)/{{ .Values.defaultBackend.name }}
