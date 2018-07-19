@@ -283,14 +283,9 @@ func checkResourcesNotPresent(labelSelector string) error {
 }
 
 // checkDeployment ensures that key properties of the deployment are correct.
-func checkDeployment(name string, replicas int, expctedLabels map[string]string) error {
+func checkDeployment(name string, replicas int, expectedLabels map[string]string) error {
 	expectedMatchLabels := map[string]string{
 		"k8s-app": name,
-	}
-	expectedLabels := map[string]string{
-		"app":                        name,
-		"k8s-app":                    name,
-		"giantswarm.io/service-type": "managed",
 	}
 
 	c := f.K8sClient()
