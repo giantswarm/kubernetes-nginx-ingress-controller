@@ -4,8 +4,9 @@ metadata:
   name: {{ .Values.controller.name }}
   namespace: {{ .Values.namespace }}
   labels:
+    app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "managed"
-    k8s-app: {{ .Values.controller.name }}
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
   annotations:
     prometheus.io/port: '{{ .Values.controller.metricsPort }}'
     prometheus.io/scrape: 'true'
@@ -22,8 +23,9 @@ spec:
   template:
     metadata:
       labels:
+        app: {{ .Values.controller.name }}
         giantswarm.io/service-type: "managed"
-        k8s-app: {{ .Values.controller.name }}
+        k8s-app: {{ .Values.controller.k8sAppLabel }}
       annotations:
         releasetime: {{ $.Release.Time }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
@@ -35,7 +37,7 @@ spec:
             podAffinityTerm:
               labelSelector:
                 matchExpressions:
-                - key: k8s-app
+                - key: app
                   operator: In
                   values:
                   - {{ .Values.controller.name }}
