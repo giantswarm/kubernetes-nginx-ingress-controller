@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: ingress-nginx
+  name: {{ .Values.configmap.name }}
   namespace: {{ .Values.namespace }}
   labels:
     giantswarm.io/service-type: "managed"

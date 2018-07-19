@@ -8,6 +8,9 @@ controller:
   name: nginx-ingress-controller
   metricsPort: 10254
 
+  configmap:
+    name: ingress-nginx
+
   replicas: 3
 
   image:
