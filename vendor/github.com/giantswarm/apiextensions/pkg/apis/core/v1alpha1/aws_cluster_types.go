@@ -60,17 +60,8 @@ type AWSClusterConfigSpec struct {
 
 type AWSClusterConfigSpecGuest struct {
 	ClusterGuestConfig `json:",inline" yaml:",inline"`
-	CredentialSecret   AWSClusterConfigSpecGuestCredentialSecret `json:"credentialSecret" yaml:"credentialSecret"`
-	Masters            []AWSClusterConfigSpecGuestMaster         `json:"masters,omitempty" yaml:"masters,omitempty"`
-	Workers            []AWSClusterConfigSpecGuestWorker         `json:"workers,omitempty" yaml:"workers,omitempty"`
-}
-
-// AWSClusterConfigSpecGuestCredentialSecret points to the K8s Secret
-// containing credentials for an AWS account in which the guest cluster should
-// be created.
-type AWSClusterConfigSpecGuestCredentialSecret struct {
-	Name      string `json:"name" yaml:"name"`
-	Namespace string `json:"namespace" yaml:"namespace"`
+	Masters            []AWSClusterConfigSpecGuestMaster `json:"masters,omitempty" yaml:"masters,omitempty"`
+	Workers            []AWSClusterConfigSpecGuestWorker `json:"workers,omitempty" yaml:"workers,omitempty"`
 }
 
 type AWSClusterConfigSpecGuestMaster struct {

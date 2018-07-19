@@ -20,8 +20,6 @@ import (
 //         kind: AzureConfig
 //         plural: azureconfigs
 //         singular: azureconfig
-//       subresources:
-//         status: {}
 //
 func NewAzureConfigCRD() *apiextensionsv1beta1.CustomResourceDefinition {
 	return &apiextensionsv1beta1.CustomResourceDefinition{
@@ -41,21 +39,18 @@ func NewAzureConfigCRD() *apiextensionsv1beta1.CustomResourceDefinition {
 				Plural:   "azureconfigs",
 				Singular: "azureconfig",
 			},
-			Subresources: &apiextensionsv1beta1.CustomResourceSubresources{
-				Status: &apiextensionsv1beta1.CustomResourceSubresourceStatus{},
-			},
 		},
 	}
 }
 
 // +genclient
+// +genclient:noStatus
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 type AzureConfig struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata"`
-	Spec              AzureConfigSpec   `json:"spec"`
-	Status            AzureConfigStatus `json:"status" yaml:"status"`
+	Spec              AzureConfigSpec `json:"spec"`
 }
 
 type AzureConfigSpec struct {
@@ -65,9 +60,8 @@ type AzureConfigSpec struct {
 }
 
 type AzureConfigSpecAzure struct {
-	CredentialSecret CredentialSecret                   `json:"credentialSecret" yaml:"credentialSecret"`
-	DNSZones         AzureConfigSpecAzureDNSZones       `json:"dnsZones" yaml:"dnsZones"`
-	VirtualNetwork   AzureConfigSpecAzureVirtualNetwork `json:"virtualNetwork" yaml:"virtualNetwork"`
+	DNSZones       AzureConfigSpecAzureDNSZones       `json:"dnsZones" yaml:"dnsZones"`
+	VirtualNetwork AzureConfigSpecAzureVirtualNetwork `json:"virtualNetwork" yaml:"virtualNetwork"`
 
 	Masters []AzureConfigSpecAzureNode `json:"masters" yaml:"masters"`
 	Workers []AzureConfigSpecAzureNode `json:"workers" yaml:"workers"`
@@ -95,7 +89,6 @@ type AzureConfigSpecAzureVirtualNetwork struct {
 	// CIDR is the CIDR for the Virtual Network.
 	CIDR string `json:"cidr" yaml:"cidr"`
 
-	// TODO: remove Master, Worker and Calico subnet cidr after azure-operator v2 is deleted.
 	// MasterSubnetCIDR is the CIDR for the master subnet.
 	MasterSubnetCIDR string `json:"masterSubnetCIDR" yaml:"masterSubnetCIDR"`
 	// WorkerSubnetCIDR is the CIDR for the worker subnet.
@@ -113,10 +106,6 @@ type AzureConfigSpecAzureNode struct {
 
 type AzureConfigSpecVersionBundle struct {
 	Version string `json:"version" yaml:"version"`
-}
-
-type AzureConfigStatus struct {
-	Cluster StatusCluster `json:"cluster" yaml:"cluster"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
