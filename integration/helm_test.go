@@ -178,14 +178,6 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(rb.Items))
 	}
 
-	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-	if len(s.Items) != 1 {
-		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
-	}
-
 	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
 	if err != nil {
 		return microerror.Mask(err)
@@ -262,14 +254,6 @@ func checkResourcesNotPresent(labelSelector string) error {
 		return microerror.Mask(err)
 	}
 
-	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
-	if err == nil && len(s.Items) > 0 {
-		return microerror.New("expected error querying for services didn't happen")
-	}
-	if !apierrors.IsNotFound(err) {
-		return microerror.Mask(err)
-	}
-
 	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
 	if err == nil && len(sb.Items) > 0 {
 		return microerror.New("expected error querying for services didn't happen")
@@ -295,6 +279,7 @@ func checkDeployment(name string, replicas int) error {
 		"k8s-app": name,
 	}
 	expectedLabels := map[string]string{
+		"app":                        name,
 		"k8s-app":                    name,
 		"giantswarm.io/service-type": "managed",
 	}
