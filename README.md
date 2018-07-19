@@ -43,3 +43,4 @@ Deployment to Guest Clusters will be handled by [chart-operator](https://github.
 | `defaultBackend.resources`           | The default backend pod resource requests & limits      | `cpu:10m memory:20Mi`                         |
 | `test.image.repository`              | The test image repository to pull from                  | `quay.io/giantswarm/alpine-testing`           |
 | `test.image.tag`                     | The test image tag to pull from                         | `0.1.0`                                       |
+
