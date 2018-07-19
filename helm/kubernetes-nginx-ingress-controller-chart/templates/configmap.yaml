@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ .Values.configmap.name }}
+  name: {{ .Values.controller.configmap.name }}
   namespace: {{ .Values.namespace }}
   labels:
     giantswarm.io/service-type: "managed"
