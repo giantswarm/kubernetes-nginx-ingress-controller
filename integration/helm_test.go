@@ -60,12 +60,21 @@ func TestHelm(t *testing.T) {
 	}
 	defer framework.HelmCmd("delete test-deploy --purge")
 
-	err = checkDeployment("nginx-ingress-controller", 3)
+	controllerLabels := map[string]string{
+		"app":                        "nginx-ingress-controller",
+		"k8s-app":                    "nginx-ingress-controller",
+		"giantswarm.io/service-type": "managed",
+	}
+	err = checkDeployment("nginx-ingress-controller", 3, controllerLabels)
 	if err != nil {
 		t.Fatalf("controller manifest is incorrect: %v", err)
 	}
 
-	err = checkDeployment("default-http-backend", 2)
+	defaultBackendLabels := map[string]string{
+		"k8s-app":                    "default-http-backend",
+		"giantswarm.io/service-type": "managed",
+	}
+	err = checkDeployment("default-http-backend", 2, defaultBackendLabels)
 	if err != nil {
 		t.Fatalf("default backend manifest is incorrect: %v", err)
 	}
@@ -274,7 +283,7 @@ func checkResourcesNotPresent(labelSelector string) error {
 }
 
 // checkDeployment ensures that key properties of the deployment are correct.
-func checkDeployment(name string, replicas int) error {
+func checkDeployment(name string, replicas int, expctedLabels map[string]string) error {
 	expectedMatchLabels := map[string]string{
 		"k8s-app": name,
 	}
