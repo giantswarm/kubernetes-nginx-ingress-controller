@@ -8,7 +8,6 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -20,10 +19,6 @@ import (
 
 const (
 	resourceNamespace = "kube-system"
-)
-
-var (
-	f *framework.Host
 )
 
 func TestHelm(t *testing.T) {
