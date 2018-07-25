@@ -8,8 +8,9 @@ metadata:
   name: {{ .Values.controller.name }}
   namespace: {{ .Values.namespace }}
   labels:
+    app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "managed"
-    k8s-app: {{ .Values.controller.name }}
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
 spec:
   type: NodePort
   ports:
@@ -24,4 +25,4 @@ spec:
     protocol: TCP
     targetPort: 443
   selector:
-    k8s-app: {{ .Values.controller.name }}
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
