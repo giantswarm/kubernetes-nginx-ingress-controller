@@ -31,9 +31,9 @@ func TestHelm(t *testing.T) {
 
 	gsHelmClient, err := createGsHelmClient()
 	if err != nil {
-		t.Fatalf("could not create giantswarm helmClient %v", err)		
+		t.Fatalf("could not create giantswarm helmClient %v", err)
 	}
-	
+
 	err = r.InstallResource(relaseName, values, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
