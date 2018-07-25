@@ -33,7 +33,7 @@ func TestHelm(t *testing.T) {
 		}
 	*/
 
-	err = r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
+	err := r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
