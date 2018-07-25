@@ -15,6 +15,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/release"
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
 const (
@@ -24,15 +25,13 @@ const (
 func TestHelm(t *testing.T) {
 	channel := os.Getenv("CIRCLE_SHA1")
 	releaseName := "kubernetes-nginx-ingress-controller"
-	// Use default values for the chart.
-	values := ""
 
 	gsHelmClient, err := createGsHelmClient()
 	if err != nil {
 		t.Fatalf("could not create giantswarm helmClient %v", err)
 	}
 
-	err = r.InstallResource(releaseName, values, channel)
+	err = r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
