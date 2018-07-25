@@ -55,7 +55,7 @@ func TestHelm(t *testing.T) {
 		t.Fatalf("default backend manifest is incorrect: %v", err)
 	}
 
-	err = framework.HelmCmd("test --debug test-deploy")
+	err = framework.HelmCmd(fmt.Sprintf("test --debug %s", releaseName))
 	if err != nil {
 		t.Errorf("unexpected error during test of the chart: %v", err)
 	}
