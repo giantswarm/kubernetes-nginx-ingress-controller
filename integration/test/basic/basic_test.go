@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -87,7 +88,7 @@ func TestMigration(t *testing.T) {
 
 	channel := os.Getenv("CIRCLE_SHA1")
 	releaseName := "kubernetes-nginx-ingress-controller"
-	err := r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
+	err = r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
