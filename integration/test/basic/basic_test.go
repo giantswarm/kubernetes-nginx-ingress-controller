@@ -25,7 +25,7 @@ const (
 
 func TestHelm(t *testing.T) {
 	channel := os.Getenv("CIRCLE_SHA1")
-	releaseName := "kubernetes-nginx-ingress-controller"
+	releaseName := "test-deploy"
 
 	/*
 		gsHelmClient, err := createGsHelmClient()
