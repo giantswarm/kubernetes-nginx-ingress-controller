@@ -44,7 +44,7 @@ jobs:
         name: Publish chart to CNR using a temporary channel for testing
         command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}
 
-    - run: ./e2e-harness test
+    - run: ./e2e-harness test --test-dir="integration/test/basic"
 
     - run:
         name: Finish with cleanup, no matter if the test succeeded or not
