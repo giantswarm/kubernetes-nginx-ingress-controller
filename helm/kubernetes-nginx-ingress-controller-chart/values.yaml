@@ -10,6 +10,9 @@ controller:
 
   replicas: 3
 
+  configmap:
+    name: ingress-nginx
+
   image:
     registry: quay.io
     repository: giantswarm/nginx-ingress-controller
