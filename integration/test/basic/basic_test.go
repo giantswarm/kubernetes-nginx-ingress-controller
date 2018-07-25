@@ -25,7 +25,7 @@ const (
 
 func TestHelm(t *testing.T) {
 	channel := os.Getenv("CIRCLE_SHA1")
-	releaseName := "test-deploy"
+	releaseName := "kubernetes-nginx-ingress-controller"
 
 	/*
 		gsHelmClient, err := createGsHelmClient()
@@ -99,7 +99,7 @@ func TestMigration(t *testing.T) {
 	}
 	l.Log("level", "debug", "message", fmt.Sprintf("%s succesfully deployed", releaseName))
 
-	defer framework.HelmCmd("delete test-deploy --purge")
+	defer framework.HelmCmd(fmt.Sprintf("delete %s --purge", releaseName))
 
 	// Check legacy resources are not present.
 	err = checkResourcesNotPresent("kind=legacy")
