@@ -77,12 +77,10 @@ func TestHelm(t *testing.T) {
 
 	backendName := "default-http-backend"
 	backendLabels := map[string]string{
-		"app": backendName,
 		"giantswarm.io/service-type": "managed",
 		"k8s-app":                    backendName,
 	}
 	backendMatchLabels := map[string]string{
-		"app":     backendName,
 		"k8s-app": backendName,
 	}
 	err = checkDeployment(backendName, 2, backendLabels, backendMatchLabels)
