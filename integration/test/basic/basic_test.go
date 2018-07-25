@@ -26,17 +26,19 @@ func TestHelm(t *testing.T) {
 	channel := os.Getenv("CIRCLE_SHA1")
 	releaseName := "kubernetes-nginx-ingress-controller"
 
-	gsHelmClient, err := createGsHelmClient()
-	if err != nil {
-		t.Fatalf("could not create giantswarm helmClient %v", err)
-	}
+	/*
+		gsHelmClient, err := createGsHelmClient()
+		if err != nil {
+			t.Fatalf("could not create giantswarm helmClient %v", err)
+		}
+	*/
 
 	err = r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
 
-	err = release.WaitForStatus(gsHelmClient, releaseName, "DEPLOYED")
+	err = release.WaitForStatus(helmClient, releaseName, "DEPLOYED")
 	if err != nil {
 		t.Fatalf("could not get release status of %q %v", releaseName, err)
 	}
