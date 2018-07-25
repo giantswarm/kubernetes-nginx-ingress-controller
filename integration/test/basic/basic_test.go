@@ -1,6 +1,6 @@
 // +build k8srequired
 
-package test
+package basic
 
 import (
 	"fmt"
