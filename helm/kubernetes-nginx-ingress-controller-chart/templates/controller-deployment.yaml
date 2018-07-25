@@ -62,7 +62,7 @@ spec:
         args:
         - /nginx-ingress-controller
         - --default-backend-service=$(POD_NAMESPACE)/{{ .Values.defaultBackend.name }}
-        - --configmap=$(POD_NAMESPACE)/ingress-nginx
+        - --configmap=$(POD_NAMESPACE)/{{ .Values.controller.configmap.name }}
         - --annotations-prefix=nginx.ingress.kubernetes.io
         env:
         - name: POD_NAME
