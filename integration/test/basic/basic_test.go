@@ -9,8 +9,10 @@ import (
 	"testing"
 
 	"github.com/giantswarm/e2e-harness/pkg/framework"
+	"github.com/giantswarm/e2e-harness/pkg/framework/release"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/microerror"
+	"github.com/giantswarm/micrologger"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -34,16 +36,16 @@ func TestHelm(t *testing.T) {
 		t.Fatalf("could not create giantswarm helmClient %v", err)
 	}
 
-	err = r.InstallResource(relaseName, values, channel)
+	err = r.InstallResource(releaseName, values, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
 
 	err = release.WaitForStatus(gsHelmClient, releaseName, "DEPLOYED")
 	if err != nil {
-		t.Fatalf("could not get release status of %q %v", testRelease, err)
+		t.Fatalf("could not get release status of %q %v", releaseName, err)
 	}
-	l.Log("level", "debug", "message", fmt.Sprintf("%s succesfully deployed", testRelease))
+	l.Log("level", "debug", "message", fmt.Sprintf("%s succesfully deployed", releaseName))
 
 	err = checkDeployment("nginx-ingress-controller", 3)
 	if err != nil {
