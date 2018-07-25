@@ -3,17 +3,14 @@
 package basic
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"reflect"
 	"testing"
 
 	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/e2e-harness/pkg/framework/resource"
-	"github.com/giantswarm/microerror"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/giantswarm/helmclient"
+	"github.com/giantswarm/micrologger"
+
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/setup"
 )
 
 var (
