@@ -54,12 +54,10 @@ func TestHelm(t *testing.T) {
 		t.Fatalf("default backend manifest is incorrect: %v", err)
 	}
 
-	/*
-		err = framework.HelmCmd("test --debug test-deploy")
-		if err != nil {
-			t.Errorf("unexpected error during test of the chart: %v", err)
-		}
-	*/
+	err = framework.HelmCmd("test --debug test-deploy")
+	if err != nil {
+		t.Errorf("unexpected error during test of the chart: %v", err)
+	}
 }
 
 // TestMigration ensures that previously deployed resources are properly
@@ -68,46 +66,51 @@ func TestHelm(t *testing.T) {
 // appropriate labels so that we can query for them. Then installs the
 // nginx-ingress-controller chart and checks that the previous resources are
 // removed and the ones for nginx-ingress-controller are in place.
-/*
-	func TestMigration(t *testing.T) {
-		// Install legacy resources.
-		err := framework.HelmCmd("install /e2e/fixtures/resources-chart -n resources")
-		if err != nil {
-			t.Fatalf("could not install resources chart: %v", err)
-		}
-		defer framework.HelmCmd("delete resources --purge")
-
-		// Check legacy resources are present.
-		err = checkResourcesPresent("kind=legacy")
-		if err != nil {
-			t.Fatalf("legacy resources present: %v", err)
-		}
-		// Check managed resources are not present.
-		err = checkResourcesNotPresent("giantswarm.io/service-type=managed")
-		if err != nil {
-			t.Fatalf("managed resources not present: %v", err)
-		}
-
-		// Install kubernetes-nginx-ingress-controller-chart.
-		channel := os.Getenv("CIRCLE_SHA1")
-		err = framework.HelmCmd(fmt.Sprintf("registry install --wait quay.io/giantswarm/kubernetes-nginx-ingress-controller-chart:%s -n test-deploy", channel))
-		if err != nil {
-			t.Fatalf("could not install kubernetes-nginx-ingress-controller-chart: %v", err)
-		}
-		defer framework.HelmCmd("delete test-deploy --purge")
-
-		// Check legacy resources are not present.
-		err = checkResourcesNotPresent("kind=legacy")
-		if err != nil {
-			t.Fatalf("legacy resources present: %v", err)
-		}
-		// Check managed resources are present.
-		err = checkResourcesPresent("giantswarm.io/service-type=managed")
-		if err != nil {
-			t.Fatalf("managed resources not present: %v", err)
-		}
+func TestMigration(t *testing.T) {
+	// Install legacy resources.
+	err := framework.HelmCmd("install /e2e/fixtures/resources-chart -n resources")
+	if err != nil {
+		t.Fatalf("could not install resources chart: %v", err)
 	}
-*/
+	defer framework.HelmCmd("delete resources --purge")
+
+	// Check legacy resources are present.
+	err = checkResourcesPresent("kind=legacy")
+	if err != nil {
+		t.Fatalf("legacy resources present: %v", err)
+	}
+	// Check managed resources are not present.
+	err = checkResourcesNotPresent("giantswarm.io/service-type=managed")
+	if err != nil {
+		t.Fatalf("managed resources not present: %v", err)
+	}
+
+	channel := os.Getenv("CIRCLE_SHA1")
+	releaseName := "kubernetes-nginx-ingress-controller"
+	err := r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
+	if err != nil {
+		t.Fatalf("could not install %q %v", releaseName, err)
+	}
+
+	err = release.WaitForStatus(helmClient, releaseName, "DEPLOYED")
+	if err != nil {
+		t.Fatalf("could not get release status of %q %v", releaseName, err)
+	}
+	l.Log("level", "debug", "message", fmt.Sprintf("%s succesfully deployed", releaseName))
+
+	defer framework.HelmCmd("delete test-deploy --purge")
+
+	// Check legacy resources are not present.
+	err = checkResourcesNotPresent("kind=legacy")
+	if err != nil {
+		t.Fatalf("legacy resources present: %v", err)
+	}
+	// Check managed resources are present.
+	err = checkResourcesPresent("giantswarm.io/service-type=managed")
+	if err != nil {
+		t.Fatalf("managed resources not present: %v", err)
+	}
+}
 
 func checkResourcesPresent(labelSelector string) error {
 	c := f.K8sClient()
