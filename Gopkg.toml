@@ -25,9 +25,16 @@
 #   unused-packages = true
 
 
+
 [[constraint]]
   branch = "master"
   name = "github.com/giantswarm/e2e-harness"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/giantswarm/helmclient"
+
+
 
 [prune]
   go-tests = true
