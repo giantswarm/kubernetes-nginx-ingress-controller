@@ -2,6 +2,16 @@
 
 
 [[projects]]
+  name = "github.com/Azure/go-autorest"
+  packages = [
+    "autorest",
+    "autorest/adal",
+    "autorest/date"
+  ]
+  revision = "fc3b03a2d2d1f43fad3007038bd16f044f870722"
+  version = "v9.10.0"
+
+[[projects]]
   name = "github.com/BurntSushi/toml"
   packages = ["."]
   revision = "b26d9c308763d68093482582cea63d69be07a0f0"
@@ -38,13 +48,19 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
+  branch = "master"
   name = "github.com/docker/distribution"
   packages = [
-    "digest",
+    "digestset",
     "reference"
   ]
-  revision = "48294d928ced5dd9b378f7fd7c6f5da3ff3f2c89"
-  version = "v2.6.2"
+  revision = "0dae0957e5fe3156c265d22bef4cba9efbf388e2"
 
 [[projects]]
   name = "github.com/docker/docker"
@@ -342,6 +358,12 @@
   version = "1.0.1"
 
 [[projects]]
+  name = "github.com/opencontainers/go-digest"
+  packages = ["."]
+  revision = "279bed98673dd5bef374d3b6e4b09e2af76183bf"
+  version = "v1.0.0-rc1"
+
+[[projects]]
   name = "github.com/pborman/uuid"
   packages = ["."]
   revision = "e790cca94e6cc75c7064b1332e63811d4aae1a53"
@@ -613,7 +635,6 @@
     "pkg/api/meta",
     "pkg/api/resource",
     "pkg/api/validation",
-    "pkg/api/validation/path",
     "pkg/apimachinery",
     "pkg/apimachinery/announced",
     "pkg/apimachinery/registered",
@@ -667,7 +688,6 @@
   version = "kubernetes-1.10.4"
 
 [[projects]]
-  branch = "master"
   name = "k8s.io/apiserver"
   packages = [
     "pkg/apis/audit",
@@ -678,7 +698,8 @@
     "pkg/features",
     "pkg/util/feature"
   ]
-  revision = "563a7d9b065ea20fbdbe24506369772acb413d8d"
+  revision = "8378ef881d4fa7d3ca5c5e7e5309592ec69b11e4"
+  version = "kubernetes-1.10.4"
 
 [[projects]]
   name = "k8s.io/client-go"
@@ -1017,6 +1038,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ba758aca7ffa3507b68508b97d6573a04b6652c2c45583d6e66f78b51b9f6376"
+  inputs-digest = "ada23d1d7b70794a013b3ba3e141c328ff9785870ddb163067aabaeab3f8c199"
   solver-name = "gps-cdcl"
   solver-version = 1
