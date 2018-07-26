@@ -48,10 +48,12 @@ func TestHelm(t *testing.T) {
 		t.Fatalf("default backend manifest is incorrect: %v", err)
 	}
 
+	/* TODO Add to giantswarm/helmclient.
 	err = framework.HelmCmd(fmt.Sprintf("test --debug %s", releaseName))
 	if err != nil {
 		t.Errorf("unexpected error during test of the chart: %v", err)
 	}
+	*/
 }
 
 // checkDeployment ensures that key properties of the deployment are correct.
