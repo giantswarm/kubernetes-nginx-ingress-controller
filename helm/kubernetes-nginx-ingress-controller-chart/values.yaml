@@ -6,7 +6,11 @@ namespace: kube-system
 
 controller:
   name: nginx-ingress-controller
+  k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
+
+  configmap:
+    name: ingress-nginx
 
   replicas: 3
 
@@ -22,6 +26,7 @@ controller:
     nodePorts:
       http: 30010
       https: 30011
+    type: NodePort
 
   resources:
     limits:

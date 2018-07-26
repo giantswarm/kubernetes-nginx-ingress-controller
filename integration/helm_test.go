@@ -60,12 +60,21 @@ func TestHelm(t *testing.T) {
 	}
 	defer framework.HelmCmd("delete test-deploy --purge")
 
-	err = checkDeployment("nginx-ingress-controller", 3)
+	controllerLabels := map[string]string{
+		"app":                        "nginx-ingress-controller",
+		"k8s-app":                    "nginx-ingress-controller",
+		"giantswarm.io/service-type": "managed",
+	}
+	err = checkDeployment("nginx-ingress-controller", 3, controllerLabels)
 	if err != nil {
 		t.Fatalf("controller manifest is incorrect: %v", err)
 	}
 
-	err = checkDeployment("default-http-backend", 2)
+	defaultBackendLabels := map[string]string{
+		"k8s-app":                    "default-http-backend",
+		"giantswarm.io/service-type": "managed",
+	}
+	err = checkDeployment("default-http-backend", 2, defaultBackendLabels)
 	if err != nil {
 		t.Fatalf("default backend manifest is incorrect: %v", err)
 	}
@@ -178,14 +187,6 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(rb.Items))
 	}
 
-	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-	if len(s.Items) != 1 {
-		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
-	}
-
 	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
 	if err != nil {
 		return microerror.Mask(err)
@@ -262,14 +263,6 @@ func checkResourcesNotPresent(labelSelector string) error {
 		return microerror.Mask(err)
 	}
 
-	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
-	if err == nil && len(s.Items) > 0 {
-		return microerror.New("expected error querying for services didn't happen")
-	}
-	if !apierrors.IsNotFound(err) {
-		return microerror.Mask(err)
-	}
-
 	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
 	if err == nil && len(sb.Items) > 0 {
 		return microerror.New("expected error querying for services didn't happen")
@@ -290,13 +283,9 @@ func checkResourcesNotPresent(labelSelector string) error {
 }
 
 // checkDeployment ensures that key properties of the deployment are correct.
-func checkDeployment(name string, replicas int) error {
+func checkDeployment(name string, replicas int, expectedLabels map[string]string) error {
 	expectedMatchLabels := map[string]string{
 		"k8s-app": name,
-	}
-	expectedLabels := map[string]string{
-		"k8s-app":                    name,
-		"giantswarm.io/service-type": "managed",
 	}
 
 	c := f.K8sClient()
