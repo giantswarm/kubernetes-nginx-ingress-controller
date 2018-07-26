@@ -1,3 +1,35 @@
+e2eTest: &e2eTest
+    machine: true
+    working_directory: /home/circleci/.go_workspace/src/github.com/giantswarm/kubernetes-nginx-ingress-controller
+    steps:
+    - checkout
+
+    - attach_workspace:
+        at: .
+
+    - run:
+        name: Get e2e-harness binary
+        command: |
+          wget -q $(curl -sS https://api.github.com/repos/giantswarm/e2e-harness/releases/latest | grep browser_download_url | head -n 1 | cut -d '"' -f 4)
+          chmod +x ./e2e-harness
+
+    - run: ./e2e-harness localkube
+
+    - run: ./e2e-harness setup --remote=false
+    
+    - run:
+        name: Publish chart to CNR using a temporary channel for testing
+        command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}
+
+    - run: ./e2e-harness test --test-dir=${TEST_DIR}
+
+    - run:
+        name: Finish with cleanup, no matter if the test succeeded or not
+        command: |
+          ./architect unpublish --channels=${CIRCLE_SHA1}
+          ./e2e-harness teardown
+        when: always
+
 version: 2
 jobs:
   build:
@@ -19,39 +51,15 @@ jobs:
         paths:
         - ./architect
 
-  e2eTest:
-    machine: true
-    working_directory: /home/circleci/.go_workspace/src/github.com/giantswarm/kubernetes-nginx-ingress-controller
-    steps:
-    - checkout
+  e2eTestBasic:
+    environment:
+      TEST_DIR: "integration/test/basic"
+    <<: *e2eTest
 
-    - attach_workspace:
-        at: .
-
-    - run:
-        name: Get e2e-harness binary
-        command: |
-          wget -q $(curl -sS https://api.github.com/repos/giantswarm/e2e-harness/releases/latest | grep browser_download_url | head -n 1 | cut -d '"' -f 4)
-          chmod +x ./e2e-harness
-
-    - run:
-        name: Setup localkube in circleCI machine
-        command: ./e2e-harness localkube
-
-    - run: ./e2e-harness setup --remote=false
-
-    - run:
-        name: Publish chart to CNR using a temporary channel for testing
-        command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}
-
-    - run: ./e2e-harness test --test-dir="integration/test/basic"
-
-    - run:
-        name: Finish with cleanup, no matter if the test succeeded or not
-        command: |
-          ./architect unpublish --channels=${CIRCLE_SHA1}
-          ./e2e-harness teardown
-        when: always
+  e2eTestMigration:
+    environment:
+      TEST_DIR: "integration/test/basic"
+    <<: *e2eTest
 
   deploy:
     machine: true
@@ -83,7 +91,11 @@ workflows:
     jobs:
       - build
 
-      - e2eTest:
+      - e2eTestBasic:
+          requires:
+          - build
+      
+      - e2eTestMigration:
           requires:
           - build
 
@@ -92,7 +104,8 @@ workflows:
             branches:
               only: master
           requires:
-          - e2eTest
+          - e2eTestBasic
+          - e2eTestMigration
 
       - publish_to_stable:
           filters:
