@@ -140,14 +140,14 @@
   revision = "96bf5b8e512b112c7fdfb0b5a7f0725ea7f4f9ce"
 
 [[projects]]
-  branch = "check-release"
+  branch = "master"
   name = "github.com/giantswarm/e2e-harness"
   packages = [
     "pkg/framework",
     "pkg/framework/resource",
     "pkg/harness"
   ]
-  revision = "a937a020b5359257d915d63c1b98c94556b83608"
+  revision = "a4e785eee3f7df10ca0ed9a1fed31bba4bfa7bc1"
 
 [[projects]]
   branch = "master"
@@ -159,7 +159,7 @@
   branch = "helm-test"
   name = "github.com/giantswarm/helmclient"
   packages = ["."]
-  revision = "1a219bd812fade11501d3951172b5f98ce39c988"
+  revision = "3f9f815dfac515a3f6536153767737b017581404"
 
 [[projects]]
   branch = "master"
@@ -1032,6 +1032,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b7bf498708fc6f88dac29cea88cbab10103a5a5977489b649d8bcac98d31d3f0"
+  inputs-digest = "6787751c874c98d2ddabf310d3b8a910c81a19e5f43966f063ad02f9704d04ae"
   solver-name = "gps-cdcl"
   solver-version = 1
