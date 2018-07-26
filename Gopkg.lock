@@ -159,7 +159,7 @@
   branch = "helm-test"
   name = "github.com/giantswarm/helmclient"
   packages = ["."]
-  revision = "3f9f815dfac515a3f6536153767737b017581404"
+  revision = "348a0160999c7279895d6151a001d3ff28e6584a"
 
 [[projects]]
   branch = "master"
