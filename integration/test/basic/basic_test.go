@@ -24,7 +24,7 @@ const (
 )
 
 func TestHelm(t *testing.T) {
-	channel := os.Getenv("CIRCLE_SHA1")
+	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), os.Getenv("TEST_NAME"))
 	releaseName := "kubernetes-nginx-ingress-controller"
 
 	/*

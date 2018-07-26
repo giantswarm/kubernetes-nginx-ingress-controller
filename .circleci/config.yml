@@ -19,14 +19,14 @@ e2eTest: &e2eTest
     
     - run:
         name: Publish chart to CNR using a temporary channel for testing
-        command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}
+        command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}-${TEST_NAME}
 
     - run: ./e2e-harness test --test-dir=${TEST_DIR}
 
     - run:
         name: Finish with cleanup, no matter if the test succeeded or not
         command: |
-          ./architect unpublish --channels=${CIRCLE_SHA1}
+          ./architect unpublish --channels=${CIRCLE_SHA1}-${TEST_NAME}
           ./e2e-harness teardown
         when: always
 
@@ -54,11 +54,13 @@ jobs:
   e2eTestBasic:
     environment:
       TEST_DIR: "integration/test/basic"
+      TEST_NAME: "basic"
     <<: *e2eTest
 
   e2eTestMigration:
     environment:
-      TEST_DIR: "integration/test/basic"
+      TEST_DIR: "integration/test/migration"
+      TEST_NAME: "migration"
     <<: *e2eTest
 
   deploy:
