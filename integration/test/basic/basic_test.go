@@ -21,10 +21,11 @@ import (
 
 const (
 	resourceNamespace = "kube-system"
+	testName          = "basic"
 )
 
 func TestHelm(t *testing.T) {
-	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), os.Getenv("TEST_NAME"))
+	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
 
 	/*

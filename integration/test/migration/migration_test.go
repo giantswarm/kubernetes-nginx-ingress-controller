@@ -21,6 +21,7 @@ import (
 
 const (
 	resourceNamespace = "kube-system"
+	testName          = "migration"
 )
 
 // TestMigration ensures that previously deployed resources are properly
@@ -48,7 +49,7 @@ func TestMigration(t *testing.T) {
 		t.Fatalf("managed resources not present: %v", err)
 	}
 
-	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), os.Getenv("TEST_NAME"))
+	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
 	err = r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
 	if err != nil {

@@ -4,4 +4,3 @@ test:
   env:
     - "KEEP_RESOURCES=${KEEP_RESOURCES}"
     - "CIRCLE_SHA1=${CIRCLE_SHA1}"
-    - "TEST_NAME=migration"
