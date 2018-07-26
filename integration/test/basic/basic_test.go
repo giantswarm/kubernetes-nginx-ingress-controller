@@ -20,20 +20,12 @@ import (
 )
 
 const (
-	resourceNamespace = "kube-system"
-	testName          = "basic"
+	testName = "basic"
 )
 
 func TestHelm(t *testing.T) {
 	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
-
-	/*
-		gsHelmClient, err := createGsHelmClient()
-		if err != nil {
-			t.Fatalf("could not create giantswarm helmClient %v", err)
-		}
-	*/
 
 	err := r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
 	if err != nil {
@@ -73,7 +65,7 @@ func checkDeployment(name string, replicas int) error {
 	}
 
 	c := f.K8sClient()
-	ds, err := c.Apps().Deployments(resourceNamespace).Get(name, metav1.GetOptions{})
+	ds, err := c.Apps().Deployments(metav1.NamespaceSystem).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
 		return microerror.Newf("could not find deployment: '%s' %v", name, err)
 	} else if err != nil {

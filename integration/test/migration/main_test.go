@@ -9,6 +9,7 @@ import (
 	"github.com/giantswarm/e2e-harness/pkg/framework/resource"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/micrologger"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/setup"
 )
@@ -36,8 +37,8 @@ func TestMain(m *testing.M) {
 	{
 		c := framework.HostConfig{
 			Logger:     l,
-			ClusterID:  "someval",
-			VaultToken: "someval",
+			ClusterID:  "na",
+			VaultToken: "na",
 		}
 		f, err = framework.NewHost(c)
 		if err != nil {
@@ -47,9 +48,10 @@ func TestMain(m *testing.M) {
 
 	{
 		c := helmclient.Config{
-			Logger:     l,
-			K8sClient:  f.K8sClient(),
-			RestConfig: f.RestConfig(),
+			Logger:          l,
+			K8sClient:       f.K8sClient(),
+			RestConfig:      f.RestConfig(),
+			TillerNamespace: "giantswarm",
 		}
 		helmClient, err = helmclient.New(c)
 		if err != nil {
@@ -60,7 +62,7 @@ func TestMain(m *testing.M) {
 	resourceConfig := resource.ResourceConfig{
 		Logger:     l,
 		HelmClient: helmClient,
-		Namespace:  "giantswarm",
+		Namespace:  metav1.NamespaceSystem,
 	}
 	r, err = resource.New(resourceConfig)
 	if err != nil {
