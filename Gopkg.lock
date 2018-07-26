@@ -156,10 +156,10 @@
   revision = "9e78ca0e32a019481beb21ae3e158d1bb150730d"
 
 [[projects]]
-  branch = "master"
+  branch = "helm-test"
   name = "github.com/giantswarm/helmclient"
   packages = ["."]
-  revision = "25e403a55384357736eadc54fe28d53c06d0fead"
+  revision = "1a219bd812fade11501d3951172b5f98ce39c988"
 
 [[projects]]
   branch = "master"
@@ -1032,6 +1032,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "513e154300af085acd4374df992baf8e3a39ea243f9b0db787ff7d0278570eae"
+  inputs-digest = "b7bf498708fc6f88dac29cea88cbab10103a5a5977489b649d8bcac98d31d3f0"
   solver-name = "gps-cdcl"
   solver-version = 1

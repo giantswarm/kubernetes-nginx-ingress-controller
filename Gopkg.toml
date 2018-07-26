@@ -49,7 +49,7 @@ required = [
   name = "github.com/giantswarm/e2e-harness"
 
 [[constraint]]
-  branch = "master"
+  branch = "helm-test"
   name = "github.com/giantswarm/helmclient"
 
 [[constraint]]
