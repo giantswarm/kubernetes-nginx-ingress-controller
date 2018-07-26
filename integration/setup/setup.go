@@ -10,7 +10,7 @@ import (
 	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/helmclient"
 
-	"github.com/giantswarm/chart-operator/integration/teardown"
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/teardown"
 )
 
 func WrapTestMain(f *framework.Host, helmClient *helmclient.Client, m *testing.M) {
