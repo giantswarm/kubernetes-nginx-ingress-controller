@@ -53,7 +53,7 @@ func TestMigration(t *testing.T) {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
 
-	err = r.WaitForStatus(helmClient, releaseName, "DEPLOYED")
+	err = r.WaitForStatus(releaseName, "DEPLOYED")
 	if err != nil {
 		t.Fatalf("could not get release status of %q %v", releaseName, err)
 	}
