@@ -8,14 +8,12 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/release"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
@@ -32,7 +30,7 @@ func TestHelm(t *testing.T) {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
 
-	err = release.WaitForStatus(helmClient, releaseName, "DEPLOYED")
+	err = r.WaitForStatus(helmClient, releaseName, "DEPLOYED")
 	if err != nil {
 		t.Fatalf("could not get release status of %q %v", releaseName, err)
 	}

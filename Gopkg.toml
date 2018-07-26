@@ -45,7 +45,7 @@ required = [
   name = "github.com/docker/distribution"
 
 [[constraint]]
-  branch = "master"
+  branch = "check-release"
   name = "github.com/giantswarm/e2e-harness"
 
 [[constraint]]

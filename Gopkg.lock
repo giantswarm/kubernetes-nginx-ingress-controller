@@ -140,20 +140,14 @@
   revision = "96bf5b8e512b112c7fdfb0b5a7f0725ea7f4f9ce"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/giantswarm/chart-operator"
-  packages = ["integration/teardown"]
-  revision = "4b7de9d1e73306f08e34a17b8504e03f1ac07126"
-
-[[projects]]
-  branch = "master"
+  branch = "check-release"
   name = "github.com/giantswarm/e2e-harness"
   packages = [
     "pkg/framework",
     "pkg/framework/resource",
     "pkg/harness"
   ]
-  revision = "b7d5f9a654423f2a0ce13d8f76a746be3a9a7165"
+  revision = "a937a020b5359257d915d63c1b98c94556b83608"
 
 [[projects]]
   branch = "master"
@@ -1038,6 +1032,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ada23d1d7b70794a013b3ba3e141c328ff9785870ddb163067aabaeab3f8c199"
+  inputs-digest = "513e154300af085acd4374df992baf8e3a39ea243f9b0db787ff7d0278570eae"
   solver-name = "gps-cdcl"
   solver-version = 1
