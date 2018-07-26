@@ -54,13 +54,11 @@ jobs:
   e2eTestBasic:
     environment:
       TEST_DIR: "integration/test/basic"
-      TEST_NAME: "basic"
     <<: *e2eTest
 
   e2eTestMigration:
     environment:
       TEST_DIR: "integration/test/migration"
-      TEST_NAME: "migration"
     <<: *e2eTest
 
   deploy:
