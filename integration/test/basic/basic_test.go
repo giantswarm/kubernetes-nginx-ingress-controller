@@ -8,9 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/microerror"
-	"github.com/giantswarm/micrologger"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -46,7 +44,7 @@ func TestHelm(t *testing.T) {
 		t.Fatalf("default backend manifest is incorrect: %v", err)
 	}
 
-	err := helmClient.RunReleaseTest(releaseName)
+	err = helmClient.RunReleaseTest(releaseName)
 	if err != nil {
 		t.Fatalf("unexpected error during test of the chart: %v", err)
 	}
@@ -91,25 +89,4 @@ func checkDeployment(name string, replicas int) error {
 	}
 
 	return nil
-}
-
-func createGsHelmClient() (*helmclient.Client, error) {
-	l, err := micrologger.New(micrologger.Config{})
-	if err != nil {
-		return nil, microerror.Maskf(err, "could not create logger")
-	}
-
-	c := helmclient.Config{
-		Logger:          l,
-		K8sClient:       f.K8sClient(),
-		RestConfig:      f.RestConfig(),
-		TillerNamespace: "giantswarm",
-	}
-
-	gsHelmClient, err := helmclient.New(c)
-	if err != nil {
-		return nil, microerror.Maskf(err, "could not create helmClient")
-	}
-
-	return gsHelmClient, nil
 }
