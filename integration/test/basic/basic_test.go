@@ -37,7 +37,7 @@ func TestHelm(t *testing.T) {
 	controllerName := "nginx-ingress-controller"
 	controllerLabels := map[string]string{
 		"app": controllerName,
-		"giantswarm.io/service.type": "managed",
+		"giantswarm.io/service-type": "managed",
 		"k8s-app":                    controllerName,
 	}
 	controllerMatchLabels := map[string]string{
@@ -52,7 +52,7 @@ func TestHelm(t *testing.T) {
 	backendName := "default-http-backend"
 	backendLabels := map[string]string{
 		"app": backendName,
-		"giantswarm.io/service.type": "managed",
+		"giantswarm.io/service-type": "managed",
 		"k8s-app":                    backendName,
 	}
 	backendMatchLabels := map[string]string{
