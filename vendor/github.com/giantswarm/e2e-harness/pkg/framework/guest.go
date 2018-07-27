@@ -1,10 +1,11 @@
 package framework
 
 import (
-	"os"
+	"fmt"
 	"time"
 
 	"github.com/cenkalti/backoff"
+	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"k8s.io/api/core/v1"
@@ -24,13 +25,20 @@ const (
 
 type GuestConfig struct {
 	Logger micrologger.Logger
+
+	ClusterID    string
+	CommonDomain string
 }
 
 type Guest struct {
 	logger micrologger.Logger
 
+	g8sClient  versioned.Interface
 	k8sClient  kubernetes.Interface
 	restConfig *rest.Config
+
+	clusterID    string
+	commonDomain string
 }
 
 func NewGuest(config GuestConfig) (*Guest, error) {
@@ -38,25 +46,43 @@ func NewGuest(config GuestConfig) (*Guest, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
+	if config.ClusterID == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.ClusterID must not be empty", config)
+	}
+	if config.CommonDomain == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.CommonDomain must not be empty", config)
+	}
+
 	g := &Guest{
 		logger: config.Logger,
 
+		g8sClient:  nil,
 		k8sClient:  nil,
 		restConfig: nil,
+
+		clusterID:    config.ClusterID,
+		commonDomain: config.CommonDomain,
 	}
 
 	return g, nil
 }
 
+// G8sClient returns the guest cluster framework's apiextensions clientset. The
+// client being returned is properly configured once Guest.Setup() is executed
+// successfully.
+func (g *Guest) G8sClient() versioned.Interface {
+	return g.g8sClient
+}
+
 // K8sClient returns the guest cluster framework's Kubernetes client. The client
-// being returned is properly configured ones Guest.Setup() got executed
+// being returned is properly configured once Guest.Setup() is executed
 // successfully.
 func (g *Guest) K8sClient() kubernetes.Interface {
 	return g.k8sClient
 }
 
 // RestConfig returns the guest cluster framework's rest config. The config
-// being returned is properly configured ones Guest.Setup() got executed
+// being returned is properly configured once Guest.Setup() is executed
 // successfully.
 func (g *Guest) RestConfig() *rest.Config {
 	return g.restConfig
@@ -76,22 +102,28 @@ func (g *Guest) Initialize() error {
 		}
 	}
 
+	var guestG8sClient versioned.Interface
 	var guestK8sClient kubernetes.Interface
 	var guestRestConfig *rest.Config
 	{
-		n := os.ExpandEnv("${CLUSTER_NAME}-api")
+		n := fmt.Sprintf("%s-api", g.clusterID)
 		s, err := hostK8sClient.CoreV1().Secrets("default").Get(n, metav1.GetOptions{})
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
 		guestRestConfig = &rest.Config{
-			Host: os.ExpandEnv("https://api.${CLUSTER_NAME}.${COMMON_DOMAIN_GUEST}"),
+			Host: fmt.Sprintf("https://api.%s.k8s.%s", g.clusterID, g.commonDomain),
 			TLSClientConfig: rest.TLSClientConfig{
 				CAData:   s.Data["ca"],
 				CertData: s.Data["crt"],
 				KeyData:  s.Data["key"],
 			},
+		}
+
+		guestG8sClient, err = versioned.NewForConfig(guestRestConfig)
+		if err != nil {
+			return microerror.Mask(err)
 		}
 
 		guestK8sClient, err = kubernetes.NewForConfig(guestRestConfig)
@@ -100,6 +132,7 @@ func (g *Guest) Initialize() error {
 		}
 	}
 
+	g.g8sClient = guestG8sClient
 	g.k8sClient = guestK8sClient
 	g.restConfig = guestRestConfig
 
@@ -138,7 +171,7 @@ func (g *Guest) WaitForAPIDown() error {
 
 		return microerror.Maskf(waitError, "k8s API is still up")
 	}
-	b := NewExponentialBackoff(ShortMaxWait, ShortMaxInterval)
+	b := NewConstantBackoff(LongMaxWait, ShortMaxInterval)
 	n := func(err error, delay time.Duration) {
 		g.logger.Log("level", "debug", "message", err.Error())
 	}
@@ -164,7 +197,7 @@ func (g *Guest) WaitForAPIUp() error {
 
 		return nil
 	}
-	b := NewExponentialBackoff(LongMaxWait, LongMaxInterval)
+	b := NewConstantBackoff(LongMaxWait, LongMaxInterval)
 	n := func(err error, delay time.Duration) {
 		g.logger.Log("level", "debug", "message", err.Error())
 	}
@@ -218,7 +251,7 @@ func (g *Guest) WaitForNodesUp(numberOfNodes int) error {
 
 		return nil
 	}
-	b := NewExponentialBackoff(LongMaxWait, LongMaxInterval)
+	b := NewConstantBackoff(LongMaxWait, LongMaxInterval)
 	n := func(err error, delay time.Duration) {
 		g.logger.Log("level", "debug", "message", err.Error())
 	}
