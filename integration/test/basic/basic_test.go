@@ -37,7 +37,7 @@ func TestHelm(t *testing.T) {
 	controllerName := "nginx-ingress-controller"
 	controllerLabels := map[string]string{
 		"app": controllerName,
-		"giantswarm.io/service.type": "managed",
+		"giantswarm.io/service-type": "managed",
 		"k8s-app":                    controllerName,
 	}
 	controllerMatchLabels := map[string]string{
@@ -51,14 +51,13 @@ func TestHelm(t *testing.T) {
 
 	backendName := "default-http-backend"
 	backendLabels := map[string]string{
-		"app": backendName,
-		"giantswarm.io/service.type": "managed",
+		"giantswarm.io/service-type": "managed",
 		"k8s-app":                    backendName,
 	}
 	backendMatchLabels := map[string]string{
 		"k8s-app": backendName,
 	}
-	err = checkDeployment(backendName, 2, backendLabels, backendMachLabels)
+	err = checkDeployment(backendName, 2, backendLabels, backendMatchLabels)
 	if err != nil {
 		t.Fatalf("default backend manifest is incorrect: %v", err)
 	}
@@ -70,7 +69,7 @@ func TestHelm(t *testing.T) {
 }
 
 // checkDeployment ensures that key properties of the deployment are correct.
-func checkDeployment(name string, replicas int, labels, matchLabels) error {
+func checkDeployment(name string, replicas int, expectedLabels, expectedMatchLabels map[string]string) error {
 	c := f.K8sClient()
 	ds, err := c.Apps().Deployments(metav1.NamespaceSystem).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
@@ -80,17 +79,17 @@ func checkDeployment(name string, replicas int, labels, matchLabels) error {
 	}
 
 	// Check deployment labels.
-	if !reflect.DeepEqual(labels, ds.ObjectMeta.Labels) {
+	if !reflect.DeepEqual(expectedLabels, ds.ObjectMeta.Labels) {
 		return microerror.Newf("expected labels: %v got: %v", expectedLabels, ds.ObjectMeta.Labels)
 	}
 
 	// Check selector match labels.
-	if !reflect.DeepEqual(matchLabels, ds.Spec.Selector.MatchLabels) {
+	if !reflect.DeepEqual(expectedMatchLabels, ds.Spec.Selector.MatchLabels) {
 		return microerror.Newf("expected match labels: %v got: %v", expectedMatchLabels, ds.Spec.Selector.MatchLabels)
 	}
 
 	// Check pod labels.
-	if !reflect.DeepEqual(labels, ds.Spec.Template.ObjectMeta.Labels) {
+	if !reflect.DeepEqual(expectedLabels, ds.Spec.Template.ObjectMeta.Labels) {
 		return microerror.Newf("expected pod labels: %v got: %v", expectedLabels, ds.Spec.Template.ObjectMeta.Labels)
 	}
 
