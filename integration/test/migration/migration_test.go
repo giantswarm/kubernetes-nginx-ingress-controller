@@ -81,6 +81,17 @@ func checkResourcesPresent(labelSelector string) error {
 	backendListOptions := metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("k8s-app=default-http-backend,%s", labelSelector),
 	}
+	configMapListOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("k8s-addon=ingress-nginx.addons.k8s.io,%s", labelSelector),
+	}
+
+	cm, err := c.Core().ConfigMaps(resourceNamespace).List(configMapListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(cm.Items) != 1 {
+		return microerror.Newf("unexpected number of configmaps, want 1, got %d", len(cm.Items))
+	}
 
 	d, err := c.Extensions().Deployments(resourceNamespace).List(controllerListOptions)
 	if err != nil {
@@ -164,6 +175,17 @@ func checkResourcesNotPresent(labelSelector string) error {
 	}
 	backendListOptions := metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("k8s-app=default-http-backend,%s", labelSelector),
+	}
+	configMapListOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("k8s-addon=ngress-nginx.addons.k8s.io,%s", labelSelector),
+	}
+
+	cm, err := c.Core().ConfigMaps(resourceNamespace).List(configMapListOptions)
+	if err == nil && len(cm.Items) > 0 {
+		return microerror.New("expected error querying for configmaps didn't happen")
+	}
+	if !apierrors.IsNotFound(err) {
+		return microerror.Mask(err)
 	}
 
 	d, err := c.Extensions().Deployments(resourceNamespace).List(controllerListOptions)

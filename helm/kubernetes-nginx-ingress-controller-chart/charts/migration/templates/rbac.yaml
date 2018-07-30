@@ -30,6 +30,7 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - configmaps
   - services
   - serviceaccounts
   verbs:

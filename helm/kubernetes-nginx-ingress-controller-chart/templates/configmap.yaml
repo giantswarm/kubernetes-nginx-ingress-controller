@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     giantswarm.io/service-type: "managed"
-    k8s-app: {{ .Values.controller.name }}
+    k8s-addon: ingress-nginx.addons.k8s.io
 data:
   enable-vts-status: "true"
   # Increase hash table size to allow more server names for stability reasons

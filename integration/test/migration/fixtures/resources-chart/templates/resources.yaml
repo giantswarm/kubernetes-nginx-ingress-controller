@@ -37,6 +37,17 @@ metadata:
     k8s-app: nginx-ingress-controller
     kind: legacy
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-nginx
+  namespace: kube-system
+  labels:
+    k8s-addon: ingress-nginx.addons.k8s.io
+    kind: legacy
+data:
+  enable-vts-status: "true"
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
