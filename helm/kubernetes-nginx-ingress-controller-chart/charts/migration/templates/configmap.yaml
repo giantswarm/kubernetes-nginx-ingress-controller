@@ -74,7 +74,7 @@ data:
             "name": "ingress-nginx",
             "namespace": "kube-system",
             "matchLabels": {
-                "k8s-addon": "k8s-addon: ingress-nginx.addons.k8s.io"
+                "k8s-addon": "ingress-nginx.addons.k8s.io"
             },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
