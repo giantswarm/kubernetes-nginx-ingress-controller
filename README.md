@@ -22,4 +22,4 @@ Provide a custom `values.yaml`:
 $ helm install kubernetes-nginx-ingress-controller-chart -f values.yaml
 ```
 
-Deployment to Guest Clusters will be handled by [chart-operator](https://github.com/giantswarm/chart-operator)
+Deployment to Guest Clusters is handled by [chart-operator](https://github.com/giantswarm/chart-operator).
