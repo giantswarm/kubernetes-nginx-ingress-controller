@@ -82,7 +82,7 @@ func checkResourcesPresent(labelSelector string) error {
 		LabelSelector: fmt.Sprintf("k8s-app=default-http-backend,%s", labelSelector),
 	}
 	configMapListOptions := metav1.ListOptions{
-		LabelSelector: fmt.Sprintf("k8s-addon=ngress-nginx.addons.k8s.io,%s", labelSelector),
+		LabelSelector: fmt.Sprintf("k8s-addon=ingress-nginx.addons.k8s.io,%s", labelSelector),
 	}
 
 	cm, err := c.Core().ConfigMaps(resourceNamespace).List(configMapListOptions)
