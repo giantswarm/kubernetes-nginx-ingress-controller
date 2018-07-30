@@ -16,7 +16,7 @@ $ cd kubernetes-nginx-ingress-controller
 $ helm install kubernetes-nginx-ingress-controller/helm/kubernetes-nginx-ingress-controller-chart
 ```
 
-Provide a custom `Charts.yaml`:
+Provide a custom `values.yaml`:
 
 ```bash
 $ helm install kubernetes-nginx-ingress-controller-chart -f values.yaml
@@ -42,4 +42,4 @@ Deployment to Guest Clusters will be handled by [chart-operator](https://github.
 | `defaultBackend.replicaCount`        | The desired number of default backend pods              | `2`                                           |
 | `defaultBackend.resources`           | The default backend pod resource requests & limits      | `cpu:10m memory:20Mi`                         |
 | `test.image.repository`              | The test image repository to pull from                  | `quay.io/giantswarm/alpine-testing`           |
-| `test.image.tag`                     | The test image tag to pull from                         | `0.1.0`                                       |
+| `test.image.tag`                     | The test image tag to pull                              | `0.1.0`                                       |
