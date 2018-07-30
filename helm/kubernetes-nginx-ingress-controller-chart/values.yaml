@@ -23,7 +23,6 @@ controller:
     nodePorts:
       http: 30010
       https: 30011
-    type: NodePort
 
   resources:
     limits:

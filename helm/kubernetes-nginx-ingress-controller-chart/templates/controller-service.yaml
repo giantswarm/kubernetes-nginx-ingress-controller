@@ -12,20 +12,6 @@ metadata:
     giantswarm.io/service-type: "managed"
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 spec:
-  {{- if eq .Values.controller.service.type "ClusterIP" }}
-  type: ClusterIP
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: 80
-  - name: https
-    port: 443
-    protocol: TCP
-    targetPort: 443
-  selector:
-    k8s-app: {{ .Values.controller.k8sAppLabel }}
-  {{- else}}
   type: NodePort
   ports:
   - name: http
@@ -39,5 +25,4 @@ spec:
     protocol: TCP
     targetPort: 443
   selector:
-    k8s-app: {{ .Values.controller.name }}
-  {{- end}}
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
