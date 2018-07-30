@@ -19,6 +19,7 @@ controller:
     repository: giantswarm/nginx-ingress-controller
     tag: 0.12.0
 
+  # Sets the NodePorts that maps to the Ingress' ports 80 (http) and 443 (https).
   service:
     nodePorts:
       http: 30010
