@@ -16,7 +16,7 @@ $ cd kubernetes-nginx-ingress-controller
 $ helm install kubernetes-nginx-ingress-controller/helm/kubernetes-nginx-ingress-controller-chart
 ```
 
-Provide a custom `Charts.yaml`:
+Provide a custom `values.yaml`:
 
 ```bash
 $ helm install kubernetes-nginx-ingress-controller-chart -f values.yaml
