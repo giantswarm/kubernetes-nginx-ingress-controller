@@ -41,7 +41,6 @@ func TestHelm(t *testing.T) {
 		"k8s-app":                    controllerName,
 	}
 	controllerMatchLabels := map[string]string{
-		"app":     controllerName,
 		"k8s-app": controllerName,
 	}
 	err = checkDeployment(controllerName, 3, controllerLabels, controllerMatchLabels)
