@@ -23,3 +23,23 @@ $ helm install kubernetes-nginx-ingress-controller-chart -f values.yaml
 ```
 
 Deployment to Guest Clusters will be handled by [chart-operator](https://github.com/giantswarm/chart-operator)
+
+## Configuration
+
+| Parameter                            | Description                                             | Default                                       |
+|--------------------------------------|---------------------------------------------------------|-----------------------------------------------|
+| `controller.name`                    | The name of the ingress controller                      | `nginx-ingress-controller`                    |
+| `controller.image.repository`        | The controller container image repository               | `quay.io/giantswarm/nginx-ingress-controller` |
+| `controller.image.tag`               | The controller container image tag                      | `0.11.0`                                      |
+| `controller.replicaCount`            | The desired number of controller pods                   | `3`                                           |
+| `controller.resources`               | The controller pod resource requests & limits           | `cpu:500m memory:350Mi`                       |
+| `controller.metricsPort`             | Sets the metricsport used for metrics and health checks | `10254`                                       |
+| `controller.service.nodePorts.http`  | Sets the nodePort that maps to the Ingress' port 80     | `30010`                                       |
+| `controller.service.nodePorts.https` | Sets the nodePort that maps to the Ingress' port 443    | `30011`                                       |
+| `defaultBackend.name`                | The name of the default backend component               | `default-http-backend`                        |
+| `defaultBackend.image.repository`    | The default backend container image repository          | `quay.io/giantswarm/defaultbackend`           |
+| `defaultBackend.image.tag`           | The default backend container image tag                 | `1.2`                                         |
+| `defaultBackend.replicaCount`        | The desired number of default backend pods              | `2`                                           |
+| `defaultBackend.resources`           | The default backend pod resource requests & limits      | `cpu:10m memory:20Mi`                         |
+| `test.image.repository`              | The test image repository to pull from                  | `quay.io/giantswarm/alpine-testing`           |
+| `test.image.tag`                     | The test image tag to pull from                         | `0.1.0`                                       |
