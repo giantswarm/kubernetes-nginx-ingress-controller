@@ -70,6 +70,17 @@ data:
             }
         },
         {
+            "kind": "ConfigMap",
+            "name": "ingress-nginx",
+            "namespace": "kube-system",
+            "matchLabels": {
+                "k8s-addon": "k8s-addon: ingress-nginx.addons.k8s.io"
+            },
+            "excludeLabels": {
+                "giantswarm.io/service-type": "managed"
+            }
+        },
+        {
             "kind": "ServiceAccount",
             "name": "nginx-ingress-controller",
             "namespace": "kube-system",
