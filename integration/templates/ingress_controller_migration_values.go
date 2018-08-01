@@ -2,11 +2,11 @@
 
 package templates
 
-// NginxIngressControllerValues values required by kubernetes-nginx-ingress-controller-chart.
-const NginxIngressControllerValues = `namespace: kube-system
+// NginxIngressControllerMigrationValues values required by kubernetes-nginx-ingress-controller-chart.
+const NginxIngressControllerMigrationValues = `namespace: kube-system
 
 controller:
-  name: nginx-ingress-controller
+  name: nginx-ingress-controller-migration
   metricsPort: 10254
 
   replicas: 3
@@ -23,7 +23,7 @@ controller:
     nodePorts:
       http: 30010
       https: 30011
-    type: NodePort
+    type: ClusterIP
 
   resources:
     limits:
@@ -34,7 +34,7 @@ controller:
       memory: 350Mi
 
 defaultBackend:
-  name: default-http-backend
+  name: default-http-backend-migration
   port: 8080
 
   replicas: 2
