@@ -87,7 +87,7 @@ func checkControllerServicePresent() error {
 	c := h.K8sClient()
 
 	controllerListOptions := metav1.ListOptions{
-		LabelSelector: "k8s-app=nginx-ingress-controller,kind-legacy",
+		LabelSelector: "k8s-app=nginx-ingress-controller,kind=legacy",
 	}
 	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
 	if err != nil {
