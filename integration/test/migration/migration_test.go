@@ -4,7 +4,6 @@ package migration
 
 import (
 	"fmt"
-	"os"
 	"reflect"
 	"testing"
 
@@ -13,6 +12,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
@@ -46,7 +46,7 @@ func TestMigration(t *testing.T) {
 		t.Fatalf("managed resources not present: %v", err)
 	}
 
-	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), testName)
+	channel := fmt.Sprintf("%s-%s", env.CircleSHA(), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
 	err = r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
 	if err != nil {
@@ -74,7 +74,7 @@ func TestMigration(t *testing.T) {
 }
 
 func checkResourcesPresent(labelSelector string) error {
-	c := f.K8sClient()
+	c := h.K8sClient()
 	controllerListOptions := metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("k8s-app=nginx-ingress-controller,%s", labelSelector),
 	}
@@ -169,7 +169,7 @@ func checkResourcesPresent(labelSelector string) error {
 }
 
 func checkResourcesNotPresent(labelSelector string) error {
-	c := f.K8sClient()
+	c := h.K8sClient()
 	controllerListOptions := metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("k8s-app=nginx-ingress-controller,%s", labelSelector),
 	}
@@ -273,7 +273,7 @@ func checkDeployment(name string, replicas int) error {
 		"giantswarm.io/service-type": "managed",
 	}
 
-	c := f.K8sClient()
+	c := h.K8sClient()
 	ds, err := c.Apps().Deployments(resourceNamespace).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
 		return microerror.Newf("could not find deployment: '%s' %v", name, err)

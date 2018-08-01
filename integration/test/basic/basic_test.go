@@ -4,7 +4,6 @@ package basic
 
 import (
 	"fmt"
-	"os"
 	"reflect"
 	"testing"
 
@@ -12,6 +11,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
@@ -20,7 +20,7 @@ const (
 )
 
 func TestHelm(t *testing.T) {
-	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), testName)
+	channel := fmt.Sprintf("%s-%s", env.CircleSHA(), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
 
 	err := r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
@@ -69,7 +69,7 @@ func TestHelm(t *testing.T) {
 
 // checkDeployment ensures that key properties of the deployment are correct.
 func checkDeployment(name string, replicas int, expectedLabels, expectedMatchLabels map[string]string) error {
-	c := f.K8sClient()
+	c := h.K8sClient()
 	ds, err := c.Apps().Deployments(metav1.NamespaceSystem).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
 		return microerror.Newf("could not find deployment: '%s' %v", name, err)
