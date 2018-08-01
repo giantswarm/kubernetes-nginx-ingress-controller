@@ -4,7 +4,6 @@ package basic
 
 import (
 	"fmt"
-	"os"
 	"reflect"
 	"testing"
 
@@ -12,6 +11,7 @@ import (
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
@@ -20,7 +20,7 @@ const (
 )
 
 func TestHelm(t *testing.T) {
-	channel := fmt.Sprintf("%s-%s", os.Getenv("CIRCLE_SHA1"), testName)
+	channel := fmt.Sprintf("%s-%s", env.CircleSHA(), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
 
 	err := r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
