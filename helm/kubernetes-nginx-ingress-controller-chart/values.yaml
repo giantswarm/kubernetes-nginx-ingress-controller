@@ -24,6 +24,8 @@ controller:
     nodePorts:
       http: 30010
       https: 30011
+    # Sets the service type as part of migrating AWS and KVM to use this chart.
+    type: NodePort
 
   resources:
     limits:
