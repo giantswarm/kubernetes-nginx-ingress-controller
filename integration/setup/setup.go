@@ -13,11 +13,11 @@ import (
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/teardown"
 )
 
-func WrapTestMain(f *framework.Host, helmClient *helmclient.Client, m *testing.M) {
+func WrapTestMain(h *framework.Host, helmClient *helmclient.Client, m *testing.M) {
 	var v int
 	var err error
 
-	err = f.CreateNamespace("giantswarm")
+	err = h.CreateNamespace("giantswarm")
 	if err != nil {
 		log.Printf("%#v\n", err)
 		v = 1
@@ -36,13 +36,13 @@ func WrapTestMain(f *framework.Host, helmClient *helmclient.Client, m *testing.M
 	if os.Getenv("KEEP_RESOURCES") != "true" {
 		// only do full teardown when not on CI
 		if os.Getenv("CIRCLECI") != "true" {
-			err := teardown.Teardown(f, helmClient)
+			err := teardown.Teardown(h, helmClient)
 			if err != nil {
 				log.Printf("%#v\n", err)
 				v = 1
 			}
 			// TODO there should be error handling for the framework teardown.
-			f.Teardown()
+			h.Teardown()
 		}
 	}
 
