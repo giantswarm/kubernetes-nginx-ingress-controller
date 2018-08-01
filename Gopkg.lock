@@ -140,14 +140,15 @@
   revision = "96bf5b8e512b112c7fdfb0b5a7f0725ea7f4f9ce"
 
 [[projects]]
-  branch = "master"
+  branch = "add-framework-deployment"
   name = "github.com/giantswarm/e2e-harness"
   packages = [
     "pkg/framework",
+    "pkg/framework/deployment",
     "pkg/framework/resource",
     "pkg/harness"
   ]
-  revision = "a4e785eee3f7df10ca0ed9a1fed31bba4bfa7bc1"
+  revision = "e0ff2de54a7f87d9ac2e7e171727becdc0cfbe64"
 
 [[projects]]
   branch = "master"
@@ -1032,6 +1033,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2cd1e9aaa79ae968b1e50fc7f8c8dd1afc9b7a0c4bcff32569b2a6631b29dc01"
+  inputs-digest = "98f4ab0dc82944f9a022005df15de707219ab91f4484d57e67b5f4489a9f4c8a"
   solver-name = "gps-cdcl"
   solver-version = 1
