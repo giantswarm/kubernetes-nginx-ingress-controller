@@ -10,6 +10,7 @@ import (
 	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/helmclient"
 
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/teardown"
 )
 
@@ -33,9 +34,9 @@ func WrapTestMain(h *framework.Host, helmClient *helmclient.Client, m *testing.M
 		v = m.Run()
 	}
 
-	if os.Getenv("KEEP_RESOURCES") != "true" {
-		// only do full teardown when not on CI
-		if os.Getenv("CIRCLECI") != "true" {
+	if env.KeepResources() != "true" {
+		// Only do full teardown when not on CI.
+		if env.CircleCI() != "true" {
 			err := teardown.Teardown(h, helmClient)
 			if err != nil {
 				log.Printf("%#v\n", err)
