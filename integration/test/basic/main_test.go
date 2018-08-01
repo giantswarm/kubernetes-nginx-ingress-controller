@@ -47,8 +47,8 @@ func init() {
 	{
 		c := helmclient.Config{
 			Logger:          l,
-			K8sClient:       f.K8sClient(),
-			RestConfig:      f.RestConfig(),
+			K8sClient:       h.K8sClient(),
+			RestConfig:      h.RestConfig(),
 			TillerNamespace: "giantswarm",
 		}
 		helmClient, err = helmclient.New(c)
@@ -66,8 +66,6 @@ func init() {
 	if err != nil {
 		panic(err.Error())
 	}
-
-
 }
 
 // TestMain allows us to have common setup and teardown steps that are run

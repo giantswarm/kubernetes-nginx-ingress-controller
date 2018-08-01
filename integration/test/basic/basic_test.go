@@ -69,7 +69,7 @@ func TestHelm(t *testing.T) {
 
 // checkDeployment ensures that key properties of the deployment are correct.
 func checkDeployment(name string, replicas int, expectedLabels, expectedMatchLabels map[string]string) error {
-	c := f.K8sClient()
+	c := h.K8sClient()
 	ds, err := c.Apps().Deployments(metav1.NamespaceSystem).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
 		return microerror.Newf("could not find deployment: '%s' %v", name, err)
