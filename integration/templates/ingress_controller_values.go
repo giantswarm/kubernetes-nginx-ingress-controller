@@ -7,6 +7,7 @@ const NginxIngressControllerValues = `namespace: kube-system
 
 controller:
   name: nginx-ingress-controller
+  k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
   replicas: 3
@@ -20,6 +21,7 @@ controller:
     tag: 0.12.0
 
   service:
+    enabled: false
     nodePorts:
       http: 30010
       https: 30011
