@@ -18,7 +18,7 @@ data:
         resources:
           resourceFile: "/var/run/{{ .Values.name }}/configmap/resources.json"
         wait:
-          deploymentName: "nginx-ingress-controller"
+          deploymentName: "nginx-ingress-controller-2"
           deploymentNamespace: "kube-system"
       kubernetes:
         address: ''
