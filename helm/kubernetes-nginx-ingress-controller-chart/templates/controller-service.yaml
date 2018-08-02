@@ -12,16 +12,20 @@ metadata:
     giantswarm.io/service-type: "managed"
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 spec:
-  type: NodePort
+  type: {{ .Values.controller.service.type }}
   ports:
   - name: http
     port: 80
+    {{- if eq .Values.controller.service.type "NodePort" }}
     nodePort: {{ .Values.controller.service.nodePorts.http }}
+    {{- end }}
     protocol: TCP
     targetPort: 80
   - name: https
     port: 443
+    {{- if eq .Values.controller.service.type "NodePort" }}
     nodePort: {{ .Values.controller.service.nodePorts.https }}
+    {{- end }}
     protocol: TCP
     targetPort: 443
   selector:
