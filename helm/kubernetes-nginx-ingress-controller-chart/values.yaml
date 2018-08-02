@@ -54,6 +54,12 @@ defaultBackend:
       cpu: 10m
       memory: 20Mi
 
+globals:
+  migration:
+    job:
+      wait:
+        enabled: false
+
 initContainer:
   image:
     registry: quay.io

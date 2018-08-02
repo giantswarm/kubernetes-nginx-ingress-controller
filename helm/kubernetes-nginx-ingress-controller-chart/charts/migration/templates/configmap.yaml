@@ -16,9 +16,11 @@ data:
       delete:
         resources:
           resourceFile: "/var/run/{{ .Values.name }}/configmap/resources.json"
+      {- if .Values.globals.migration.job.wait.enabled }}
         wait:
           deploymentName: "nginx-ingress-controller"
           deploymentNamespace: "kube-system"
+      {- end }}
       kubernetes:
         address: ''
         inCluster: true
