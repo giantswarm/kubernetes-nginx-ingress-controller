@@ -4,8 +4,9 @@ metadata:
   name: {{ .Values.defaultBackend.name }}
   namespace: {{ .Values.namespace }}
   labels:
+    app: {{ .Values.defaultBackend.name }}
     giantswarm.io/service-type: "managed"
-    k8s-app: {{ .Values.defaultBackend.name }}
+    k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
 spec:
   replicas: {{ .Values.defaultBackend.replicas }}
   selector:
@@ -16,8 +17,9 @@ spec:
       annotations:
         releasetime: {{ $.Release.Time }}
       labels:
+        app: {{ .Values.defaultBackend.name }}
         giantswarm.io/service-type: "managed"
-        k8s-app: {{ .Values.defaultBackend.name }}
+        k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
     spec:
       containers:
       - name: {{ .Values.defaultBackend.name }}

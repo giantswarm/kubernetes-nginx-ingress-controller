@@ -36,6 +36,7 @@ controller:
 
 defaultBackend:
   name: default-http-backend-2
+  k8sAppLabel: default-http-backend
   port: 8080
 
   replicas: 2
