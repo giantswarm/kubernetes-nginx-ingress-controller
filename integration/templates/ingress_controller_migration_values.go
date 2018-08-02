@@ -2,18 +2,18 @@
 
 package templates
 
-// NginxIngressControllerValues values required by kubernetes-nginx-ingress-controller-chart.
-const NginxIngressControllerValues = `namespace: kube-system
+// NginxIngressControllerMigrationValues values required by kubernetes-nginx-ingress-controller-chart.
+const NginxIngressControllerMigrationValues = `namespace: kube-system
 
 controller:
-  name: nginx-ingress-controller
+  name: nginx-ingress-controller-2
   k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
   replicas: 3
 
   configmap:
-    name: ingress-nginx
+    name: ingress-nginx-2
 
   image:
     registry: quay.io
@@ -35,7 +35,7 @@ controller:
       memory: 350Mi
 
 defaultBackend:
-  name: default-http-backend
+  name: default-http-backend-2
   port: 8080
 
   replicas: 2
