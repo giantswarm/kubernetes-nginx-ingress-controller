@@ -11,7 +11,7 @@ spec:
   replicas: {{ .Values.defaultBackend.replicas }}
   selector:
     matchLabels:
-      k8s-app: {{ .Values.defaultBackend.name }}
+      k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
   template:
     metadata:
       annotations:
