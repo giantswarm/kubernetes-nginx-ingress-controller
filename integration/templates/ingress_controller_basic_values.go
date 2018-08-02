@@ -57,8 +57,7 @@ defaultBackend:
 global:
   migration:
     job:
-      wait:
-        enabled: false
+      enabled: false
 
 initContainer:
   image:
