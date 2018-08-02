@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "post-install"
     "helm.sh/hook-weight": "-2"
     "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
@@ -16,6 +16,9 @@ data:
       delete:
         resources:
           resourceFile: "/var/run/{{ .Values.name }}/configmap/resources.json"
+        wait:
+          deploymentName: "nginx-ingress-controller"
+          deploymentNamespace: "kube-system"
       kubernetes:
         address: ''
         inCluster: true
