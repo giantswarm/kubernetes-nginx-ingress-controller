@@ -54,7 +54,7 @@ defaultBackend:
       cpu: 10m
       memory: 20Mi
 
-globals:
+global:
   migration:
     job:
       wait:
