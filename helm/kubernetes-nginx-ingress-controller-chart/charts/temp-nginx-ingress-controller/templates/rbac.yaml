@@ -6,7 +6,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "temp"
@@ -28,7 +28,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "temp"
@@ -49,7 +49,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.controller.name }}
@@ -106,12 +106,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: nginx-ingress-role
+  name: {{ .Values.controller.role.name }}
   namespace: {{ .Values.namespace }}
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "temp"
