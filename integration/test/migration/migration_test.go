@@ -34,6 +34,11 @@ func TestMigration(t *testing.T) {
 	}
 	defer framework.HelmCmd("delete resources --purge")
 
+	// Check controller service is present.
+	err = checkControllerServicePresent()
+	if err != nil {
+		t.Fatalf("controller service present: %v", err)
+	}
 	// Check legacy resources are present.
 	err = checkResourcesPresent("kind=legacy")
 	if err != nil {
@@ -47,7 +52,7 @@ func TestMigration(t *testing.T) {
 
 	channel := fmt.Sprintf("%s-%s", env.CircleSHA(), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
-	err = r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
+	err = r.InstallResource(releaseName, templates.NginxIngressControllerMigrationValues, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
@@ -70,6 +75,28 @@ func TestMigration(t *testing.T) {
 	if err != nil {
 		t.Fatalf("managed resources not present: %v", err)
 	}
+	// Check controller service is still present.
+	err = checkControllerServicePresent()
+	if err != nil {
+		t.Fatalf("controller service present: %v", err)
+	}
+}
+
+func checkControllerServicePresent() error {
+	c := h.K8sClient()
+
+	controllerListOptions := metav1.ListOptions{
+		LabelSelector: "k8s-app=nginx-ingress-controller,kind=legacy",
+	}
+	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+	if len(s.Items) != 1 {
+		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
+	}
+
+	return nil
 }
 
 func checkResourcesPresent(labelSelector string) error {
@@ -138,14 +165,6 @@ func checkResourcesPresent(labelSelector string) error {
 	}
 	if len(rb.Items) != 1 {
 		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(rb.Items))
-	}
-
-	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-	if len(s.Items) != 1 {
-		return microerror.Newf("unexpected number of services, want 1, got %d", len(s.Items))
 	}
 
 	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
@@ -230,14 +249,6 @@ func checkResourcesNotPresent(labelSelector string) error {
 	rb, err := c.Rbac().RoleBindings(resourceNamespace).List(controllerListOptions)
 	if err == nil && len(rb.Items) > 0 {
 		return microerror.New("expected error querying for rolebindings didn't happen")
-	}
-	if !apierrors.IsNotFound(err) {
-		return microerror.Mask(err)
-	}
-
-	s, err := c.Core().Services(resourceNamespace).List(controllerListOptions)
-	if err == nil && len(s.Items) > 0 {
-		return microerror.New("expected error querying for services didn't happen")
 	}
 	if !apierrors.IsNotFound(err) {
 		return microerror.Mask(err)

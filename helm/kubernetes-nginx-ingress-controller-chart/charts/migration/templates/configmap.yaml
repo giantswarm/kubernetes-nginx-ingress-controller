@@ -1,3 +1,4 @@
+{{- if .Values.global.migration.job.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -25,17 +26,6 @@ data:
           keyFile: ''
   resources.json: |
     [
-        {
-            "kind": "Service",
-            "name": "nginx-ingress-controller",
-            "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
-            "excludeLabels": {
-                "giantswarm.io/service-type": "managed"
-            }
-        },
         {
             "kind": "Service",
             "name": "default-http-backend",
@@ -136,3 +126,4 @@ data:
             }
         }
     ]
+{{- end }}

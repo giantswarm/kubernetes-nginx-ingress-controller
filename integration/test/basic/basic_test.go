@@ -18,7 +18,7 @@ func TestHelm(t *testing.T) {
 	channel := fmt.Sprintf("%s-%s", env.CircleSHA(), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
 
-	err := r.InstallResource(releaseName, templates.NginxIngressControllerValues, channel)
+	err := r.InstallResource(releaseName, templates.NginxIngressControllerBasicValues, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}

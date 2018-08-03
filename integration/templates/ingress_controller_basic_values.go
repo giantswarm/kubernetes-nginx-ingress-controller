@@ -2,11 +2,12 @@
 
 package templates
 
-// NginxIngressControllerValues values required by kubernetes-nginx-ingress-controller-chart.
-const NginxIngressControllerValues = `namespace: kube-system
+// NginxIngressControllerBasicValues values required by kubernetes-nginx-ingress-controller-chart.
+const NginxIngressControllerBasicValues = `namespace: kube-system
 
 controller:
   name: nginx-ingress-controller
+  k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
   replicas: 3
@@ -20,6 +21,7 @@ controller:
     tag: 0.12.0
 
   service:
+    enabled: true
     nodePorts:
       http: 30010
       https: 30011
@@ -34,6 +36,7 @@ controller:
 
 defaultBackend:
   name: default-http-backend
+  k8sAppLabel: default-http-backend
   port: 8080
 
   replicas: 2
@@ -50,6 +53,11 @@ defaultBackend:
     requests:
       cpu: 10m
       memory: 20Mi
+
+global:
+  migration:
+    job:
+      enabled: false
 
 initContainer:
   image:
