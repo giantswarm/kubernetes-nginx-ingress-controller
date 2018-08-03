@@ -6,7 +6,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "hook-succeeded"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
   labels:
     app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "temp"
@@ -28,7 +28,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "hook-succeeded"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
   labels:
     app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "temp"
@@ -49,7 +49,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "hook-succeeded"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.controller.name }}
@@ -111,7 +111,7 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-11"
-    "helm.sh/hook-delete-policy": "hook-succeeded"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
   labels:
     app: {{ .Values.controller.name }}
     giantswarm.io/service-type: "temp"
