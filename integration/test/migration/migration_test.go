@@ -181,7 +181,7 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Mask(err)
 	}
 	if len(sa.Items) != 1 {
-		return microerror.Newf("unexpected number of serviceaccountss, want 1, got %d", len(sa.Items))
+		return microerror.Newf("unexpected number of serviceaccounts, want 1, got %d", len(sa.Items))
 	}
 
 	return nil
