@@ -1,27 +1,27 @@
-# Default values for nginx-ingress-controller-chart.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+// +build k8srequired
 
-namespace: kube-system
+package templates
+
+// NginxIngressControllerMigrationValues values required by kubernetes-nginx-ingress-controller-chart.
+const NginxIngressControllerMigrationValues = `namespace: kube-system
 
 controller:
-  name: nginx-ingress-controller
+  name: nginx-ingress-controller-2
   k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
   replicas: 3
 
   configmap:
-    name: ingress-nginx
+    name: ingress-nginx-2
 
   image:
     registry: quay.io
     repository: giantswarm/nginx-ingress-controller
     tag: 0.12.0
 
-  # Sets the NodePorts that maps to the Ingress' ports 80 (http) and 443 (https).
   service:
-    enabled: true
+    enabled: false
     nodePorts:
       http: 30010
       https: 30011
@@ -35,7 +35,7 @@ controller:
       memory: 350Mi
 
 defaultBackend:
-  name: default-http-backend
+  name: default-http-backend-2
   k8sAppLabel: default-http-backend
   port: 8080
 
@@ -57,7 +57,7 @@ defaultBackend:
 global:
   migration:
     job:
-      enabled: false
+      enabled: true
 
 initContainer:
   image:
@@ -70,3 +70,4 @@ test:
     registry: quay.io
     repository: giantswarm/alpine-testing
     tag: 0.1.0
+`
