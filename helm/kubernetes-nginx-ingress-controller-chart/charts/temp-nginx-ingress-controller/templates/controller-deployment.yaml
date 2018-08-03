@@ -19,6 +19,7 @@ spec:
   replicas: {{ .Values.global.controller.replicas }}
   selector:
     matchLabels:
+      app: {{ .Values.controller.name }}
       k8s-app: {{ .Values.controller.k8sAppLabel }}
   strategy:
     type: RollingUpdate
