@@ -131,7 +131,7 @@
     "pkg/clientset/versioned/typed/example/v1alpha1",
     "pkg/clientset/versioned/typed/provider/v1alpha1"
   ]
-  revision = "dbe7aa4771048f64040c9e6148a708c21226a1b2"
+  revision = "b404baf4b6f26764ad1356d8a639daec7c97138b"
 
 [[projects]]
   branch = "master"
@@ -140,7 +140,7 @@
   revision = "30620a9d0ecdb133f82257768ece76ebc1b6f8ef"
 
 [[projects]]
-  branch = "add-framework-deployment"
+  branch = "master"
   name = "github.com/giantswarm/e2e-harness"
   packages = [
     "pkg/framework",
@@ -148,13 +148,13 @@
     "pkg/framework/resource",
     "pkg/harness"
   ]
-  revision = "e0ff2de54a7f87d9ac2e7e171727becdc0cfbe64"
+  revision = "1be392690131ad476b4b385c96ac00e65eabf5d0"
 
 [[projects]]
   branch = "master"
   name = "github.com/giantswarm/errors"
   packages = ["guest"]
-  revision = "2b68497b52129c0b5befe81abee57e766a81da7d"
+  revision = "51a7ca6b403dc133497da26a0a30684a5df56752"
 
 [[projects]]
   branch = "master"
@@ -172,7 +172,7 @@
   branch = "master"
   name = "github.com/giantswarm/microerror"
   packages = ["."]
-  revision = "a8d5d4f526c526b4b773062958847fe7e0b7f449"
+  revision = "a767567285d6db85cf9f08322fe49351aa385109"
 
 [[projects]]
   branch = "master"
@@ -265,7 +265,7 @@
   branch = "master"
   name = "github.com/google/go-github"
   packages = ["github"]
-  revision = "b50a4aab93702d0dc74b27cc0221585cebd94c98"
+  revision = "7161710a6e17f60dd044570a59c5e11a3a5200d6"
 
 [[projects]]
   branch = "master"
@@ -426,7 +426,7 @@
     "ed25519/internal/edwards25519",
     "ssh/terminal"
   ]
-  revision = "c126467f60eb25f8f27e5a981f32a87e3965053f"
+  revision = "56440b844dfe139a8ac053f4ecac0b20b79058f4"
 
 [[projects]]
   branch = "master"
@@ -442,7 +442,7 @@
     "publicsuffix",
     "trace"
   ]
-  revision = "49c15d80dfbc983ea25246ee959d970efe09ec09"
+  revision = "f4c29de78a2a91c00474a2e689954305c350adf9"
 
 [[projects]]
   branch = "master"
@@ -466,7 +466,7 @@
     "unix",
     "windows"
   ]
-  revision = "bd9dbc187b6e1dacfdd2722a87e83093c2d7bd6e"
+  revision = "0ffbfd41fbef8ffcf9b62b0b0aa3a5873ed7a4fe"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -1023,7 +1023,7 @@
   branch = "master"
   name = "k8s.io/utils"
   packages = ["exec"]
-  revision = "66066c83e385e385ccc3c964b44fd7dcd413d0ed"
+  revision = "045dc31ee5c40e8240241ce28dc24d7b56130373"
 
 [[projects]]
   branch = "master"
@@ -1034,6 +1034,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "98f4ab0dc82944f9a022005df15de707219ab91f4484d57e67b5f4489a9f4c8a"
+  inputs-digest = "f26e99760de65511fb931f6caf0c6f89c9f31ad50121e1bfe774d89310640c70"
   solver-name = "gps-cdcl"
   solver-version = 1

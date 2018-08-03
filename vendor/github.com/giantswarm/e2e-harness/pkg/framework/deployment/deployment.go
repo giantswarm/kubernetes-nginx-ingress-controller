@@ -10,7 +10,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-type DeploymentConfig struct {
+type Config struct {
 	K8sClient kubernetes.Interface
 	Logger    micrologger.Logger
 }
@@ -20,7 +20,7 @@ type Deployment struct {
 	logger    micrologger.Logger
 }
 
-func New(config DeploymentConfig) (*Deployment, error) {
+func New(config Config) (*Deployment, error) {
 	if config.K8sClient == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.K8sClient must not be empty", config)
 	}
@@ -40,29 +40,29 @@ func New(config DeploymentConfig) (*Deployment, error) {
 func (d *Deployment) Check(name string, replicas int, expectedLabels, expectedMatchLabels map[string]string) error {
 	ds, err := d.k8sClient.Apps().Deployments(metav1.NamespaceSystem).Get(name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
-		return microerror.Newf("could not find deployment: '%s' %v", name, err)
+		return microerror.Maskf(notFoundError, "deployment: '%s'", name)
 	} else if err != nil {
-		return microerror.Newf("unexpected error getting deployment: %v", err)
+		return microerror.Mask(err)
 	}
 
 	// Check deployment labels.
 	if !reflect.DeepEqual(expectedLabels, ds.ObjectMeta.Labels) {
-		return microerror.Newf("expected labels: %v got: %v", expectedLabels, ds.ObjectMeta.Labels)
+		return microerror.Maskf(incorrectDeploymentError, "expected labels: %v got: %v", expectedLabels, ds.ObjectMeta.Labels)
 	}
 
 	// Check selector match labels.
 	if !reflect.DeepEqual(expectedMatchLabels, ds.Spec.Selector.MatchLabels) {
-		return microerror.Newf("expected match labels: %v got: %v", expectedMatchLabels, ds.Spec.Selector.MatchLabels)
+		return microerror.Maskf(incorrectDeploymentError, "expected match labels: %v got: %v", expectedMatchLabels, ds.Spec.Selector.MatchLabels)
 	}
 
 	// Check pod labels.
 	if !reflect.DeepEqual(expectedLabels, ds.Spec.Template.ObjectMeta.Labels) {
-		return microerror.Newf("expected pod labels: %v got: %v", expectedLabels, ds.Spec.Template.ObjectMeta.Labels)
+		return microerror.Maskf(incorrectDeploymentError, "expected pod labels: %v got: %v", expectedLabels, ds.Spec.Template.ObjectMeta.Labels)
 	}
 
 	// Check replica count.
 	if *ds.Spec.Replicas != int32(replicas) {
-		return microerror.Newf("expected replicas: %d got: %d", replicas, ds.Spec.Replicas)
+		return microerror.Maskf(incorrectDeploymentError, "expected replicas: %d got: %d", replicas, ds.Spec.Replicas)
 	}
 
 	return nil
