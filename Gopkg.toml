@@ -34,8 +34,6 @@ required = [
   "k8s.io/apiserver/pkg/endpoints/request"
 ]
 
-
-
 [[constraint]]
   name = "github.com/Azure/go-autorest"
   version = "9.1.0"
@@ -63,8 +61,6 @@ required = [
 [[constraint]]
   name = "k8s.io/apiserver"
   version = "kubernetes-1.10.4"
-
-
 
 [prune]
   go-tests = true

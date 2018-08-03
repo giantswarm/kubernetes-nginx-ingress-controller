@@ -4,7 +4,6 @@ package migration
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/giantswarm/e2e-harness/pkg/framework"
@@ -269,47 +268,6 @@ func checkResourcesNotPresent(labelSelector string) error {
 	}
 	if !apierrors.IsNotFound(err) {
 		return microerror.Mask(err)
-	}
-
-	return nil
-}
-
-// checkDeployment ensures that key properties of the deployment are correct.
-func checkDeployment(name string, replicas int) error {
-	expectedMatchLabels := map[string]string{
-		"k8s-app": name,
-	}
-	expectedLabels := map[string]string{
-		"k8s-app":                    name,
-		"giantswarm.io/service-type": "managed",
-	}
-
-	c := h.K8sClient()
-	ds, err := c.Apps().Deployments(resourceNamespace).Get(name, metav1.GetOptions{})
-	if apierrors.IsNotFound(err) {
-		return microerror.Newf("could not find deployment: '%s' %v", name, err)
-	} else if err != nil {
-		return microerror.Newf("unexpected error getting deployment: %v", err)
-	}
-
-	// Check deployment labels.
-	if !reflect.DeepEqual(expectedLabels, ds.ObjectMeta.Labels) {
-		return microerror.Newf("expected labels: %v got: %v", expectedLabels, ds.ObjectMeta.Labels)
-	}
-
-	// Check selector match labels.
-	if !reflect.DeepEqual(expectedMatchLabels, ds.Spec.Selector.MatchLabels) {
-		return microerror.Newf("expected match labels: %v got: %v", expectedMatchLabels, ds.Spec.Selector.MatchLabels)
-	}
-
-	// Check pod labels.
-	if !reflect.DeepEqual(expectedLabels, ds.Spec.Template.ObjectMeta.Labels) {
-		return microerror.Newf("expected pod labels: %v got: %v", expectedLabels, ds.Spec.Template.ObjectMeta.Labels)
-	}
-
-	// Check replica count.
-	if *ds.Spec.Replicas != int32(replicas) {
-		return microerror.Newf("expected replicas: %d got: %d", replicas, ds.Spec.Replicas)
 	}
 
 	return nil

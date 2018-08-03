@@ -1508,12 +1508,28 @@ func (c *CommunityHealthFiles) GetContributing() *Metric {
 	return c.Contributing
 }
 
+// GetIssueTemplate returns the IssueTemplate field.
+func (c *CommunityHealthFiles) GetIssueTemplate() *Metric {
+	if c == nil {
+		return nil
+	}
+	return c.IssueTemplate
+}
+
 // GetLicense returns the License field.
 func (c *CommunityHealthFiles) GetLicense() *Metric {
 	if c == nil {
 		return nil
 	}
 	return c.License
+}
+
+// GetPullRequestTemplate returns the PullRequestTemplate field.
+func (c *CommunityHealthFiles) GetPullRequestTemplate() *Metric {
+	if c == nil {
+		return nil
+	}
+	return c.PullRequestTemplate
 }
 
 // GetReadme returns the Readme field.
@@ -6084,6 +6100,38 @@ func (p *Plan) GetSpace() int {
 	return *p.Space
 }
 
+// GetConfigURL returns the ConfigURL field if it's non-nil, zero value otherwise.
+func (p *PreReceiveHook) GetConfigURL() string {
+	if p == nil || p.ConfigURL == nil {
+		return ""
+	}
+	return *p.ConfigURL
+}
+
+// GetEnforcement returns the Enforcement field if it's non-nil, zero value otherwise.
+func (p *PreReceiveHook) GetEnforcement() string {
+	if p == nil || p.Enforcement == nil {
+		return ""
+	}
+	return *p.Enforcement
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (p *PreReceiveHook) GetID() int64 {
+	if p == nil || p.ID == nil {
+		return 0
+	}
+	return *p.ID
+}
+
+// GetName returns the Name field if it's non-nil, zero value otherwise.
+func (p *PreReceiveHook) GetName() string {
+	if p == nil || p.Name == nil {
+		return ""
+	}
+	return *p.Name
+}
+
 // GetBody returns the Body field if it's non-nil, zero value otherwise.
 func (p *Project) GetBody() string {
 	if p == nil || p.Body == nil {
@@ -9748,6 +9796,14 @@ func (r *RepoStatus) GetURL() string {
 	return *r.URL
 }
 
+// GetStrict returns the Strict field if it's non-nil, zero value otherwise.
+func (r *RequiredStatusChecksRequest) GetStrict() bool {
+	if r == nil || r.Strict == nil {
+		return false
+	}
+	return *r.Strict
+}
+
 // GetName returns the Name field if it's non-nil, zero value otherwise.
 func (s *ServiceHook) GetName() string {
 	if s == nil || s.Name == nil {
@@ -10796,6 +10852,14 @@ func (t *Tree) GetSHA() string {
 	return *t.SHA
 }
 
+// GetTruncated returns the Truncated field if it's non-nil, zero value otherwise.
+func (t *Tree) GetTruncated() bool {
+	if t == nil || t.Truncated == nil {
+		return false
+	}
+	return *t.Truncated
+}
+
 // GetContent returns the Content field if it's non-nil, zero value otherwise.
 func (t *TreeEntry) GetContent() string {
 	if t == nil || t.Content == nil {
@@ -11374,6 +11438,70 @@ func (u *UserLDAPMapping) GetType() string {
 
 // GetURL returns the URL field if it's non-nil, zero value otherwise.
 func (u *UserLDAPMapping) GetURL() string {
+	if u == nil || u.URL == nil {
+		return ""
+	}
+	return *u.URL
+}
+
+// GetCreatedAt returns the CreatedAt field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetCreatedAt() string {
+	if u == nil || u.CreatedAt == nil {
+		return ""
+	}
+	return *u.CreatedAt
+}
+
+// GetExcludeAttachments returns the ExcludeAttachments field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetExcludeAttachments() bool {
+	if u == nil || u.ExcludeAttachments == nil {
+		return false
+	}
+	return *u.ExcludeAttachments
+}
+
+// GetGUID returns the GUID field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetGUID() string {
+	if u == nil || u.GUID == nil {
+		return ""
+	}
+	return *u.GUID
+}
+
+// GetID returns the ID field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetID() int64 {
+	if u == nil || u.ID == nil {
+		return 0
+	}
+	return *u.ID
+}
+
+// GetLockRepositories returns the LockRepositories field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetLockRepositories() bool {
+	if u == nil || u.LockRepositories == nil {
+		return false
+	}
+	return *u.LockRepositories
+}
+
+// GetState returns the State field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetState() string {
+	if u == nil || u.State == nil {
+		return ""
+	}
+	return *u.State
+}
+
+// GetUpdatedAt returns the UpdatedAt field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetUpdatedAt() string {
+	if u == nil || u.UpdatedAt == nil {
+		return ""
+	}
+	return *u.UpdatedAt
+}
+
+// GetURL returns the URL field if it's non-nil, zero value otherwise.
+func (u *UserMigration) GetURL() string {
 	if u == nil || u.URL == nil {
 		return ""
 	}
