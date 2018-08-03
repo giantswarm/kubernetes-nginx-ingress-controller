@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   annotations:
     "helm.sh/hook": "pre-install"
-    "helm.sh/hook-weight": "-12"
+    "helm.sh/hook-weight": "-15"
     # "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     giantswarm.io/service-type: "temp"
