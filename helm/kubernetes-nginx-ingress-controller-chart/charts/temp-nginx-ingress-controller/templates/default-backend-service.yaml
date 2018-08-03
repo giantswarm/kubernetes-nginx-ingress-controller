@@ -1,0 +1,22 @@
+{{- if .Values.global.migration.job.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.defaultBackend.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    app: {{ .Values.defaultBackend.name }}
+    giantswarm.io/service-type: "temp"
+    k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: {{ .Values.defaultBackend.port }}
+  selector:
+    k8s-app: {{ .Values.defaultBackend.name }}
+{{- end }}
