@@ -54,3 +54,9 @@ defaultBackend:
     requests:
       cpu: 10m
       memory: 20Mi
+
+initContainer:
+  image:
+    registry: quay.io
+    repository: giantswarm/alpine
+    tag: 3.7
