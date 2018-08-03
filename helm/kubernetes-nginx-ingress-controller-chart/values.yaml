@@ -19,6 +19,9 @@ controller:
     repository: giantswarm/nginx-ingress-controller
     tag: 0.12.0
 
+  role:
+    name: nginx-ingress-role
+
   # Sets the NodePorts that maps to the Ingress' ports 80 (http) and 443 (https).
   service:
     enabled: true
