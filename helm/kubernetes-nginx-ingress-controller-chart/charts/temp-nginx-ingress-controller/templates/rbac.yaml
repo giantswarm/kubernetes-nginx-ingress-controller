@@ -1,10 +1,15 @@
+{{- if .Values.global.migration.job.enabled }}
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.controller.name }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-13"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     app: {{ .Values.controller.name }}
-    giantswarm.io/service-type: "managed"
+    giantswarm.io/service-type: "temp"
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 subjects:
 - kind: ServiceAccount
@@ -20,9 +25,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ .Values.controller.name }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-11"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     app: {{ .Values.controller.name }}
-    giantswarm.io/service-type: "managed"
+    giantswarm.io/service-type: "temp"
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 subjects:
 - kind: ServiceAccount
@@ -37,10 +46,14 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ .Values.controller.name }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-11"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.controller.name }}
-    giantswarm.io/service-type: "managed"
+    giantswarm.io/service-type: "temp"
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 rules:
 - apiGroups:
@@ -93,11 +106,15 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ .Values.controller.role.names }}
+  name: {{ .Values.controller.role.name }}
   namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-11"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     app: {{ .Values.controller.name }}
-    giantswarm.io/service-type: "managed"
+    giantswarm.io/service-type: "temp"
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 rules:
 - apiGroups:
@@ -136,3 +153,4 @@ rules:
   - get
   - create
   - update
+{{- end }}

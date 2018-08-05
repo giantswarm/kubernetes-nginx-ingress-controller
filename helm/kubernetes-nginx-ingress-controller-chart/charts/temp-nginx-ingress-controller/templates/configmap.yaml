@@ -1,0 +1,24 @@
+{{- if .Values.global.migration.job.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.controller.configmap.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-15"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    giantswarm.io/service-type: "temp"
+    k8s-addon: ingress-nginx.addons.k8s.io
+data:
+  enable-vts-status: "true"
+  # Increase hash table size to allow more server names for stability reasons
+  server-name-hash-bucket-size: "1024"
+  server-name-hash-max-size: "1024"
+  server-tokens: "false"
+  worker-processes: "4"
+  # Disables setting a 'Strict-Transport-Security' header, which can be harmful.
+  # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
+  hsts: "false"
+{{- end }}

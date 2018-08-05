@@ -1,0 +1,44 @@
+{{- if .Values.global.migration.job.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.defaultBackend.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-12"
+    # "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    app: {{ .Values.defaultBackend.name }}
+    giantswarm.io/service-type: "temp"
+    k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
+spec:
+  replicas: {{ .Values.defaultBackend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.defaultBackend.name }}
+      k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
+  template:
+    metadata:
+      annotations:
+        releasetime: {{ $.Release.Time }}
+      labels:
+        app: {{ .Values.defaultBackend.name }}
+        giantswarm.io/service-type: "temp"
+        k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
+    spec:
+      containers:
+      - name: {{ .Values.defaultBackend.name }}
+        image: "{{ .Values.defaultBackend.image.registry }}/{{ .Values.defaultBackend.image.repository }}:{{ .Values.defaultBackend.image.tag }}"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ .Values.defaultBackend.port }}
+            scheme: HTTP
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        ports:
+        - containerPort: {{ .Values.defaultBackend.port }}
+        resources:
+{{ toYaml .Values.defaultBackend.resources | indent 10 }}
+{{- end }}

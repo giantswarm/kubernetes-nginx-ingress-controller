@@ -1,18 +1,16 @@
-# Default values for nginx-ingress-controller-chart.
+# Default values for temp-nginx-ingress-controller.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 namespace: kube-system
 
 controller:
-  name: nginx-ingress-controller
+  name: temp-nginx-ingress-controller
   k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
-  replicas: 3
-
   configmap:
-    name: ingress-nginx
+    name: temp-ingress-nginx
 
   image:
     registry: quay.io
@@ -20,11 +18,11 @@ controller:
     tag: 0.12.0
 
   role:
-    name: nginx-ingress-role
+    name: temp-nginx-ingress-role
 
   # Sets the NodePorts that maps to the Ingress' ports 80 (http) and 443 (https).
   service:
-    enabled: true
+    enabled: false
     nodePorts:
       http: 30010
       https: 30011
@@ -38,7 +36,7 @@ controller:
       memory: 350Mi
 
 defaultBackend:
-  name: default-http-backend
+  name: temp-default-http-backend
   k8sAppLabel: default-http-backend
   port: 8080
 
@@ -57,21 +55,8 @@ defaultBackend:
       cpu: 10m
       memory: 20Mi
 
-global:
-  controller:
-    replicas: 3
-  migration:
-    job:
-      enabled: false
-
 initContainer:
   image:
     registry: quay.io
     repository: giantswarm/alpine
     tag: 3.7
-
-test:
-  image:
-    registry: quay.io
-    repository: giantswarm/alpine-testing
-    tag: 0.1.0
