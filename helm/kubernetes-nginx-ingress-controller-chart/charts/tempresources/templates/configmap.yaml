@@ -1,0 +1,62 @@
+{{- if .Values.global.migration.job.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-12"
+    "helm.sh/hook-delete-policy": "hook-succeeded"
+  labels:
+    app: {{ .Values.name }}
+    giantswarm.io/service-type: "managed"
+data:
+  config.yaml: |
+    service:
+      cnrr:
+        address: "{{ .Values.cnr.address }}"
+        organization: "{{ .Values.cnr.organization }}"
+      create:
+        chart:
+          channelName: "0-2-stable"
+          chartName: "kubernetes-nginx-ingress-controller-chart"
+          namespace: "kube-system"
+          releaseName: "temp-nginx-ingress-controller"
+          valuesFile: "/var/run/{{ .Values.name }}/configmap/values.json"
+        wait:
+          deploymentName: "nginx-ingress-controller"
+          deploymentNamespace: "kube-system"
+      helm:
+        tillerNamespace:  "kube-system" 
+      kubernetes:
+        address: ''
+        inCluster: true
+        tls:
+          caFile: ''
+          crtFile: ''
+          keyFile: ''
+  values.json: |
+    {
+      "controller": {
+        "name": "temp-nginx-ingress-controller",
+        "replicas": "{{ .Values.global.controller.replicas }}",
+        "configMap": {
+          "name": "temp-ingress-nginx"
+        },
+        "role": {
+          "name": "temp-nginx-ingress-role"
+        },
+        "service": {
+          "enabled": false
+        }
+      },
+      "defaultBackend": {
+        "name": "temp-default-http-backend"
+      },
+      "test": {
+        "enabled": false
+      }
+    }
+
+{{- end }}
