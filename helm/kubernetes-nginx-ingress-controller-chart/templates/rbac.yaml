@@ -30,7 +30,7 @@ subjects:
   namespace: {{ .Values.namespace }}
 roleRef:
   kind: Role
-  name: nginx-ingress-role
+  name: {{ .Values.controller.role.name }}
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -93,7 +93,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: nginx-ingress-role
+  name: {{ .Values.controller.role.name }}
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.controller.name }}
