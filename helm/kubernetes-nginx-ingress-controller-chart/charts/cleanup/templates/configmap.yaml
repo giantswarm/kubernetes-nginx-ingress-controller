@@ -20,6 +20,9 @@ data:
       delete:
         chart:
           releaseName: "temp-nginx-ingress-controller"
+        wait:
+          deploymentName: "nginx-ingress-controller"
+          deploymentNamespace: "kube-system"
       helm:
         tillerNamespace:  "kube-system" 
       kubernetes:
