@@ -16,7 +16,7 @@ cnr:
 
 delete:
   chart:
-    releaseName: "ingress-controller-tempresources"
+    releaseName: "temp-nginx-ingress-controller"
   wait:
     deploymentName: "nginx-ingress-controller"
 
