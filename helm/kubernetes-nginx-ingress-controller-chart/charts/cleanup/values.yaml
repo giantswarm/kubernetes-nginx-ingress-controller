@@ -14,6 +14,15 @@ cnr:
   address: "https://quay.io"
   organization: "giantswarm"
 
+delete:
+  chart:
+    releaseName: "temp-nginx-ingress-controller"
+  wait:
+    deploymentName: "nginx-ingress-controller"
+
+helm:
+  tillerNamespace: "giantswarm"
+
 resources:
   limits:
     cpu: 50m
