@@ -17,6 +17,9 @@ data:
       delete:
         resources:
           resourceFile: "/var/run/{{ .Values.name }}/configmap/resources.json"
+        wait:
+          deploymentName: "{{ .Values.delete.wait.deploymentName }}"
+          deploymentNamespace: "{{ .Values.namespace }}"
       kubernetes:
         address: ''
         inCluster: true

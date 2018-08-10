@@ -14,6 +14,31 @@ cnr:
   address: "https://quay.io"
   organization: "giantswarm"
 
+create:
+  chart:
+    chartName: "kubernetes-nginx-ingress-controller-chart"
+    channelName: "0-2-stable"
+    namespace: "kube-system"
+    releaseName: "temp-nginx-ingress-controller"
+
+controller:
+  name: "temp-nginx-ingress-controller"
+
+  configmap:
+    name: "temp-ingress-nginx"
+
+  role:
+    name: "temp-nginx-ingress-role"
+
+  service:
+    enabled: false
+
+defaultBackend:
+  name: "temp-default-http-backend"
+
+helm:
+  tillerNamespace: "giantswarm"
+
 resources:
   limits:
     cpu: 50m
