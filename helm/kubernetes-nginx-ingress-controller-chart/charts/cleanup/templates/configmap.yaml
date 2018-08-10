@@ -13,7 +13,23 @@ metadata:
     giantswarm.io/service-type: "managed"
 data:
   config.yaml: |
-    # TODO
-  values.json: |
-    {}
+   service:
+      cnr:
+        address: "{{ .Values.cnr.address }}"
+        organization: "{{ .Values.cnr.organization }}"
+      delete:
+        chart:
+          releaseName: "{{ .Values.delete.chart.releaseName }}"
+        wait:
+          deploymentName: "{{ .Values.delete.wait.deploymentName }}"
+          deploymentNamespace: "{{ .Values.namespace }}"
+      helm:
+        tillerNamespace: "{{ .Values.helm.tillerNamespace }}"
+      kubernetes:
+        address: ''
+        inCluster: true
+        tls:
+          caFile: ''
+          crtFile: ''
+          keyFile: ''
 {{- end }}
