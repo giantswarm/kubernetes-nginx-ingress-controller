@@ -59,6 +59,8 @@ defaultBackend:
 
 global:
   migration:
+    controller:
+      replicas: 3
     job:
       enabled: false
 
