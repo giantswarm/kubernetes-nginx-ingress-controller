@@ -13,7 +13,47 @@ metadata:
     giantswarm.io/service-type: "managed"
 data:
   config.yaml: |
-    # TODO
+    service:
+      cnr:
+        address: "{{ .Values.cnr.address }}"
+        organization: "{{ .Values.cnr.organization }}"
+      create:
+        chart:
+          channelName: "{{ .Values.create.chart.channelName }}"
+          chartName: "{{ .Values.create.chart.chartName }}"
+          namespace: "{{ .Values.create.chart.namespace }}"
+          releaseName: "{{ .Values.create.chart.releaseName }}"
+          valuesFile: "/var/run/{{ .Values.name }}/configmap/values.json"
+      helm:
+        tillerNamespace:  "{{ .Values.namespace }}"
+      kubernetes:
+        address: ''
+        inCluster: true
+        tls:
+          caFile: ''
+          crtFile: ''
+          keyFile: ''
   values.json: |
-    {}
+    {
+      "controller": {
+        "name": "{{ .Values.controller.name }}",
+        "replicas": "{{ .Values.global.controller.replicas }}",
+        "configmap": {
+          "name": "{{ .Values.controller.configmap.name }}"
+        },
+        "role": {
+          "name": "{{ .Values.controller.role.name }}"
+        },
+        "service": {
+          "enabled": {{ .Values.controller.service.enabled }}
+        }
+      },
+      "defaultBackend": {
+        "name": "{{ .Values.defaultBackend.name }}"
+      },
+      "test": {
+        "enabled": false
+      }
+    }
+
 {{- end }}
