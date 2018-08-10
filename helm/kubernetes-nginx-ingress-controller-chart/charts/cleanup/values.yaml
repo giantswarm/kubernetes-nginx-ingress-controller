@@ -1,0 +1,23 @@
+# Default values for cleanup chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+name: ingress-controller-cleanup
+namespace: kube-system
+
+image:
+  registry: quay.io
+  repository: giantswarm/k8s-migrator
+  tag: latest
+
+cnr:
+  address: "https://quay.io"
+  organization: "giantswarm"
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 75Mi
+  requests:
+    cpu: 50m
+    memory: 75Mi
