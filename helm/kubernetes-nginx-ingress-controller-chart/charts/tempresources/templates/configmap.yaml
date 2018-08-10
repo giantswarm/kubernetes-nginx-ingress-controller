@@ -47,6 +47,14 @@ data:
         "role": {
           "name": "temp-nginx-ingress-role"
         },
+        "resources": {
+          "limits": {
+            "cpu": "250m"
+          },
+          "requests": {
+            "cpu": "250m"
+          }
+        },
         "service": {
           "enabled": false
         }

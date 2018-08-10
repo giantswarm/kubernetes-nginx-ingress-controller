@@ -31,10 +31,12 @@ controller:
 
   resources:
     limits:
-      cpu: 500m
+      # TODO Put back to 500m
+      cpu: 250m
       memory: 350Mi
     requests:
-      cpu: 500m
+      # TODO Put back to 500m
+      cpu: 250m
       memory: 350Mi
 
 defaultBackend:
