@@ -14,7 +14,7 @@ metadata:
 data:
   config.yaml: |
     service:
-      cnrr:
+      cnr:
         address: "{{ .Values.cnr.address }}"
         organization: "{{ .Values.cnr.organization }}"
       create:
@@ -41,7 +41,7 @@ data:
       "controller": {
         "name": "temp-nginx-ingress-controller",
         "replicas": "{{ .Values.global.controller.replicas }}",
-        "configMap": {
+        "configmap": {
           "name": "temp-ingress-nginx"
         },
         "role": {
