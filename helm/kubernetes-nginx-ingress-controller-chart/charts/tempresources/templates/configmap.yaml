@@ -25,7 +25,7 @@ data:
           releaseName: "{{ .Values.create.chart.releaseName }}"
           valuesFile: "/var/run/{{ .Values.name }}/configmap/values.json"
       helm:
-        tillerNamespace:  "{{ .Values.namespace }}"
+        tillerNamespace:  "{{ .Values.helm.tillerNamespace }}"
       kubernetes:
         address: ''
         inCluster: true
