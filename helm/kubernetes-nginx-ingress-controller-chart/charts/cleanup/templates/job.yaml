@@ -20,8 +20,6 @@ spec:
           items:
           - key: config.yaml
             path: config.yaml
-          - key: values.json
-            path: values.json
       serviceAccountName: {{ .Values.name }}
       containers:
       - name: {{ .Values.name }}
@@ -31,7 +29,6 @@ spec:
           mountPath: /var/run/{{ .Values.name }}/configmap/
         args:
         - delete
-        - -h
         - --config.dirs=/var/run/{{ .Values.name }}/configmap/
         - --config.files=config
         resources:
