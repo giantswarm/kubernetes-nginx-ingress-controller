@@ -24,9 +24,6 @@ data:
           namespace: "kube-system"
           releaseName: "temp-nginx-ingress-controller"
           valuesFile: "/var/run/{{ .Values.name }}/configmap/values.json"
-        wait:
-          deploymentName: "nginx-ingress-controller"
-          deploymentNamespace: "kube-system"
       helm:
         tillerNamespace:  "kube-system" 
       kubernetes:
