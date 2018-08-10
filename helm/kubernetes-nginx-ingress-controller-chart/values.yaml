@@ -58,6 +58,8 @@ defaultBackend:
       memory: 20Mi
 
 global:
+  controller:
+    replicas: 3
   migration:
     job:
       enabled: false

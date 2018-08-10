@@ -17,6 +17,9 @@ data:
       delete:
         resources:
           resourceFile: "/var/run/{{ .Values.name }}/configmap/resources.json"
+        wait:
+          deploymentName: "temp-nginx-ingress-controller"
+          deploymentNamespace: "kube-system"
       kubernetes:
         address: ''
         inCluster: true

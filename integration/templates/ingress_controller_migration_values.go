@@ -10,7 +10,7 @@ controller:
   k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
-  replicas: 3
+  replicas: 1
 
   configmap:
     name: ingress-nginx
@@ -39,7 +39,7 @@ defaultBackend:
   k8sAppLabel: default-http-backend
   port: 8080
 
-  replicas: 2
+  replicas: 1
 
   image:
     registry: quay.io
@@ -55,6 +55,8 @@ defaultBackend:
       memory: 20Mi
 
 global:
+  controller:
+    replicas: 1
   migration:
     job:
       enabled: true
