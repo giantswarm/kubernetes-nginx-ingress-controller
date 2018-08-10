@@ -71,7 +71,6 @@ initContainer:
     tag: 3.7
 
 test:
-  enabled: false
   image:
     registry: quay.io
     repository: giantswarm/alpine-testing
