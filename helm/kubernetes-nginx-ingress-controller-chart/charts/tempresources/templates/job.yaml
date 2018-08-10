@@ -32,7 +32,6 @@ spec:
           mountPath: /var/run/{{ .Values.name }}/configmap/
         args:
         - create 
-        - -h
         - --config.dirs=/var/run/{{ .Values.name }}/configmap/
         - --config.files=config
         resources:
