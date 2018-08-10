@@ -8,8 +8,7 @@ namespace: kube-system
 image:
   registry: quay.io
   repository: giantswarm/k8s-migrator
-  # TOOD
-  tag: 4f51f64268bb2f7b4b67cd6d4476a4d694849d50
+  tag: latest
 
 cnr:
   address: "https://quay.io"
