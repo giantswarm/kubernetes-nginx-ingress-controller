@@ -159,12 +159,18 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of roles, want 1, got %d", len(r.Items))
 	}
 
+	// An adddional role binding is needed for the chart due to the migration.
+	roleBindingCount := 1
+	if labelSelector == "giantswarm.io/service-type=managed" {
+		roleBindingCount = 2
+	}
+
 	rb, err := c.Rbac().RoleBindings(resourceNamespace).List(controllerListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
-	if len(rb.Items) != 2 {
-		return microerror.Newf("unexpected number of rolebindings, want 2, got %d", len(rb.Items))
+	if len(rb.Items) != roleBindingCount {
+		return microerror.Newf("unexpected number of rolebindings, want %d, got %d", roleBindingCount, len(rb.Items))
 	}
 
 	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
