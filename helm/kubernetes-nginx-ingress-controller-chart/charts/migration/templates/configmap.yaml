@@ -74,17 +74,6 @@ data:
             }
         },
         {
-            "kind": "ServiceAccount",
-            "name": "nginx-ingress-controller",
-            "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
-            "excludeLabels": {
-                "giantswarm.io/service-type": "managed"
-            }
-        },
-        {
             "kind": "RoleBinding",
             "name": "nginx-ingress-controller",
             "namespace": "kube-system",
@@ -119,6 +108,17 @@ data:
         },
         {
             "kind": "ClusterRole",
+            "name": "nginx-ingress-controller",
+            "namespace": "kube-system",
+            "matchLabels": {
+                "k8s-app": "nginx-ingress-controller"
+            },
+            "excludeLabels": {
+                "giantswarm.io/service-type": "managed"
+            }
+        },
+        {
+            "kind": "ServiceAccount",
             "name": "nginx-ingress-controller",
             "namespace": "kube-system",
             "matchLabels": {
