@@ -163,8 +163,8 @@ func checkResourcesPresent(labelSelector string) error {
 	if err != nil {
 		return microerror.Mask(err)
 	}
-	if len(rb.Items) != 1 {
-		return microerror.Newf("unexpected number of rolebindings, want 1, got %d", len(rb.Items))
+	if len(rb.Items) != 2 {
+		return microerror.Newf("unexpected number of rolebindings, want 2, got %d", len(rb.Items))
 	}
 
 	sb, err := c.Core().Services(resourceNamespace).List(backendListOptions)
