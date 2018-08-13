@@ -19,6 +19,11 @@ controller:
     repository: giantswarm/nginx-ingress-controller
     tag: 0.12.0
 
+  rbac:
+    privilegedPod:
+      role:
+        name: privileged-psp-user 
+
   role:
     name: nginx-ingress-role
 
