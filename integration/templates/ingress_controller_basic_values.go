@@ -16,12 +16,10 @@ controller:
     name: ingress-nginx
 
   image:
-    registry: quay.io
     repository: giantswarm/nginx-ingress-controller
     tag: 0.12.0
 
   service:
-    enabled: true
     nodePorts:
       http: 30010
       https: 30011
@@ -42,7 +40,6 @@ defaultBackend:
   replicas: 2
 
   image:
-    registry: quay.io
     repository: giantswarm/defaultbackend
     tag: 1.2
 
@@ -56,8 +53,10 @@ defaultBackend:
 
 global:
   migration:
-    job:
-      enabled: false
+    enabled: false
+
+image:
+  registry: quay.io
 
 initContainer:
   image:
