@@ -29,7 +29,6 @@ controller:
 
   # Sets the NodePorts that maps to the Ingress' ports 80 (http) and 443 (https).
   service:
-    enabled: true
     nodePorts:
       http: 30010
       https: 30011
