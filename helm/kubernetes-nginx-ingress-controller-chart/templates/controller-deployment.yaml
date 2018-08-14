@@ -57,7 +57,7 @@ spec:
           privileged: true
       containers:
       - name: {{ .Values.controller.name }}
-        image: "{{ .Values.controller.image.registry }}/{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
+        image: "{{ .Values.image.registry }}/{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
         args:
         - /nginx-ingress-controller
         - --default-backend-service=$(POD_NAMESPACE)/{{ .Values.defaultBackend.name }}
