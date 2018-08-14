@@ -15,7 +15,6 @@ controller:
     name: ingress-nginx
 
   image:
-    registry: quay.io
     repository: giantswarm/nginx-ingress-controller
     tag: 0.12.0
 
@@ -49,7 +48,6 @@ defaultBackend:
   replicas: 2
 
   image:
-    registry: quay.io
     repository: giantswarm/defaultbackend
     tag: 1.2
 
@@ -60,6 +58,10 @@ defaultBackend:
     requests:
       cpu: 10m
       memory: 20Mi
+
+image:
+  registry: quay.io
+
 
 global:
   controller:
