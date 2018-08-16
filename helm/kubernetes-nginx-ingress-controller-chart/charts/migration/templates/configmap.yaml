@@ -86,11 +86,8 @@ data:
         },
         {
             "kind": "Role",
-            "name": "nginx-ingress-controller",
+            "name": "nginx-ingress-role",
             "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
             }
