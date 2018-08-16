@@ -43,6 +43,9 @@ data:
         },
         "role": {
           "name": "{{ .Values.controller.role.name }}"
+        },
+        "service": {
+          "enabled": false
         }
       },
       "defaultBackend": {
