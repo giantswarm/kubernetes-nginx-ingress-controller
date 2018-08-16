@@ -43,13 +43,15 @@ data:
         },
         "role": {
           "name": "{{ .Values.controller.role.name }}"
-        },
-        "service": {
-          "enabled": {{ .Values.controller.service.enabled }}
         }
       },
       "defaultBackend": {
         "name": "{{ .Values.defaultBackend.name }}"
+      },
+      "global": {
+        "migration": {
+          "enabled": false
+        }
       },
       "test": {
         "enabled": false
