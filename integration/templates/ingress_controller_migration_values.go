@@ -20,6 +20,8 @@ controller:
     tag: 0.12.0
 
   service:
+    service:
+      enabled: false
     nodePorts:
       http: 30010
       https: 30011
@@ -54,6 +56,7 @@ defaultBackend:
 global:
   controller:
     replicas: 1
+    useProxyProtocol: true
   migration:
     enabled: true
 
