@@ -43,12 +43,18 @@ data:
         },
         "role": {
           "name": "{{ .Values.controller.role.name }}"
-        }
+        },
+        "service": {
+          "enabled": false,
+        },
       },
       "defaultBackend": {
         "name": "{{ .Values.defaultBackend.name }}"
       },
       "global": {
+        "controller": {
+          "useProxyProtocol": {{ .Values.global.controller.useProxyProtocol }}
+        },
         "migration": {
           "enabled": false
         }
