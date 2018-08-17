@@ -20,8 +20,7 @@ controller:
     tag: 0.12.0
 
   service:
-    service:
-      enabled: false
+    enabled: false
     nodePorts:
       http: 30010
       https: 30011
