@@ -184,7 +184,7 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of services, want 1, got %d", len(sb.Items))
 	}
 
-	sa, err := c.Core().ServiceAccounts(resourceNamespace).List(controllerListOptions)
+	sa, err := c.Core().ServiceAccounts(resourceNamespace).List(labelListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
