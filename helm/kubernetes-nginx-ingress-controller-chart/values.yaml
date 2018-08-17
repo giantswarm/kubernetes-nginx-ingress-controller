@@ -66,6 +66,7 @@ image:
 global:
   controller:
     replicas: 3
+    useProxyProtocol: false
   migration:
     enabled: false
 
