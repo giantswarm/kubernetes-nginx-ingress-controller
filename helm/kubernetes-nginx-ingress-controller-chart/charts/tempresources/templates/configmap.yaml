@@ -1,4 +1,4 @@
-{{- if .Values.global.migration.job.enabled }}
+{{- if .Values.global.migration.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -45,11 +45,19 @@ data:
           "name": "{{ .Values.controller.role.name }}"
         },
         "service": {
-          "enabled": {{ .Values.controller.service.enabled }}
-        }
+          "enabled": false,
+        },
       },
       "defaultBackend": {
         "name": "{{ .Values.defaultBackend.name }}"
+      },
+      "global": {
+        "controller": {
+          "useProxyProtocol": {{ .Values.global.controller.useProxyProtocol }}
+        },
+        "migration": {
+          "enabled": false
+        }
       },
       "test": {
         "enabled": false

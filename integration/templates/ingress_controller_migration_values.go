@@ -16,7 +16,6 @@ controller:
     name: ingress-nginx
 
   image:
-    registry: quay.io
     repository: giantswarm/nginx-ingress-controller
     tag: 0.12.0
 
@@ -42,7 +41,6 @@ defaultBackend:
   replicas: 1
 
   image:
-    registry: quay.io
     repository: giantswarm/defaultbackend
     tag: 1.2
 
@@ -57,9 +55,12 @@ defaultBackend:
 global:
   controller:
     replicas: 1
+    useProxyProtocol: true
   migration:
-    job:
-      enabled: true
+    enabled: true
+
+image:
+  registry: quay.io
 
 initContainer:
   image:

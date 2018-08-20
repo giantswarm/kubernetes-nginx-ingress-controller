@@ -1,4 +1,4 @@
-{{- if .Values.global.migration.job.enabled }}
+{{- if .Values.global.migration.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -77,20 +77,14 @@ data:
             "kind": "RoleBinding",
             "name": "nginx-ingress-controller",
             "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
             }
         },
         {
             "kind": "Role",
-            "name": "nginx-ingress-controller",
+            "name": "nginx-ingress-role",
             "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
             }
@@ -98,10 +92,6 @@ data:
         {
             "kind": "ClusterRoleBinding",
             "name": "nginx-ingress-controller",
-            "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
             }
@@ -109,10 +99,6 @@ data:
         {
             "kind": "ClusterRole",
             "name": "nginx-ingress-controller",
-            "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
             }
@@ -121,9 +107,6 @@ data:
             "kind": "ServiceAccount",
             "name": "nginx-ingress-controller",
             "namespace": "kube-system",
-            "matchLabels": {
-                "k8s-app": "nginx-ingress-controller"
-            },
             "excludeLabels": {
                 "giantswarm.io/service-type": "managed"
             }
