@@ -16,3 +16,4 @@ data:
   # Disables setting a 'Strict-Transport-Security' header, which can be harmful.
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "false"
+  use-proxy-protocol: "{{ .Values.global.controller.useProxyProtocol }}"
