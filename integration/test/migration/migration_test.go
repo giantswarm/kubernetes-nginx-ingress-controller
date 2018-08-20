@@ -101,14 +101,17 @@ func checkControllerServicePresent() error {
 
 func checkResourcesPresent(labelSelector string) error {
 	c := h.K8sClient()
-	controllerListOptions := metav1.ListOptions{
-		LabelSelector: fmt.Sprintf("k8s-app=nginx-ingress-controller,%s", labelSelector),
-	}
 	backendListOptions := metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("k8s-app=default-http-backend,%s", labelSelector),
 	}
 	configMapListOptions := metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("k8s-addon=ingress-nginx.addons.k8s.io,%s", labelSelector),
+	}
+	controllerListOptions := metav1.ListOptions{
+		LabelSelector: fmt.Sprintf("k8s-app=nginx-ingress-controller,%s", labelSelector),
+	}
+	labelListOptions := metav1.ListOptions{
+		LabelSelector: labelSelector,
 	}
 
 	cm, err := c.Core().ConfigMaps(resourceNamespace).List(configMapListOptions)
@@ -135,12 +138,12 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of deployments, want 1, got %d", len(db.Items))
 	}
 
-	cr, err := c.Rbac().ClusterRoles().List(controllerListOptions)
+	cr, err := c.Rbac().ClusterRoles().List(labelListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
 	if len(cr.Items) != 1 {
-		return microerror.Newf("unexpected number of roles, want 1, got %d", len(cr.Items))
+		return microerror.Newf("unexpected number of cluster roles, want 1, got %d", len(cr.Items))
 	}
 
 	// An extra cluster role binding is needed by the chart due to the migration.
@@ -149,7 +152,7 @@ func checkResourcesPresent(labelSelector string) error {
 		clusterRoleBindingCount = 2
 	}
 
-	crb, err := c.Rbac().ClusterRoleBindings().List(controllerListOptions)
+	crb, err := c.Rbac().ClusterRoleBindings().List(labelListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -157,7 +160,7 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of cluster rolebindings, want %d, got %d", clusterRoleBindingCount, len(crb.Items))
 	}
 
-	r, err := c.Rbac().Roles(resourceNamespace).List(controllerListOptions)
+	r, err := c.Rbac().Roles(resourceNamespace).List(labelListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -165,7 +168,7 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of roles, want 1, got %d", len(r.Items))
 	}
 
-	rb, err := c.Rbac().RoleBindings(resourceNamespace).List(controllerListOptions)
+	rb, err := c.Rbac().RoleBindings(resourceNamespace).List(labelListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
@@ -181,7 +184,7 @@ func checkResourcesPresent(labelSelector string) error {
 		return microerror.Newf("unexpected number of services, want 1, got %d", len(sb.Items))
 	}
 
-	sa, err := c.Core().ServiceAccounts(resourceNamespace).List(controllerListOptions)
+	sa, err := c.Core().ServiceAccounts(resourceNamespace).List(labelListOptions)
 	if err != nil {
 		return microerror.Mask(err)
 	}
