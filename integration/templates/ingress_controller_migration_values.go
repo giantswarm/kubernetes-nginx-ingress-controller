@@ -54,7 +54,7 @@ defaultBackend:
 
 global:
   controller:
-    replicas: 1
+    tempReplicas: 1
     useProxyProtocol: true
   migration:
     enabled: true
