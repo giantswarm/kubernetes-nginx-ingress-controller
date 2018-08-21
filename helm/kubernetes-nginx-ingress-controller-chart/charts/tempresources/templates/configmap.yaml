@@ -37,7 +37,7 @@ data:
     {
       "controller": {
         "name": "{{ .Values.controller.name }}",
-        "replicas": "{{ .Values.global.controller.replicas }}",
+        "replicas": "{{ .Values.global.controller.tempReplicas }}",
         "configmap": {
           "name": "{{ .Values.controller.configmap.name }}"
         },
