@@ -43,6 +43,7 @@ spec:
                   - {{ .Values.controller.name }}
               topologyKey: kubernetes.io/hostname
       serviceAccountName: {{ .Values.controller.name }}
+      priorityClassName: system-cluster-critical
       initContainers:
       # Overall performance improvements
       # See https://github.com/kubernetes/ingress-nginx/issues/1939
