@@ -3,24 +3,35 @@
 package basic
 
 import (
+	"fmt"
 	"testing"
 
+	"github.com/giantswarm/apprclient"
 	"github.com/giantswarm/e2e-harness/pkg/framework"
-	"github.com/giantswarm/e2e-harness/pkg/framework/deployment"
-	"github.com/giantswarm/e2e-harness/pkg/framework/resource"
+	"github.com/giantswarm/e2etests/managedservices"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/micrologger"
+	"github.com/spf13/afero"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/setup"
+	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
+)
+
+const (
+	chartName          = "kubernetes-nginx-ingress-controller"
+	controllerName     = "nginx-ingress-controller"
+	defaultBackendName = "default-http-backend"
+	testName           = "basic"
 )
 
 var (
-	d          *deployment.Deployment
+	a          *apprclient.Client
+	ms         *managedservices.ManagedServices
 	h          *framework.Host
 	helmClient *helmclient.Client
 	l          micrologger.Logger
-	r          *resource.Resource
 )
 
 func init() {
@@ -29,6 +40,20 @@ func init() {
 	{
 		c := micrologger.Config{}
 		l, err = micrologger.New(c)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	{
+		c := apprclient.Config{
+			Fs:     afero.NewOsFs(),
+			Logger: l,
+
+			Address:      "https://quay.io",
+			Organization: "giantswarm",
+		}
+		a, err = apprclient.New(c)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -47,17 +72,6 @@ func init() {
 	}
 
 	{
-		c := deployment.Config{
-			K8sClient: h.K8sClient(),
-			Logger:    l,
-		}
-		d, err = deployment.New(c)
-		if err != nil {
-			panic(err.Error())
-		}
-	}
-
-	{
 		c := helmclient.Config{
 			Logger:          l,
 			K8sClient:       h.K8sClient(),
@@ -70,14 +84,54 @@ func init() {
 		}
 	}
 
-	resourceConfig := resource.ResourceConfig{
-		Logger:     l,
-		HelmClient: helmClient,
-		Namespace:  metav1.NamespaceSystem,
-	}
-	r, err = resource.New(resourceConfig)
-	if err != nil {
-		panic(err.Error())
+	{
+		c := managedservices.Config{
+			ApprClient:    a,
+			HelmClient:    helmClient,
+			HostFramework: h,
+			Logger:        l,
+
+			ChartConfig: managedservices.ChartConfig{
+				ChannelName: fmt.Sprintf("%s-%s", env.CircleSHA(), testName),
+				ChartName:   chartName,
+				ChartValues: templates.NginxIngressControllerBasicValues,
+				Namespace:   metav1.NamespaceSystem,
+			},
+			ChartResources: managedservices.ChartResources{
+				Deployments: []managedservices.Deployment{
+					{
+						Name:      controllerName,
+						Namespace: metav1.NamespaceSystem,
+						Labels: map[string]string{
+							"app": controllerName,
+							"giantswarm.io/service-type": "managed",
+							"k8s-app":                    controllerName,
+						},
+						MatchLabels: map[string]string{
+							"k8s-app": controllerName,
+						},
+						Replicas: 3,
+					},
+					{
+						Name:      defaultBackendName,
+						Namespace: metav1.NamespaceSystem,
+						Labels: map[string]string{
+							"app": defaultBackendName,
+							"giantswarm.io/service-type": "managed",
+							"k8s-app":                    defaultBackendName,
+						},
+						MatchLabels: map[string]string{
+							"k8s-app": defaultBackendName,
+						},
+						Replicas: 2,
+					},
+				},
+			},
+		}
+		ms, err = managedservices.New(c)
+		if err != nil {
+			panic(err.Error())
+		}
 	}
 }
 
