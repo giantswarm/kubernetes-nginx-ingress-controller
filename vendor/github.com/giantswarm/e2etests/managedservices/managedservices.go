@@ -24,7 +24,7 @@ type Config struct {
 	Logger        micrologger.Logger
 }
 
-type Basic struct {
+type ManagedServices struct {
 	namespace string
 
 	apprClient    *apprclient.Client
@@ -34,7 +34,7 @@ type Basic struct {
 	resource      *frameworkresource.Resource
 }
 
-func New(config Config) (*Basic, error) {
+func New(config Config) (*ManagedServices, error) {
 	var err error
 
 	if config.Namespace == "" {
@@ -69,7 +69,7 @@ func New(config Config) (*Basic, error) {
 		}
 	}
 
-	h := &Basic{
+	ms := &ManagedServices{
 		apprClient:    config.ApprClient,
 		helmClient:    config.HelmClient,
 		hostFramework: config.HostFramework,
@@ -77,10 +77,10 @@ func New(config Config) (*Basic, error) {
 		resource:      resource,
 	}
 
-	return h, nil
+	return ms, nil
 }
 
-func (h *Basic) Test(ctx context.Context, chartConfig ChartConfig, chartResources ChartResources) error {
+func (ms *ManagedServices) Test(ctx context.Context, chartConfig ChartConfig, chartResources ChartResources) error {
 	var err error
 
 	err = validateChartConfig(chartConfig)
@@ -93,71 +93,71 @@ func (h *Basic) Test(ctx context.Context, chartConfig ChartConfig, chartResource
 	}
 
 	{
-		h.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installing chart %#q", chartConfig.ChartName))
+		ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installing chart %#q", chartConfig.ChartName))
 
-		err = h.resource.InstallResource(chartConfig.ChartName, chartConfig.ChartValues, chartConfig.ChannelName)
+		err = ms.resource.InstallResource(chartConfig.ChartName, chartConfig.ChartValues, chartConfig.ChannelName)
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		h.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installed chart %#q", chartConfig.ChartName))
+		ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installed chart %#q", chartConfig.ChartName))
 	}
 
 	{
-		h.logger.LogCtx(ctx, "level", "debug", "message", "waiting for deployed status")
+		ms.logger.LogCtx(ctx, "level", "debug", "message", "waiting for deployed status")
 
-		err = h.resource.WaitForStatus(chartConfig.ChartName, "DEPLOYED")
+		err = ms.resource.WaitForStatus(chartConfig.ChartName, "DEPLOYED")
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		h.logger.LogCtx(ctx, "level", "debug", "message", "chart is deployed")
+		ms.logger.LogCtx(ctx, "level", "debug", "message", "chart is deployed")
 	}
 	{
-		h.logger.LogCtx(ctx, "level", "debug", "message", "checking resources")
+		ms.logger.LogCtx(ctx, "level", "debug", "message", "checking resources")
 
 		for _, ds := range chartResources.DaemonSets {
-			h.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("checking daemonset %#q", ds.Name))
+			ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("checking daemonset %#q", ds.Name))
 
-			err = h.checkDaemonSet(ds)
+			err = ms.checkDaemonSet(ds)
 			if err != nil {
 				return microerror.Mask(err)
 			}
 
-			h.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("daemonset %#q is correct", ds.Name))
+			ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("daemonset %#q is correct", ds.Name))
 		}
 
 		for _, d := range chartResources.Deployments {
-			h.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("checking deployment %#q", d.Name))
+			ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("checking deployment %#q", d.Name))
 
-			err = h.checkDeployment(d)
+			err = ms.checkDeployment(d)
 			if err != nil {
 				return microerror.Mask(err)
 			}
 
-			h.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("deployment %#q is correct", d.Name))
+			ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("deployment %#q is correct", d.Name))
 		}
 
-		h.logger.LogCtx(ctx, "level", "debug", "message", "resources are correct")
+		ms.logger.LogCtx(ctx, "level", "debug", "message", "resources are correct")
 	}
 
 	{
-		h.logger.LogCtx(ctx, "level", "debug", "message", "running release tests")
+		ms.logger.LogCtx(ctx, "level", "debug", "message", "running release tests")
 
-		err = h.helmClient.RunReleaseTest(chartConfig.ChartName)
+		err = ms.helmClient.RunReleaseTest(chartConfig.ChartName)
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		h.logger.LogCtx(ctx, "level", "debug", "message", "release tests passed")
+		ms.logger.LogCtx(ctx, "level", "debug", "message", "release tests passed")
 	}
 
 	return nil
 }
 
 // checkDaemonSet ensures that key properties of the daemonset are correct.
-func (h *Basic) checkDaemonSet(expectedDaemonSet DaemonSet) error {
-	ds, err := h.hostFramework.K8sClient().Apps().DaemonSets(expectedDaemonSet.Namespace).Get(expectedDaemonSet.Name, metav1.GetOptions{})
+func (ms *ManagedServices) checkDaemonSet(expectedDaemonSet DaemonSet) error {
+	ds, err := ms.hostFramework.K8sClient().Apps().DaemonSets(expectedDaemonSet.Namespace).Get(expectedDaemonSet.Name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
 		return microerror.Maskf(notFoundError, "daemonset: %#q", expectedDaemonSet.Name, err)
 	} else if err != nil {
@@ -180,8 +180,8 @@ func (h *Basic) checkDaemonSet(expectedDaemonSet DaemonSet) error {
 }
 
 // checkDeployment ensures that key properties of the deployment are correct.
-func (h *Basic) checkDeployment(expectedDeployment Deployment) error {
-	ds, err := h.hostFramework.K8sClient().Apps().Deployments(expectedDeployment.Namespace).Get(expectedDeployment.Name, metav1.GetOptions{})
+func (ms *ManagedServices) checkDeployment(expectedDeployment Deployment) error {
+	ds, err := ms.hostFramework.K8sClient().Apps().Deployments(expectedDeployment.Namespace).Get(expectedDeployment.Name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
 		return microerror.Maskf(notFoundError, "deployment: %#q", expectedDeployment.Name, err)
 	} else if err != nil {
