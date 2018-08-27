@@ -3,62 +3,64 @@
 package basic
 
 import (
+	"context"
 	"fmt"
 	"testing"
+
+	"github.com/giantswarm/e2etests/managedservices"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
 const (
-	testName = "basic"
+	chartName          = "kubernetes-nginx-ingress-controller"
+	controllerName     = "nginx-ingress-controller"
+	defaultBackendName = "default-http-backend"
+	testName           = "basic"
 )
 
 func TestHelm(t *testing.T) {
-	channel := fmt.Sprintf("%s-%s", env.CircleSHA(), testName)
-	releaseName := "kubernetes-nginx-ingress-controller"
-
-	err := r.InstallResource(releaseName, templates.NginxIngressControllerBasicValues, channel)
-	if err != nil {
-		t.Fatalf("could not install %q %v", releaseName, err)
+	chartConfig := managedservices.ChartConfig{
+		ChannelName: fmt.Sprintf("%s-%s", env.CircleSHA(), testName),
+		ChartName:   chartName,
+		ChartValues: templates.NginxIngressControllerBasicValues,
+		Namespace:   metav1.NamespaceSystem,
+	}
+	chartResources := managedservices.ChartResources{
+		Deployments: []managedservices.Deployment{
+			{
+				Name:      controllerName,
+				Namespace: metav1.NamespaceSystem,
+				Labels: map[string]string{
+					"app": controllerName,
+					"giantswarm.io/service-type": "managed",
+					"k8s-app":                    controllerName,
+				},
+				MatchLabels: map[string]string{
+					"k8s-app": controllerName,
+				},
+				Replicas: 3,
+			},
+			{
+				Name:      defaultBackendName,
+				Namespace: metav1.NamespaceSystem,
+				Labels: map[string]string{
+					"app": defaultBackendName,
+					"giantswarm.io/service-type": "managed",
+					"k8s-app":                    defaultBackendName,
+				},
+				MatchLabels: map[string]string{
+					"k8s-app": defaultBackendName,
+				},
+				Replicas: 2,
+			},
+		},
 	}
 
-	err = r.WaitForStatus(releaseName, "DEPLOYED")
+	err := ms.Test(context.Background(), chartConfig, chartResources)
 	if err != nil {
-		t.Fatalf("could not get release status of %q %v", releaseName, err)
-	}
-	l.Log("level", "debug", "message", fmt.Sprintf("%s succesfully deployed", releaseName))
-
-	controllerName := "nginx-ingress-controller"
-	controllerLabels := map[string]string{
-		"app": controllerName,
-		"giantswarm.io/service-type": "managed",
-		"k8s-app":                    controllerName,
-	}
-	controllerMatchLabels := map[string]string{
-		"k8s-app": controllerName,
-	}
-	err = d.Check(controllerName, 3, controllerLabels, controllerMatchLabels)
-	if err != nil {
-		t.Fatalf("controller manifest is incorrect: %v", err)
-	}
-
-	backendName := "default-http-backend"
-	backendLabels := map[string]string{
-		"app": backendName,
-		"giantswarm.io/service-type": "managed",
-		"k8s-app":                    backendName,
-	}
-	backendMatchLabels := map[string]string{
-		"k8s-app": backendName,
-	}
-	err = d.Check(backendName, 2, backendLabels, backendMatchLabels)
-	if err != nil {
-		t.Fatalf("default backend manifest is incorrect: %v", err)
-	}
-
-	err = helmClient.RunReleaseTest(releaseName)
-	if err != nil {
-		t.Fatalf("unexpected error during test of the chart: %v", err)
+		t.Fatalf("%#v", err)
 	}
 }

@@ -16,7 +16,7 @@ import (
 
 var (
 	h          *framework.Host
-	helmClient *helmclient.Client
+	helmClient helmclient.Interface
 	l          micrologger.Logger
 	r          *resource.Resource
 )
