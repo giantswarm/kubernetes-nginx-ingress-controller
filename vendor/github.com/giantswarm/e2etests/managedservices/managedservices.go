@@ -16,30 +16,28 @@ import (
 )
 
 type Config struct {
-	Namespace string
-
 	ApprClient    *apprclient.Client
 	HelmClient    *helmclient.Client
 	HostFramework *framework.Host
 	Logger        micrologger.Logger
+
+	ChartConfig    ChartConfig
+	ChartResources ChartResources
 }
 
 type ManagedServices struct {
-	namespace string
-
 	apprClient    *apprclient.Client
 	helmClient    *helmclient.Client
 	hostFramework *framework.Host
 	logger        micrologger.Logger
 	resource      *frameworkresource.Resource
+
+	chartConfig    ChartConfig
+	chartResources ChartResources
 }
 
 func New(config Config) (*ManagedServices, error) {
 	var err error
-
-	if config.Namespace == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Namespace must not be empty", config)
-	}
 
 	if config.ApprClient == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.ApprClient must not be empty", config)
@@ -54,13 +52,22 @@ func New(config Config) (*ManagedServices, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
+	err = validateChartConfig(config.ChartConfig)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+	err = validateChartResources(config.ChartResources)
+	if err != nil {
+		return nil, microerror.Mask(err)
+	}
+
 	var resource *frameworkresource.Resource
 	{
 		c := frameworkresource.ResourceConfig{
 			ApprClient: config.ApprClient,
 			HelmClient: config.HelmClient,
 			Logger:     config.Logger,
-			Namespace:  config.Namespace,
+			Namespace:  config.ChartConfig.Namespace,
 		}
 
 		resource, err = frameworkresource.New(c)
@@ -75,38 +82,32 @@ func New(config Config) (*ManagedServices, error) {
 		hostFramework: config.HostFramework,
 		logger:        config.Logger,
 		resource:      resource,
+
+		chartConfig:    config.ChartConfig,
+		chartResources: config.ChartResources,
 	}
 
 	return ms, nil
 }
 
-func (ms *ManagedServices) Test(ctx context.Context, chartConfig ChartConfig, chartResources ChartResources) error {
+func (ms *ManagedServices) Test(ctx context.Context) error {
 	var err error
 
-	err = validateChartConfig(chartConfig)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-	err = validateChartResources(chartResources)
-	if err != nil {
-		return microerror.Mask(err)
-	}
-
 	{
-		ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installing chart %#q", chartConfig.ChartName))
+		ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installing chart %#q", ms.chartConfig.ChartName))
 
-		err = ms.resource.InstallResource(chartConfig.ChartName, chartConfig.ChartValues, chartConfig.ChannelName)
+		err = ms.resource.InstallResource(ms.chartConfig.ChartName, ms.chartConfig.ChartValues, ms.chartConfig.ChannelName)
 		if err != nil {
 			return microerror.Mask(err)
 		}
 
-		ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installed chart %#q", chartConfig.ChartName))
+		ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("installed chart %#q", ms.chartConfig.ChartName))
 	}
 
 	{
 		ms.logger.LogCtx(ctx, "level", "debug", "message", "waiting for deployed status")
 
-		err = ms.resource.WaitForStatus(chartConfig.ChartName, "DEPLOYED")
+		err = ms.resource.WaitForStatus(ms.chartConfig.ChartName, "DEPLOYED")
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -116,7 +117,7 @@ func (ms *ManagedServices) Test(ctx context.Context, chartConfig ChartConfig, ch
 	{
 		ms.logger.LogCtx(ctx, "level", "debug", "message", "checking resources")
 
-		for _, ds := range chartResources.DaemonSets {
+		for _, ds := range ms.chartResources.DaemonSets {
 			ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("checking daemonset %#q", ds.Name))
 
 			err = ms.checkDaemonSet(ds)
@@ -127,7 +128,7 @@ func (ms *ManagedServices) Test(ctx context.Context, chartConfig ChartConfig, ch
 			ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("daemonset %#q is correct", ds.Name))
 		}
 
-		for _, d := range chartResources.Deployments {
+		for _, d := range ms.chartResources.Deployments {
 			ms.logger.LogCtx(ctx, "level", "debug", "message", fmt.Sprintf("checking deployment %#q", d.Name))
 
 			err = ms.checkDeployment(d)
@@ -144,7 +145,7 @@ func (ms *ManagedServices) Test(ctx context.Context, chartConfig ChartConfig, ch
 	{
 		ms.logger.LogCtx(ctx, "level", "debug", "message", "running release tests")
 
-		err = ms.helmClient.RunReleaseTest(chartConfig.ChartName)
+		err = ms.helmClient.RunReleaseTest(ms.chartConfig.ChartName)
 		if err != nil {
 			return microerror.Mask(err)
 		}
@@ -159,21 +160,24 @@ func (ms *ManagedServices) Test(ctx context.Context, chartConfig ChartConfig, ch
 func (ms *ManagedServices) checkDaemonSet(expectedDaemonSet DaemonSet) error {
 	ds, err := ms.hostFramework.K8sClient().Apps().DaemonSets(expectedDaemonSet.Namespace).Get(expectedDaemonSet.Name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
-		return microerror.Maskf(notFoundError, "daemonset: %#q", expectedDaemonSet.Name, err)
+		return microerror.Maskf(notFoundError, "daemonset %#q", expectedDaemonSet.Name)
 	} else if err != nil {
 		return microerror.Mask(err)
 	}
 
-	if !reflect.DeepEqual(expectedDaemonSet.Labels, ds.ObjectMeta.Labels) {
-		return microerror.Maskf(invalidLabelsError, "expected labels: %v got: %v", expectedDaemonSet.Labels, ds.ObjectMeta.Labels)
+	err = ms.checkLabels("daemonset labels", expectedDaemonSet.Labels, ds.ObjectMeta.Labels)
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
-	if !reflect.DeepEqual(expectedDaemonSet.MatchLabels, ds.Spec.Selector.MatchLabels) {
-		return microerror.Maskf(invalidLabelsError, "expected match labels: %v got: %v", expectedDaemonSet.MatchLabels, ds.Spec.Selector.MatchLabels)
+	err = ms.checkLabels("daemonset matchLabels", expectedDaemonSet.MatchLabels, ds.Spec.Selector.MatchLabels)
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
-	if !reflect.DeepEqual(expectedDaemonSet.Labels, ds.Spec.Template.ObjectMeta.Labels) {
-		return microerror.Maskf(invalidLabelsError, "expected pod labels: %v got: %v", expectedDaemonSet.Labels, ds.Spec.Template.ObjectMeta.Labels)
+	err = ms.checkLabels("daemonset pod labels", expectedDaemonSet.Labels, ds.Spec.Template.ObjectMeta.Labels)
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
 	return nil
@@ -183,7 +187,7 @@ func (ms *ManagedServices) checkDaemonSet(expectedDaemonSet DaemonSet) error {
 func (ms *ManagedServices) checkDeployment(expectedDeployment Deployment) error {
 	ds, err := ms.hostFramework.K8sClient().Apps().Deployments(expectedDeployment.Namespace).Get(expectedDeployment.Name, metav1.GetOptions{})
 	if apierrors.IsNotFound(err) {
-		return microerror.Maskf(notFoundError, "deployment: %#q", expectedDeployment.Name, err)
+		return microerror.Maskf(notFoundError, "deployment: %#q", expectedDeployment.Name)
 	} else if err != nil {
 		return microerror.Mask(err)
 	}
@@ -192,16 +196,28 @@ func (ms *ManagedServices) checkDeployment(expectedDeployment Deployment) error 
 		return microerror.Maskf(invalidReplicasError, "expected %d replicas got: %d", expectedDeployment.Replicas, *ds.Spec.Replicas)
 	}
 
-	if !reflect.DeepEqual(expectedDeployment.Labels, ds.ObjectMeta.Labels) {
-		return microerror.Maskf(invalidLabelsError, "expected labels: %v got: %v", expectedDeployment.Labels, ds.ObjectMeta.Labels)
+	err = ms.checkLabels("deployment labels", expectedDeployment.Labels, ds.ObjectMeta.Labels)
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
-	if !reflect.DeepEqual(expectedDeployment.MatchLabels, ds.Spec.Selector.MatchLabels) {
-		return microerror.Maskf(invalidLabelsError, "expected match labels: %v got: %v", expectedDeployment.MatchLabels, ds.Spec.Selector.MatchLabels)
+	err = ms.checkLabels("deployment matchLabels", expectedDeployment.MatchLabels, ds.Spec.Selector.MatchLabels)
+	if err != nil {
+		return microerror.Mask(err)
 	}
 
-	if !reflect.DeepEqual(expectedDeployment.Labels, ds.Spec.Template.ObjectMeta.Labels) {
-		return microerror.Newf("expected pod labels: %v got: %v", expectedDeployment.Labels, ds.Spec.Template.ObjectMeta.Labels)
+	err = ms.checkLabels("deployment pod labels", expectedDeployment.Labels, ds.Spec.Template.ObjectMeta.Labels)
+	if err != nil {
+		return microerror.Mask(err)
+	}
+
+	return nil
+}
+
+func (ms *ManagedServices) checkLabels(labelType string, expectedLabels, labels map[string]string) error {
+	if !reflect.DeepEqual(expectedLabels, labels) {
+		ms.logger.Log("level", "debug", "message", fmt.Sprintf("expected %s: %v got: %v", labelType, expectedLabels, labels))
+		return microerror.Maskf(invalidLabelsError, "%s do not match expected labels", labelType)
 	}
 
 	return nil
