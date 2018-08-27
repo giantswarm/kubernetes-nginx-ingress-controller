@@ -7,24 +7,20 @@ import (
 	"os"
 	"testing"
 
-	"github.com/giantswarm/e2e-harness/pkg/framework"
-	"github.com/giantswarm/helmclient"
-
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
-	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/teardown"
 )
 
-func WrapTestMain(h *framework.Host, helmClient *helmclient.Client, m *testing.M) {
+func Setup(m *testing.M, config Config) {
 	var v int
 	var err error
 
-	err = h.CreateNamespace("giantswarm")
+	err = config.Host.CreateNamespace("giantswarm")
 	if err != nil {
 		log.Printf("%#v\n", err)
 		v = 1
 	}
 
-	err = helmClient.EnsureTillerInstalled()
+	err = config.HelmClient.EnsureTillerInstalled()
 	if err != nil {
 		log.Printf("%#v\n", err)
 		v = 1
@@ -37,13 +33,13 @@ func WrapTestMain(h *framework.Host, helmClient *helmclient.Client, m *testing.M
 	if env.KeepResources() != "true" {
 		// Only do full teardown when not on CI.
 		if env.CircleCI() != "true" {
-			err := teardown.Teardown(h, helmClient)
+			err := teardown(config)
 			if err != nil {
 				log.Printf("%#v\n", err)
 				v = 1
 			}
 			// TODO there should be error handling for the framework teardown.
-			h.Teardown()
+			config.Host.Teardown()
 		}
 	}
 

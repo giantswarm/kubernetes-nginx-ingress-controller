@@ -1,12 +1,13 @@
 // +build k8srequired
 
-package teardown
+package setup
 
 import (
 	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/helmclient"
 )
 
-func Teardown(f *framework.Host, helmClient *helmclient.Client) error {
-	return nil
+type Config struct {
+	HelmClient *helmclient.Client
+	Host       *framework.Host
 }
