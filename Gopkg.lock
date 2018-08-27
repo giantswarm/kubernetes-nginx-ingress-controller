@@ -32,8 +32,8 @@
 [[projects]]
   name = "github.com/cenkalti/backoff"
   packages = ["."]
-  revision = "61153c768f31ee5f130071d08fc82b85208528de"
-  version = "v1.1.0"
+  revision = "2ea60e5f094469f9e65adb9cd103795b73ae743e"
+  version = "v2.0.0"
 
 [[projects]]
   name = "github.com/coreos/go-semver"
@@ -141,14 +141,25 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/giantswarm/backoff"
+  packages = ["."]
+  revision = "889af437b4d98f8a1ccb66cb85b93de13d8c666e"
+
+[[projects]]
+  branch = "master"
   name = "github.com/giantswarm/e2e-harness"
   packages = [
     "pkg/framework",
-    "pkg/framework/deployment",
     "pkg/framework/resource",
     "pkg/harness"
   ]
-  revision = "1be392690131ad476b4b385c96ac00e65eabf5d0"
+  revision = "356ee815b2f63562157d4f30149f7e8b19ae2a74"
+
+[[projects]]
+  branch = "helm-tests"
+  name = "github.com/giantswarm/e2etests"
+  packages = ["managedservices"]
+  revision = "ef66e07fc5e497ecb53b68471b8838ab656fb54f"
 
 [[projects]]
   branch = "master"
@@ -160,7 +171,7 @@
   branch = "master"
   name = "github.com/giantswarm/helmclient"
   packages = ["."]
-  revision = "96dbe271d80db79342f735a964c421e05daa0e97"
+  revision = "95121dddf902715f9b1799fc64dbf7119d471dec"
 
 [[projects]]
   branch = "master"
@@ -1034,6 +1045,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f26e99760de65511fb931f6caf0c6f89c9f31ad50121e1bfe774d89310640c70"
+  inputs-digest = "2cd97be81142f0d68849413e09bc7d4daab87e7d9e594f3e21428b8b8febd905"
   solver-name = "gps-cdcl"
   solver-version = 1
