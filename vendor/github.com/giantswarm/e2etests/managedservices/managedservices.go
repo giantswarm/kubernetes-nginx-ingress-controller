@@ -52,11 +52,11 @@ func New(config Config) (*ManagedServices, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
-	err = validateChartConfig(config.ChartConfig)
+	err = config.ChartConfig.Validate()
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
-	err = validateChartResources(config.ChartResources)
+	err = config.ChartResources.Validate()
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
@@ -218,28 +218,6 @@ func (ms *ManagedServices) checkLabels(labelType string, expectedLabels, labels 
 	if !reflect.DeepEqual(expectedLabels, labels) {
 		ms.logger.Log("level", "debug", "message", fmt.Sprintf("expected %s: %v got: %v", labelType, expectedLabels, labels))
 		return microerror.Maskf(invalidLabelsError, "%s do not match expected labels", labelType)
-	}
-
-	return nil
-}
-
-func validateChartConfig(chartConfig ChartConfig) error {
-	if chartConfig.ChannelName == "" {
-		return microerror.Maskf(invalidConfigError, "%T.ChannelName must not be empty", chartConfig)
-	}
-	if chartConfig.ChartName == "" {
-		return microerror.Maskf(invalidConfigError, "%T.ChartName must not be empty", chartConfig)
-	}
-	if chartConfig.Namespace == "" {
-		return microerror.Maskf(invalidConfigError, "%T.Namespace must not be empty", chartConfig)
-	}
-
-	return nil
-}
-
-func validateChartResources(chartResources ChartResources) error {
-	if len(chartResources.DaemonSets) == 0 && len(chartResources.Deployments) == 0 {
-		return microerror.Maskf(invalidConfigError, "at least one daemonset or deployment must be specified")
 	}
 
 	return nil

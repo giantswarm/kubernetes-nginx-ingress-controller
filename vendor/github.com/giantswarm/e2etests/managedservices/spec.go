@@ -1,6 +1,10 @@
 package managedservices
 
-import "context"
+import (
+	"context"
+
+	"github.com/giantswarm/microerror"
+)
 
 // ChartConfig is the chart to test.
 type ChartConfig struct {
@@ -10,10 +14,32 @@ type ChartConfig struct {
 	Namespace   string
 }
 
+func (cc ChartConfig) Validate() error {
+	if cc.ChannelName == "" {
+		return microerror.Maskf(invalidConfigError, "%T.ChannelName must not be empty", cc)
+	}
+	if cc.ChartName == "" {
+		return microerror.Maskf(invalidConfigError, "%T.ChartName must not be empty", cc)
+	}
+	if cc.Namespace == "" {
+		return microerror.Maskf(invalidConfigError, "%T.Namespace must not be empty", cc)
+	}
+
+	return nil
+}
+
 // ChartResources are the key resources deployed by the chart.
 type ChartResources struct {
 	DaemonSets  []DaemonSet
 	Deployments []Deployment
+}
+
+func (cr ChartResources) Validate() error {
+	if len(cr.DaemonSets) == 0 && len(cr.Deployments) == 0 {
+		return microerror.Maskf(invalidConfigError, "at least one daemonset or deployment must be specified")
+	}
+
+	return nil
 }
 
 // DaemonSet is a daemonset to be tested.
@@ -43,5 +69,5 @@ type Interface interface {
 	// - Check key resources are correct.
 	// - Run helm release tests.
 	//
-	Test(ctx context.Context, chartConfig ChartConfig, chartResources ChartResources) error
+	Test(ctx context.Context) error
 }

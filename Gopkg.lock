@@ -159,7 +159,7 @@
   branch = "helm-tests"
   name = "github.com/giantswarm/e2etests"
   packages = ["managedservices"]
-  revision = "b56e41a6b0dc06694430bd66a12e1ea5baaa4e89"
+  revision = "a321096f11f83afacfa714bf4dee79eab241a699"
 
 [[projects]]
   branch = "master"
