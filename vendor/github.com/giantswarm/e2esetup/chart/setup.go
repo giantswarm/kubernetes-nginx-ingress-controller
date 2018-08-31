@@ -1,4 +1,4 @@
-package helm
+package chart
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/giantswarm/microerror"
 
-	"github.com/giantswarm/e2esetup/helm/env"
+	"github.com/giantswarm/e2esetup/chart/env"
 )
 
 func Setup(ctx context.Context, m *testing.M, config Config) error {

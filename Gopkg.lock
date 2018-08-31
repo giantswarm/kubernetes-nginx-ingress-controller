@@ -159,10 +159,10 @@
   branch = "helm"
   name = "github.com/giantswarm/e2esetup"
   packages = [
-    "helm",
-    "helm/env"
+    "chart",
+    "chart/env"
   ]
-  revision = "41f103975ec92402237f9d96fd4decdda33b260f"
+  revision = "4583dbd415fba3417d679cd43e4921520a1a2683"
 
 [[projects]]
   branch = "master"
@@ -1054,6 +1054,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "19819ef63e62c664c3333095a7faedc1319a24e003a04ef49995021e75fa8352"
+  inputs-digest = "86a45e7156e476ca33b9aaf6e6a623717a525182d92df694d01ac2c088956dbb"
   solver-name = "gps-cdcl"
   solver-version = 1
