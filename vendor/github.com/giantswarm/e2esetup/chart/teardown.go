@@ -1,6 +1,4 @@
-// +build k8srequired
-
-package setup
+package chart
 
 func teardown(config Config) error {
 	return nil

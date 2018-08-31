@@ -157,6 +157,15 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/giantswarm/e2esetup"
+  packages = [
+    "chart",
+    "chart/env"
+  ]
+  revision = "d69cd345fbb3e1b1c7f092cf009d0c92806ce2bb"
+
+[[projects]]
+  branch = "master"
   name = "github.com/giantswarm/e2etests"
   packages = ["managedservices"]
   revision = "8391748d9b75fc5f2c3a11359331cb124cfc0451"
@@ -1045,6 +1054,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "72b86295ecac063b29ea9c5d89ea6233ca6968d84b7f1350a171cca99361c3b5"
+  inputs-digest = "e37c6ed46531f1e4f48d4974cd4ae11e8d41e9e0517d799ef5fdad0f6e3e5e2a"
   solver-name = "gps-cdcl"
   solver-version = 1

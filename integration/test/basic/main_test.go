@@ -3,19 +3,21 @@
 package basic
 
 import (
+	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/giantswarm/apprclient"
 	"github.com/giantswarm/e2e-harness/pkg/framework"
+	e2esetup "github.com/giantswarm/e2esetup/chart"
+	"github.com/giantswarm/e2esetup/chart/env"
 	"github.com/giantswarm/e2etests/managedservices"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/afero"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
-	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/setup"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
@@ -138,12 +140,18 @@ func init() {
 // TestMain allows us to have common setup and teardown steps that are run
 // once for all the tests https://golang.org/pkg/testing/#hdr-Main.
 func TestMain(m *testing.M) {
+	ctx := context.Background()
+
 	{
-		c := setup.Config{
+		c := e2esetup.Config{
 			HelmClient: helmClient,
 			Host:       h,
 		}
 
-		setup.Setup(m, c)
+		err := e2esetup.Setup(ctx, m, c)
+		if err != nil {
+			l.LogCtx(ctx, "level", "error", "message", "e2e test failed", "stack", fmt.Sprintf("%#v\n", err))
+			os.Exit(1)
+		}
 	}
 }

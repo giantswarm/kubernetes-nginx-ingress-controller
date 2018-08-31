@@ -7,11 +7,11 @@ import (
 	"testing"
 
 	"github.com/giantswarm/e2e-harness/pkg/framework"
+	"github.com/giantswarm/e2esetup/chart/env"
 	"github.com/giantswarm/microerror"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/env"
 	"github.com/giantswarm/kubernetes-nginx-ingress-controller/integration/templates"
 )
 
