@@ -10,8 +10,8 @@ import (
 
 	"github.com/giantswarm/apprclient"
 	"github.com/giantswarm/e2e-harness/pkg/framework"
-	e2esetup "github.com/giantswarm/e2esetup/helm"
-	"github.com/giantswarm/e2esetup/helm/env"
+	e2esetup "github.com/giantswarm/e2esetup/chart"
+	"github.com/giantswarm/e2esetup/chart/env"
 	"github.com/giantswarm/e2etests/managedservices"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/micrologger"

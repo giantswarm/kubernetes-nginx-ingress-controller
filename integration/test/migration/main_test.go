@@ -10,7 +10,7 @@ import (
 
 	"github.com/giantswarm/e2e-harness/pkg/framework"
 	"github.com/giantswarm/e2e-harness/pkg/framework/resource"
-	e2esetup "github.com/giantswarm/e2esetup/helm"
+	e2esetup "github.com/giantswarm/e2esetup/chart"
 	"github.com/giantswarm/helmclient"
 	"github.com/giantswarm/micrologger"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
