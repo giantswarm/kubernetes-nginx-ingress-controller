@@ -22,10 +22,11 @@ import (
 )
 
 const (
+	testName = "basic"
+
 	chartName          = "kubernetes-nginx-ingress-controller"
 	controllerName     = "nginx-ingress-controller"
 	defaultBackendName = "default-http-backend"
-	testName           = "basic"
 )
 
 var (
@@ -94,10 +95,11 @@ func init() {
 			Logger:        l,
 
 			ChartConfig: managedservices.ChartConfig{
-				ChannelName: fmt.Sprintf("%s-%s", env.CircleSHA(), testName),
-				ChartName:   chartName,
-				ChartValues: templates.NginxIngressControllerBasicValues,
-				Namespace:   metav1.NamespaceSystem,
+				ChannelName:     fmt.Sprintf("%s-%s", env.CircleSHA(), testName),
+				ChartName:       chartName,
+				ChartValues:     templates.NginxIngressControllerBasicValues,
+				Namespace:       metav1.NamespaceSystem,
+				RunReleaseTests: true,
 			},
 			ChartResources: managedservices.ChartResources{
 				Deployments: []managedservices.Deployment{
