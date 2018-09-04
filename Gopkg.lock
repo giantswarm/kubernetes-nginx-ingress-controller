@@ -166,10 +166,10 @@
   revision = "d69cd345fbb3e1b1c7f092cf009d0c92806ce2bb"
 
 [[projects]]
-  branch = "release-tests-flag"
+  branch = "master"
   name = "github.com/giantswarm/e2etests"
   packages = ["managedservices"]
-  revision = "c1c289f5d1c10f034de2b7bc6d3b89d0026f07c6"
+  revision = "bc2f34dab1e20f4be9cfdf04bb1881d47f0daffe"
 
 [[projects]]
   branch = "master"
@@ -1057,6 +1057,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6839f09495d52b72ab52bed967baa98c7ceb79f551e113eef0f8244fdc0c3ab3"
+  inputs-digest = "e37c6ed46531f1e4f48d4974cd4ae11e8d41e9e0517d799ef5fdad0f6e3e5e2a"
   solver-name = "gps-cdcl"
   solver-version = 1
