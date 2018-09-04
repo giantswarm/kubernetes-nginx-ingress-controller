@@ -16,6 +16,10 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+const (
+	testName = "basic"
+)
+
 var (
 	h          *framework.Host
 	helmClient *helmclient.Client
