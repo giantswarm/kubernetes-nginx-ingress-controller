@@ -14,6 +14,12 @@ configmap:
   server-tokens: "false"
   worker-processes: "4"
 
+  # optional settings that can be set.
+  enable-underscores-in-headers: ""
+  proxy-buffers-size: ""
+  proxy-buffers: ""
+  vts-default-filter-key: ""
+
 controller:
   name: nginx-ingress-controller
   k8sAppLabel: nginx-ingress-controller
