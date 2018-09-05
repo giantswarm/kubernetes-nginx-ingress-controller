@@ -8,12 +8,11 @@ namespace: kube-system
 # configmap.
 configmap:
   enable-vts-status: "true"
+  hsts: "false"
   server-name-hash-bucket-size: "1024"
   server-name-hash-max-size: "1024"
   server-tokens: "false"
   worker-processes: "4"
-  hsts: "false"
-  use-proxy-protocol: false
 
 controller:
   name: nginx-ingress-controller

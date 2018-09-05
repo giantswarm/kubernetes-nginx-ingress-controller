@@ -15,6 +15,6 @@ data:
   server-name-hash-bucket-size: "{{ .Values.configmap.server-name-hash-bucket-size }}"
   server-name-hash-max-size: "{{ .Values.configmap.server-name-hash-max-size }}"
   server-tokens: "{{ .Values.configmap.server-tokens }}"
-  worker-processes: "4"
+  worker-processes: "{{ .Values.configmap.worker-processes }}"
   # Global is used as this key is used by the migration logic.
   use-proxy-protocol: "{{ .Values.global.controller.useProxyProtocol }}"
