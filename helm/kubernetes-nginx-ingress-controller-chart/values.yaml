@@ -4,6 +4,22 @@
 
 namespace: kube-system
 
+# configmap contains settings that can be overridden with a custom values
+# configmap.
+configmap:
+  enable-vts-status: "true"
+  hsts: "false"
+  server-name-hash-bucket-size: "1024"
+  server-name-hash-max-size: "1024"
+  server-tokens: "false"
+  worker-processes: "4"
+
+  # optional settings that can be set.
+  enable-underscores-in-headers: ""
+  proxy-buffers-size: ""
+  proxy-buffers: ""
+  vts-default-filter-key: ""
+
 controller:
   name: nginx-ingress-controller
   k8sAppLabel: nginx-ingress-controller
