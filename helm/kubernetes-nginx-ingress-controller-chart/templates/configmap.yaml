@@ -7,31 +7,30 @@ metadata:
     giantswarm.io/service-type: "managed"
     k8s-addon: ingress-nginx.addons.k8s.io
 data:
-  {{- if .Values.configmap.enable-underscores-in-headers }}
-  enable-underscores-in-headers: "{{.Values.configmap.enable-underscores-in-headers }}"
+  {{- if index .Values.configmap "enable-underscores-in-headers" }}
+  enable-underscores-in-headers: "{{ index .Values.configmap "enable-underscores-in-headers" }}"
   {{- end}}
-
-  enable-vts-status: "{{ .Values.configmap.enable-vts-status }}"
+  enable-vts-status: "{{ index .Values.configmap "enable-vts-status" }}"
   # Disables setting a 'Strict-Transport-Security' header, which can be harmful.
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "{{ .Values.configmap.hsts }}"
 
-  {{- if .Values.configmap.proxy-buffers-size }}
-  proxy-buffers-size: "{{.Values.configmap.proxy-buffers-size }}"
+  {{- if index .Values.configmap "proxy-buffers-size" }}
+  proxy-buffers-size: "{{ index .Values.configmap "proxy-buffers-size" }}"
   {{- end}}
 
-  {{- if .Values.configmap.proxy-buffers }}
-  proxy-buffers: "{{.Values.configmap.proxy-buffers }}"
+  {{- if index .Values.configmap "proxy-buffers" }}
+  proxy-buffers: "{{ index .Values.configmap "proxy-buffers" }}"
   {{- end}}
 
   # Increase hash table size to allow more server names for stability reasons
-  server-name-hash-bucket-size: "{{ .Values.configmap.server-name-hash-bucket-size }}"
-  server-name-hash-max-size: "{{ .Values.configmap.server-name-hash-max-size }}"
-  server-tokens: "{{ .Values.configmap.server-tokens }}"
-  worker-processes: "{{ .Values.configmap.worker-processes }}"
+  server-name-hash-bucket-size: "{{ index .Values.configmap "server-name-hash-bucket-size" }}"
+  server-name-hash-max-size: "{{ index .Values.configmap "server-name-hash-max-size" }}"
+  server-tokens: "{{ index .Values.configmap "server-tokens" }}"
+  worker-processes: "{{ index .Values.configmap "worker-processes" }}"
   # Global is used as this key is used by the migration logic.
   use-proxy-protocol: "{{ .Values.global.controller.useProxyProtocol }}"
 
-  {{- if .Values.configmap.vts-default-filter-key }}
-  vts-default-filter-key: "{{.Values.configmap.vts-default-filter-key }}"
+  {{- if index .Values.configmap "vts-default-filter-key" }}
+  vts-default-filter-key: "{{ index .Values.configmap "vts-default-filter-key" }}"
   {{- end}}
