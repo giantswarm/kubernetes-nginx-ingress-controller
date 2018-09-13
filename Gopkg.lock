@@ -163,7 +163,7 @@
     "chart",
     "chart/env"
   ]
-  revision = "d69cd345fbb3e1b1c7f092cf009d0c92806ce2bb"
+  revision = "649469c2d54fba4bf86b3e9bca96bd47435461ae"
 
 [[projects]]
   branch = "master"
