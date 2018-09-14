@@ -64,9 +64,10 @@ func init() {
 
 	{
 		c := framework.HostConfig{
-			Logger:     l,
-			ClusterID:  "na",
-			VaultToken: "na",
+			Logger: l,
+
+			ClusterID:  "n/a",
+			VaultToken: "n/a",
 		}
 		h, err = framework.NewHost(c)
 		if err != nil {
@@ -76,9 +77,10 @@ func init() {
 
 	{
 		c := helmclient.Config{
-			Logger:          l,
-			K8sClient:       h.K8sClient(),
-			RestConfig:      h.RestConfig(),
+			Logger:     l,
+			K8sClient:  h.K8sClient(),
+			RestConfig: h.RestConfig(),
+
 			TillerNamespace: "giantswarm",
 		}
 		helmClient, err = helmclient.New(c)
@@ -150,10 +152,11 @@ func TestMain(m *testing.M) {
 			Host:       h,
 		}
 
-		err := e2esetup.Setup(ctx, m, c)
+		v, err := e2esetup.Setup(ctx, m, c)
 		if err != nil {
 			l.LogCtx(ctx, "level", "error", "message", "e2e test failed", "stack", fmt.Sprintf("%#v\n", err))
-			os.Exit(1)
 		}
+
+		os.Exit(v)
 	}
 }
