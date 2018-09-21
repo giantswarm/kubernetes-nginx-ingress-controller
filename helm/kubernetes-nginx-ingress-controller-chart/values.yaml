@@ -50,9 +50,12 @@ controller:
       https: 30011
 
   resources:
+    limits:
+      cpu: 500m
+      memory: 600Mi
     requests:
       cpu: 500m
-      memory: 350Mi
+      memory: 600Mi
 
 defaultBackend:
   name: default-http-backend
