@@ -7,10 +7,13 @@ metadata:
     giantswarm.io/service-type: "managed"
     k8s-addon: ingress-nginx.addons.k8s.io
 data:
+
+  disable-access-log: "{{ .Values.configmap "disable-access-log" }}"
   {{- if index .Values.configmap "enable-underscores-in-headers" }}
   enable-underscores-in-headers: "{{ index .Values.configmap "enable-underscores-in-headers" }}"
   {{- end}}
   enable-vts-status: "{{ index .Values.configmap "enable-vts-status" }}"
+  error-log-level: "{{ .Values.configmap "error-log-level" }}"
   # Disables setting a 'Strict-Transport-Security' header, which can be harmful.
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "{{ .Values.configmap.hsts }}"
