@@ -50,9 +50,6 @@ controller:
       https: 30011
 
   resources:
-    limits:
-      cpu: 500m
-      memory: 350Mi
     requests:
       cpu: 500m
       memory: 350Mi
