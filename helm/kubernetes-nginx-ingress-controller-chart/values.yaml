@@ -7,7 +7,9 @@ namespace: kube-system
 # configmap contains settings that can be overridden with a custom values
 # configmap.
 configmap:
+  disable-access-log: "false"
   enable-vts-status: "true"
+  error-log-level: "error"
   hsts: "false"
   server-name-hash-bucket-size: "1024"
   server-name-hash-max-size: "1024"
