@@ -16,7 +16,7 @@ e2eTest: &e2eTest
     - run: ./e2e-harness localkube
 
     - run: ./e2e-harness setup --remote=false
-    
+
     - run:
         name: Publish chart to CNR using a temporary channel for testing
         command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}-${TEST_NAME}
@@ -45,6 +45,10 @@ jobs:
           ./architect version
 
     - run: ./architect build
+
+    - run:
+        name: Publish chart to CNR using a temporary channel for feature branch deploys
+        command: ./architect publish --pipeline=false --channels=wip-${CIRCLE_SHA1}
 
     - persist_to_workspace:
         root: .
@@ -96,7 +100,7 @@ workflows:
       - e2eTestBasic:
           requires:
           - build
-      
+
       - e2eTestMigration:
           requires:
           - build
