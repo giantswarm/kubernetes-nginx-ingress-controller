@@ -29,6 +29,7 @@ spec:
       annotations:
         releasetime: {{ $.Release.Time }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
     spec:
       affinity:
         podAntiAffinity:
