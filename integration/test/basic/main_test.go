@@ -109,7 +109,7 @@ func init() {
 						Name:      controllerName,
 						Namespace: metav1.NamespaceSystem,
 						Labels: map[string]string{
-							"app": controllerName,
+							"app":                        controllerName,
 							"giantswarm.io/service-type": "managed",
 							"k8s-app":                    controllerName,
 						},
@@ -122,7 +122,7 @@ func init() {
 						Name:      defaultBackendName,
 						Namespace: metav1.NamespaceSystem,
 						Labels: map[string]string{
-							"app": defaultBackendName,
+							"app":                        defaultBackendName,
 							"giantswarm.io/service-type": "managed",
 							"k8s-app":                    defaultBackendName,
 						},
