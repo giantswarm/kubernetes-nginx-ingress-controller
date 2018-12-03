@@ -8,7 +8,7 @@ metadata:
     giantswarm.io/service-type: "managed"
     k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 80
     targetPort: {{ .Values.defaultBackend.port }}
