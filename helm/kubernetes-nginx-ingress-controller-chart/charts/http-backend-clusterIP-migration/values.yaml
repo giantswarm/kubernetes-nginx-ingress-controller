@@ -10,10 +10,6 @@ image:
   repository: giantswarm/k8s-migrator
   tag: latest
 
-delete:
-  wait:
-    deploymentName: "temp-nginx-ingress-controller"
-
 resources:
   limits:
     cpu: 50m
