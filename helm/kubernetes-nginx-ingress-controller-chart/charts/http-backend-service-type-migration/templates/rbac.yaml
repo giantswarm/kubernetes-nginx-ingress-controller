@@ -4,7 +4,7 @@ kind: ClusterRole
 metadata:
   name: {{ .Values.name }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-upgrade"
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": "hook-succeeded,hook-failed"
   labels:
@@ -12,21 +12,10 @@ metadata:
     giantswarm.io/service-type: "managed"
 rules:
 - apiGroups:
-  - rbac.authorization.k8s.io
-  resources:
-  - clusterrolebindings
-  - clusterroles
-  - rolebindings
-  - roles
-  verbs:
-  - "get"
-  - "delete"
-- apiGroups:
   - ""
   resources:
   - configmaps
   - services
-  - serviceaccounts
   verbs:
   - "get"
   - "delete"
@@ -36,7 +25,7 @@ kind: ClusterRoleBinding
 metadata:
   name: {{ .Values.name }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-upgrade"
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:

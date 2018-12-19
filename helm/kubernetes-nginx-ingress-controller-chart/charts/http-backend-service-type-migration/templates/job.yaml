@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-upgrade"
     "helm.sh/hook-delete-policy": "hook-succeeded"
   labels:
     app: {{ .Values.name }}
