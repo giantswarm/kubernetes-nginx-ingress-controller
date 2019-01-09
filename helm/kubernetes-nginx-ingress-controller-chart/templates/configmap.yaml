@@ -37,3 +37,7 @@ data:
   {{- if index .Values.configmap "vts-default-filter-key" }}
   vts-default-filter-key: "{{ index .Values.configmap "vts-default-filter-key" }}"
   {{- end}}
+
+  {{- if index .Values.configmap "log-format-upstream" }}
+  log-format-upstream: "{{ index .Values.configmap "log-format-upstream" }}"
+  {{- end}}
