@@ -18,6 +18,10 @@ data:
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "{{ .Values.configmap.hsts }}"
 
+  {{- if index .Values.configmap "log-format-upstream" }}
+  log-format-upstream: "{{ index .Values.configmap "log-format-upstream" }}"
+  {{- end}}
+  
   {{- if index .Values.configmap "proxy-buffers-size" }}
   proxy-buffers-size: "{{ index .Values.configmap "proxy-buffers-size" }}"
   {{- end}}
@@ -36,8 +40,4 @@ data:
 
   {{- if index .Values.configmap "vts-default-filter-key" }}
   vts-default-filter-key: "{{ index .Values.configmap "vts-default-filter-key" }}"
-  {{- end}}
-
-  {{- if index .Values.configmap "log-format-upstream" }}
-  log-format-upstream: "{{ index .Values.configmap "log-format-upstream" }}"
   {{- end}}
