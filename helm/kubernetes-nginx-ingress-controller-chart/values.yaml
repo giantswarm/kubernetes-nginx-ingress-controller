@@ -21,6 +21,7 @@ configmap:
   proxy-buffers-size: ""
   proxy-buffers: ""
   vts-default-filter-key: ""
+  log-format-upstream: ""
 
 controller:
   name: nginx-ingress-controller
