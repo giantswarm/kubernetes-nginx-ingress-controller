@@ -18,6 +18,7 @@ configmap:
 
   # optional settings that can be set.
   enable-underscores-in-headers: ""
+  log-format-upstream: ""
   proxy-buffers-size: ""
   proxy-buffers: ""
   vts-default-filter-key: ""
