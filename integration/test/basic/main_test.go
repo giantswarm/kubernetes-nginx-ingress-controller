@@ -109,7 +109,7 @@ func init() {
 						Name:      controllerName,
 						Namespace: metav1.NamespaceSystem,
 						DeploymentLabels: map[string]string{
-							"app": controllerName,
+							"app":                        controllerName,
 							"giantswarm.io/service-type": "managed",
 							"k8s-app":                    controllerName,
 						},
@@ -117,7 +117,7 @@ func init() {
 							"k8s-app": controllerName,
 						},
 						PodLabels: map[string]string{
-							"app": controllerName,
+							"app":                        controllerName,
 							"giantswarm.io/service-type": "managed",
 							"k8s-app":                    controllerName,
 						},
@@ -127,7 +127,7 @@ func init() {
 						Name:      defaultBackendName,
 						Namespace: metav1.NamespaceSystem,
 						DeploymentLabels: map[string]string{
-							"app": defaultBackendName,
+							"app":                        defaultBackendName,
 							"giantswarm.io/service-type": "managed",
 							"k8s-app":                    defaultBackendName,
 						},
@@ -135,7 +135,7 @@ func init() {
 							"k8s-app": defaultBackendName,
 						},
 						PodLabels: map[string]string{
-							"app": defaultBackendName,
+							"app":                        defaultBackendName,
 							"giantswarm.io/service-type": "managed",
 							"k8s-app":                    defaultBackendName,
 						},
