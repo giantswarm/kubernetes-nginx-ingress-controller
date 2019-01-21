@@ -51,7 +51,7 @@ func TestMigration(t *testing.T) {
 
 	channel := fmt.Sprintf("%s-%s", env.CircleSHA(), testName)
 	releaseName := "kubernetes-nginx-ingress-controller"
-	err = r.InstallResource(releaseName, templates.NginxIngressControllerMigrationValues, channel)
+	err = r.Install(releaseName, templates.NginxIngressControllerMigrationValues, channel)
 	if err != nil {
 		t.Fatalf("could not install %q %v", releaseName, err)
 	}
