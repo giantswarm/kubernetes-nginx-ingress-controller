@@ -38,7 +38,7 @@ data:
 
   {{- if index .Values.configmap "use-proxy-protocol" }}
   # Allow user to override value.
-  use-proxy-protocol: "{{ .Values.configmap "use-proxy-protocol" }}"
+  use-proxy-protocol: "{{ index .Values.configmap "use-proxy-protocol" }}"
   {{- else }}
   # Global is used as this key is used by the migration logic.
   use-proxy-protocol: "{{ .Values.global.controller.useProxyProtocol }}"
