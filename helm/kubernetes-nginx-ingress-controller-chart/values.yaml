@@ -21,6 +21,7 @@ configmap:
   log-format-upstream: ""
   proxy-buffers-size: ""
   proxy-buffers: ""
+  use-proxy-protocol: ""
   vts-default-filter-key: ""
 
 controller:
