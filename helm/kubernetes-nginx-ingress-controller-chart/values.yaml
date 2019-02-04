@@ -17,10 +17,10 @@ configmap:
   worker-processes: "4"
 
   autoscaling:
-    minReplicas: 2
-    maxReplicas: 15
-    targetCPUUtilizationPercentage: 50
-    targetMemoryUtilizationPercentage: 50
+    min-replicas: 2
+    max-replicas: 15
+    target-cpu-utilization-percentage: 50
+    target-memory-utilization-percentage: 50
 
   # optional settings that can be set.
   enable-underscores-in-headers: ""
