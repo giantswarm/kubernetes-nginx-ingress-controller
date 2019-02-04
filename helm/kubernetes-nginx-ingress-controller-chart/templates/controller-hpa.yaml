@@ -12,14 +12,14 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ .Values.controller.name }}
-  minReplicas: {{ .Values.configmap.autoscaling.min-replicas }}
-  maxReplicas: {{ .Values.configmap.autoscaling.max-replicas }}
+  minReplicas: {{ index .Values.configmap.autoscaling "min-replicas" }}
+  maxReplicas: {{ index .Values.configmap.autoscaling "max-replicas" }}
   metrics:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.configmap.autoscaling.target-cpu-utilization-percentage }}
+        targetAverageUtilization: {{ index .Values.configmap.autoscaling "target-cpu-utilization-percentage" }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.configmap.autoscaling.target-memory-utilization-percentage }}
+        targetAverageUtilization: {{ index .Values.configmap.autoscaling "target-memory-utilization-percentage" }}
