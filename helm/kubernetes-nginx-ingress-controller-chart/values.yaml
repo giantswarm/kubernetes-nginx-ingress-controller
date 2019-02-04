@@ -16,6 +16,12 @@ configmap:
   server-tokens: "false"
   worker-processes: "4"
 
+  autoscaling:
+    minReplicas: 2
+    maxReplicas: 15
+    targetCPUUtilizationPercentage: 50
+    targetMemoryUtilizationPercentage: 50
+
   # optional settings that can be set.
   enable-underscores-in-headers: ""
   log-format-upstream: ""

@@ -12,15 +12,14 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ .Values.controller.name }}
-  minReplicas: 2
-  # This is the maximum number of nodes we allow currently. Having more controllers than nodes should not happen.
-  maxReplicas: 100
+  minReplicas: {{ .Values.configmap.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.configmap.autoscaling.maxReplicas }}
   metrics:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: 50
+        targetAverageUtilization: {{ .Values.configmap.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: 50
+        targetAverageUtilization: {{ .Values.configmap.autoscaling.targetMemoryUtilizationPercentage }}
