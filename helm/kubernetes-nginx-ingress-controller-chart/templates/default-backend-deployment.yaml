@@ -16,6 +16,7 @@ spec:
     metadata:
       annotations:
         releasetime: {{ $.Release.Time }}
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
       labels:
         app: {{ .Values.defaultBackend.name }}
         giantswarm.io/service-type: "managed"
