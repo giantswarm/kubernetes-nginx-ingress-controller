@@ -24,6 +24,9 @@ configmap:
   use-proxy-protocol: ""
   vts-default-filter-key: ""
 
+  # command args options
+  classname: nginx.ingress.kubernetes.io
+
 controller:
   name: nginx-ingress-controller
   k8sAppLabel: nginx-ingress-controller
