@@ -24,6 +24,10 @@ configmap:
   use-proxy-protocol: ""
   vts-default-filter-key: ""
 
+  # command args options
+  annotations-prefix: nginx.ingress.kubernetes.io
+  default-ssl-certificate: ""
+
 controller:
   name: nginx-ingress-controller
   k8sAppLabel: nginx-ingress-controller
