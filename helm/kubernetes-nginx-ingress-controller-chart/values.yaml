@@ -18,6 +18,7 @@ configmap:
 
   # optional settings that can be set.
   enable-underscores-in-headers: ""
+  large-client-header-buffers: ""
   log-format-upstream: ""
   proxy-buffers-size: ""
   proxy-buffers: ""
