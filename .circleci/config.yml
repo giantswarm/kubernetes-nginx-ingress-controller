@@ -111,7 +111,6 @@ workflows:
               only: master
           requires:
           - e2eTestBasic
-          - e2eTestMigration
 
       - publish_to_stable:
           filters:
