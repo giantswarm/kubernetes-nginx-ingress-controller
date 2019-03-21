@@ -41,7 +41,7 @@ controller:
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.21.0
+    tag: 0.23.0
 
   rbac:
     privilegedPod:
@@ -59,9 +59,6 @@ controller:
       https: 30011
 
   resources:
-    limits:
-      cpu: 500m
-      memory: 600Mi
     requests:
       cpu: 500m
       memory: 600Mi

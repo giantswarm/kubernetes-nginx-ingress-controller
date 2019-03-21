@@ -69,6 +69,7 @@ spec:
         - --default-ssl-certificate={{ index .Values.configmap "default-ssl-certificate" }}
         {{- end}}
         - --enable-ssl-chain-completion=false
+        - --enable-dynamic-certificates=true
         env:
         - name: POD_NAME
           valueFrom:
