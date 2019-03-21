@@ -33,16 +33,14 @@ spec:
     spec:
       affinity:
         podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - {{ .Values.controller.name }}
-              topologyKey: kubernetes.io/hostname
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ .Values.controller.name }}
+            topologyKey: kubernetes.io/hostname
       serviceAccountName: {{ .Values.controller.name }}
       priorityClassName: system-cluster-critical
       initContainers:
@@ -69,6 +67,7 @@ spec:
         - --default-ssl-certificate={{ index .Values.configmap "default-ssl-certificate" }}
         {{- end}}
         - --enable-ssl-chain-completion=false
+        - --enable-dynamic-certificates=true
         env:
         - name: POD_NAME
           valueFrom:
