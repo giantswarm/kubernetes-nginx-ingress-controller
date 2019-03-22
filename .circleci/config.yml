@@ -101,17 +101,12 @@ workflows:
           requires:
           - build
 
-      - e2eTestMigration:
-          requires:
-          - build
-
       - deploy:
           filters:
             branches:
               only: master
           requires:
           - e2eTestBasic
-          - e2eTestMigration
 
       - publish_to_stable:
           filters:
