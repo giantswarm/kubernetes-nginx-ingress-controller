@@ -55,6 +55,12 @@ jobs:
         paths:
         - ./architect
 
+  e2eTestBasic:
+    environment:
+      TEST_DIR: "integration/test/basic"
+      TEST_NAME: "basic"
+    <<: *e2eTest
+
   deploy:
     machine: true
     steps:
@@ -85,10 +91,16 @@ workflows:
     jobs:
       - build
 
+      - e2eTestBasic:
+          requires:
+          - build
+
       - deploy:
           filters:
             branches:
               only: master
+          requires:
+          - e2eTestBasic
 
       - publish_to_stable:
           filters:
