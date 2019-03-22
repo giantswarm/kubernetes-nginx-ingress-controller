@@ -121,7 +121,7 @@ func init() {
 							"giantswarm.io/service-type": "managed",
 							"k8s-app":                    controllerName,
 						},
-						Replicas: 1,
+						Replicas: 3,
 					},
 					{
 						Name:      defaultBackendName,
