@@ -34,6 +34,10 @@ data:
   proxy-buffers: "{{ index .Values.configmap "proxy-buffers" }}"
   {{- end}}
 
+  {{- if index .Values.configmap "use-forwarded-headers" }}
+  use-forwarded-headers: "{{ index .Values.configmap "use-forwarded-headers" }}"
+  {{- end}}
+
   # Increase hash table size to allow more server names for stability reasons
   server-name-hash-bucket-size: "{{ index .Values.configmap "server-name-hash-bucket-size" }}"
   server-name-hash-max-size: "{{ index .Values.configmap "server-name-hash-max-size" }}"
