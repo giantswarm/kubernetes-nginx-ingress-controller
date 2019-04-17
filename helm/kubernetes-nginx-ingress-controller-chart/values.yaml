@@ -43,7 +43,7 @@ controller:
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.23.0
+    tag: 0.24.1
 
   rbac:
     privilegedPod:
