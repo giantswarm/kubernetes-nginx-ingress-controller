@@ -10,7 +10,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ### Added
 
-- Nginx kubectl plugin has added a commend to `lint` your ingress resources. That way you can observe deprecated annotations or properties. To install the command go [here](https://github.com/kubernetes/ingress-nginx/blob/29f7d9a77ade24a7366ef4a6f258b8aeef50678c/docs/kubectl-plugin.md).
+- Nginx kubectl plugin has a new command to `lint` your ingress resources. That way you can observe deprecated annotations or properties. To install the plugin go [here](https://github.com/kubernetes/ingress-nginx/blob/29f7d9a77ade24a7366ef4a6f258b8aeef50678c/docs/kubectl-plugin.md).
 
 ### Changed
 
