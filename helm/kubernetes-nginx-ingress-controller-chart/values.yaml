@@ -46,9 +46,6 @@ controller:
     tag: 0.24.1
 
   rbac:
-    privilegedPod:
-      role:
-        name: privileged-psp-user 
 
   role:
     name: nginx-ingress-role
