@@ -22,6 +22,7 @@ spec:
         giantswarm.io/service-type: "managed"
         k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
     spec:
+      serviceAccount: {{ .Values.defaultBackend.name }}
       containers:
       - name: {{ .Values.defaultBackend.name }}
         image: "{{ .Values.image.registry }}/{{ .Values.defaultBackend.image.repository }}:{{ .Values.defaultBackend.image.tag }}"
