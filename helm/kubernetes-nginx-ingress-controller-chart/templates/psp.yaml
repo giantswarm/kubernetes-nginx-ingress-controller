@@ -12,7 +12,7 @@ spec:
     rule: RunAsAny
   fsGroup:
     rule: RunAsAny
-    seLinux:
+  seLinux:
     rule: RunAsAny
   supplementalGroups:
     rule: RunAsAny
