@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [0.7.0]
+
+### Added
+
+- Custom serviceaccount for `default-http-backend`.
+- Separate podsecuritypolicies for `nginx-ingress-controller` and `default-http-backend`.
+
 ## [0.6.0]
 
 ### Changed

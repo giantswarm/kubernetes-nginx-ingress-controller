@@ -15,23 +15,6 @@ roleRef:
   name: {{ .Values.controller.name }}
   apiGroup: rbac.authorization.k8s.io
 ---
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: {{ .Values.controller.name }}-privileged-psp
-  labels:
-    app: {{ .Values.controller.name }}
-    giantswarm.io/service-type: "managed"
-    k8s-app: {{ .Values.controller.k8sAppLabel }}
-subjects:
-- kind: ServiceAccount
-  name: {{ .Values.controller.name }}
-  namespace: {{ .Values.namespace }}
-roleRef:
-  kind: ClusterRole
-  name: {{ .Values.controller.rbac.privilegedPod.role.name }}
-  apiGroup: rbac.authorization.k8s.io
----
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
