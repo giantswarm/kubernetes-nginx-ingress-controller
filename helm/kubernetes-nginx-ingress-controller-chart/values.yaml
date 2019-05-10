@@ -84,6 +84,9 @@ defaultBackend:
       cpu: 10m
       memory: 20Mi
 
+  userID: 33
+  groupID: 33
+
 image:
   registry: quay.io
 
