@@ -17,10 +17,7 @@ spec:
   supplementalGroups:
     rule: RunAsAny
   volumes:
-  - downwardAPI
-  - emptyDir
-  - hostPath
-  - secret
+  - '*'
 ---
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
