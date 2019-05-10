@@ -55,6 +55,8 @@ spec:
         name: sysctl
         securityContext:
           privileged: true
+          runAsUser: {{ .Values.initContainer.userID }}
+          runAsGroup: {{ .Values.initContainer.groupID }}
       containers:
       - name: {{ .Values.controller.name }}
         image: "{{ .Values.image.registry }}/{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
@@ -68,6 +70,9 @@ spec:
         {{- end}}
         - --enable-ssl-chain-completion=false
         - --enable-dynamic-certificates=true
+        securityContext:
+          runAsUser: {{ .Values.controller.userID }}
+          runAsGroup: {{ .Values.controller.groupID }}
         env:
         - name: POD_NAME
           valueFrom:

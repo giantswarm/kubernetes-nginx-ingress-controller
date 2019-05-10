@@ -12,6 +12,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 - Custom serviceaccount for `default-http-backend`.
 - Separate podsecuritypolicies for `nginx-ingress-controller` and `default-http-backend`.
+- Run nginx-ingress-controller as `www-data` user instead of `root`.
 
 ## [0.6.0]
 
