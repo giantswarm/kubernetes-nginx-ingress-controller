@@ -62,6 +62,9 @@ controller:
       cpu: 500m
       memory: 600Mi
 
+  userID: 33
+  groupID: 33
+
 defaultBackend:
   name: default-http-backend
   k8sAppLabel: default-http-backend
@@ -96,8 +99,9 @@ initContainer:
   image:
     registry: quay.io
     repository: giantswarm/alpine
-    tag: 3.7
+    tag: 3.9-giantswarm
   userID: 1000
+  groupID: 1000
 
 test:
   image:
