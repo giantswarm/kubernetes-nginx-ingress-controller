@@ -97,6 +97,7 @@ initContainer:
     registry: quay.io
     repository: giantswarm/alpine
     tag: 3.7
+  userID: 1000
 
 test:
   image:

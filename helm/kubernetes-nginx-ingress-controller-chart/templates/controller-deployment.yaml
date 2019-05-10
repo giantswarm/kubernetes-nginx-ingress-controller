@@ -55,6 +55,7 @@ spec:
         name: sysctl
         securityContext:
           privileged: true
+          runAsUser: {{ .Values.initContainer.userID }}
       containers:
       - name: {{ .Values.controller.name }}
         image: "{{ .Values.image.registry }}/{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
