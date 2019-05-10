@@ -66,7 +66,7 @@ initContainer:
   image:
     registry: quay.io
     repository: giantswarm/alpine
-    tag: 3.7
+    tag: 3.9-giantswarm
 
 test:
   image:
