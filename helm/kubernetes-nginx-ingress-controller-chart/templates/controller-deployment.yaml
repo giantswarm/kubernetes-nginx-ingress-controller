@@ -43,20 +43,6 @@ spec:
             topologyKey: kubernetes.io/hostname
       serviceAccountName: {{ .Values.controller.name }}
       priorityClassName: system-cluster-critical
-      initContainers:
-      # Overall performance improvements
-      # See https://github.com/kubernetes/ingress-nginx/issues/1939
-      - command:
-        - sh
-        - -c
-        - sysctl -w net.core.somaxconn=32768; sysctl -w net.ipv4.ip_local_port_range="1024 65535"
-        image: "{{ .Values.initContainer.image.registry }}/{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
-        imagePullPolicy: IfNotPresent
-        name: sysctl
-        securityContext:
-          privileged: true
-          runAsUser: {{ .Values.initContainer.userID }}
-          runAsGroup: {{ .Values.initContainer.groupID }}
       containers:
       - name: {{ .Values.controller.name }}
         image: "{{ .Values.image.registry }}/{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
@@ -71,6 +57,12 @@ spec:
         - --enable-ssl-chain-completion=false
         - --enable-dynamic-certificates=true
         securityContext:
+          allowPrivilegeEscalation: true
+          capabilities:
+            drop:
+              - ALL
+            add:
+              - NET_BIND_SERVICE
           runAsUser: {{ .Values.controller.userID }}
           runAsGroup: {{ .Values.controller.groupID }}
         env:

@@ -98,14 +98,6 @@ global:
   migration:
     enabled: false
 
-initContainer:
-  image:
-    registry: quay.io
-    repository: giantswarm/alpine
-    tag: 3.9-giantswarm
-  userID: 1000
-  groupID: 1000
-
 test:
   image:
     registry: quay.io
