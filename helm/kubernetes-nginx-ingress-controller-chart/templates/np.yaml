@@ -1,0 +1,49 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: {{ .Values.controller.namespace }}
+  name: {{ .Values.controller.name }}
+  labels:
+    app: {{ .Values.controller.name }}
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Values.controller.name }}
+  ingress:
+  - ports:
+    - port: 80
+      protocol: TCP
+    - port: 443
+      protocol: TCP
+    - port: {{ .Values.controller.metricsPort }}
+      protocol: TCP
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.0.0.0/8
+    - ipBlock:
+        cidr: 172.16.0.0/12
+    - ipBlock:
+        cidr: 192.168.0.0/16
+  policyTypes:
+  - Egress
+  - Ingress
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: {{ .Values.defaultBackend.namespace }}
+  name: {{ .Values.defaultBackend.name }}
+spec:
+  podSelector:
+    matchLabels:
+      app: {{ .Values.defaultBackend.name }}
+  ingress:
+  - ports:
+    - port: {{ .Values.defaultBackend.port }}
+      protocol: TCP
+  policyTypes:
+  - Ingress
+
