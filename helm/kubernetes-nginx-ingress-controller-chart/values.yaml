@@ -98,6 +98,8 @@ image:
 
 
 global:
+  hpa:
+    enabled: false
   controller:
     tempReplicas: 2
     useProxyProtocol: false
