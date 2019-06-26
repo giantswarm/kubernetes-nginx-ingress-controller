@@ -17,7 +17,7 @@ controller:
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.12.0
+    tag: 0.23.0
 
   service:
     enabled: false
@@ -66,7 +66,7 @@ initContainer:
   image:
     registry: quay.io
     repository: giantswarm/alpine
-    tag: 3.7
+    tag: 3.9-giantswarm
 
 test:
   image:

@@ -15,6 +15,8 @@ configmap:
   server-name-hash-max-size: "1024"
   server-tokens: "false"
   worker-processes: "4"
+  use-forwarded-headers: "true"
+
 
   autoscaling:
     min-replicas: 2
@@ -24,11 +26,16 @@ configmap:
 
   # optional settings that can be set.
   enable-underscores-in-headers: ""
+  large-client-header-buffers: ""
   log-format-upstream: ""
   proxy-buffers-size: ""
   proxy-buffers: ""
   use-proxy-protocol: ""
   vts-default-filter-key: ""
+
+  # command args options
+  annotations-prefix: nginx.ingress.kubernetes.io
+  default-ssl-certificate: ""
 
 controller:
   name: nginx-ingress-controller
@@ -42,12 +49,9 @@ controller:
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.21.0
+    tag: 0.24.1
 
   rbac:
-    privilegedPod:
-      role:
-        name: privileged-psp-user 
 
   role:
     name: nginx-ingress-role
@@ -60,12 +64,12 @@ controller:
       https: 30011
 
   resources:
-    limits:
-      cpu: 500m
-      memory: 600Mi
     requests:
       cpu: 500m
       memory: 600Mi
+
+  userID: 33
+  groupID: 33
 
 defaultBackend:
   name: default-http-backend
@@ -86,6 +90,9 @@ defaultBackend:
       cpu: 10m
       memory: 20Mi
 
+  userID: 33
+  groupID: 33
+
 image:
   registry: quay.io
 
@@ -96,12 +103,6 @@ global:
     useProxyProtocol: false
   migration:
     enabled: false
-
-initContainer:
-  image:
-    registry: quay.io
-    repository: giantswarm/alpine
-    tag: 3.7
 
 test:
   image:

@@ -10,14 +10,14 @@ controller:
   k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
-  replicas: 3
+  replicas: 1
 
   configmap:
     name: ingress-nginx
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.12.0
+    tag: 0.23.0
 
   service:
     enabled: true
@@ -65,7 +65,7 @@ initContainer:
   image:
     registry: quay.io
     repository: giantswarm/alpine
-    tag: 3.7
+    tag: 3.9-giantswarm
 
 test:
   image:

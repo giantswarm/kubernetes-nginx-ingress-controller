@@ -5,6 +5,9 @@
 name: http-backend-service-type-migration
 namespace: kube-system
 
+userID: 1000
+groupID: 1000
+
 image:
   registry: quay.io
   repository: giantswarm/k8s-migrator

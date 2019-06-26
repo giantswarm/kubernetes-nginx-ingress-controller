@@ -18,6 +18,10 @@ data:
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "{{ .Values.configmap.hsts }}"
 
+  {{- if index .Values.configmap "large-client-header-buffers" }}
+  large-client-header-buffers: "{{ index .Values.configmap "large-client-header-buffers" }}"
+  {{- end}}
+
   {{- if index .Values.configmap "log-format-upstream" }}
   log-format-upstream: "{{ index .Values.configmap "log-format-upstream" }}"
   {{- end}}
@@ -28,6 +32,10 @@ data:
 
   {{- if index .Values.configmap "proxy-buffers" }}
   proxy-buffers: "{{ index .Values.configmap "proxy-buffers" }}"
+  {{- end}}
+
+  {{- if index .Values.configmap "use-forwarded-headers" }}
+  use-forwarded-headers: "{{ index .Values.configmap "use-forwarded-headers" }}"
   {{- end}}
 
   # Increase hash table size to allow more server names for stability reasons
