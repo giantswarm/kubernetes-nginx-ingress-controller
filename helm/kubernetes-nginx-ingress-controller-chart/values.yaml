@@ -18,6 +18,12 @@ configmap:
   use-forwarded-headers: "true"
 
 
+  autoscaling:
+    min-replicas: 2
+    max-replicas: 15
+    target-cpu-utilization-percentage: 50
+    target-memory-utilization-percentage: 50
+
   # optional settings that can be set.
   enable-underscores-in-headers: ""
   large-client-header-buffers: ""
@@ -90,6 +96,9 @@ defaultBackend:
 image:
   registry: quay.io
 
+
+hpa:
+  enabled: false
 
 global:
   controller:

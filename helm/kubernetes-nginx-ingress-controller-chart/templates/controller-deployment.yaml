@@ -94,7 +94,7 @@ spec:
             exec:
               command:
               - sleep
-              - "15"
+              - "60"
         ports:
         - name: http
           containerPort: 80
