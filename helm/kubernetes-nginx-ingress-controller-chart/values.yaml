@@ -97,9 +97,10 @@ image:
   registry: quay.io
 
 
+hpa:
+  enabled: false
+
 global:
-  hpa:
-    enabled: false
   controller:
     tempReplicas: 2
     useProxyProtocol: false
