@@ -19,6 +19,7 @@ configmap:
 
 
   autoscaling:
+    enabled: false
     min-replicas: 2
     max-replicas: 15
     target-cpu-utilization-percentage: 50
@@ -95,10 +96,6 @@ defaultBackend:
 
 image:
   registry: quay.io
-
-
-hpa:
-  enabled: false
 
 global:
   controller:
