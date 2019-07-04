@@ -15,6 +15,7 @@ spec:
   template:
     metadata:
       annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
         releasetime: {{ $.Release.Time }}
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
       labels:
