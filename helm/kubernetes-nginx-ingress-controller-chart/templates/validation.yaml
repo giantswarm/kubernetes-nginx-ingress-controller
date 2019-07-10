@@ -1,0 +1,65 @@
+{{- if .Values.configmap.validation.enabled }}
+{{- $cn := printf "%s.%s.svc" "{{ .Values.controller.name }}-validation" .Release.Namespace }}
+{{- $ca := genCA (printf "%s-ca" "{{ .Values.controller.name }}-validation") (atoi (printf "%d" (int64 .Values.configmap.validation.certificateValidity))) -}}
+{{- $cert := genSignedCert $cn nil nil (atoi (printf "%d" (int64 .Values.configmap.validation.certificateValidity))) $ca -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.controller.name }}-validation
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.controller.name }}
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
+type: Opaque
+data:
+  cert.pem: {{ $cert.Cert | b64enc }}
+  key.pem: {{ $cert.Key | b64enc }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.controller.name }}-validation
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.controller.name }}
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
+spec:
+  ports:
+  - name: admission
+    port: 443
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: nginx-ingress
+    component: controller
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ .Values.controller.name }}-validation
+  labels:
+    app: {{ .Values.controller.name }}
+    giantswarm.io/service-type: "managed"
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
+webhooks:
+- name: validate.nginx.ingress.kubernetes.io
+  rules:
+  - apiGroups:
+    - extensions
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ingresses
+  failurePolicy: Fail
+  clientConfig:
+    service:
+      namespace: ingress-nginx
+      name: ingress-validation-webhook
+      path: /extensions/v1beta1/ingress
+    caBundle: {{ $ca.Key | b64enc }}
+{{- end }}
