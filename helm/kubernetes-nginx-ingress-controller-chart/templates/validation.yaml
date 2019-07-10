@@ -32,8 +32,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: nginx-ingress
-    component: controller
+    app: {{ .Values.controller.name }}
 ---
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration

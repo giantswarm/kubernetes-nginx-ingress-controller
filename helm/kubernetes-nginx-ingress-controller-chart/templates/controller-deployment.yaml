@@ -55,9 +55,9 @@ spec:
         - --default-ssl-certificate={{ index .Values.configmap "default-ssl-certificate" }}
         {{- end}}
         {{- if .Values.configmap.validation_hook_enable }}
-        - --validating-webhook=8080
-        - --validating-webhook-certificate="/var/run/certs/cert.pem"
-        - --validating-webhook-key="/var/run/certs/key.pem"
+        - --validating-webhook=:8080
+        - --validating-webhook-certificate="/usr/local/certificates/cert.pem"
+        - --validating-webhook-key="/usr/local/certificates/key.pem"
         {{- end}}
         - --enable-ssl-chain-completion=false
         - --enable-dynamic-certificates=true
@@ -107,10 +107,13 @@ spec:
         - name: https
           containerPort: 443
           protocol: TCP
+        - name: webhook
+          containerPort: 8080
+          protocol: TCP
       {{- if .Values.configmap.validation_hook_enable }}
         volumeMounts:
         - name: certs
-          mountPath: /var/run/certs
+          mountPath: /usr/local/certificates
           readOnly: true
       volumes:
       - name: certs
