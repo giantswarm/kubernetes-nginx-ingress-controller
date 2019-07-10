@@ -19,7 +19,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.controller.name }}-validation
+  name: ingress-validation-webhook
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.controller.name }}
