@@ -19,7 +19,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ingress-validation-webhook
+  name: {{ .Values.controller.name }}-validation
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.controller.name }}
@@ -58,8 +58,8 @@ webhooks:
   failurePolicy: Fail
   clientConfig:
     service:
-      namespace: ingress-nginx
-      name: ingress-validation-webhook
+      namespace: {{ .Values.namespace }}
+      name: {{ .Values.controller.name }}-validation
       path: /extensions/v1beta1/ingress
-    caBundle: {{ $ca.Key | b64enc }}
+    caBundle: {{ $ca.Cert | b64enc }}
 {{- end }}
