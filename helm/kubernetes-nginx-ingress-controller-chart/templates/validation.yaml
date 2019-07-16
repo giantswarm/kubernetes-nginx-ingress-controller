@@ -1,7 +1,8 @@
 {{- if .Values.configmap.validation_hook_enable }}
 {{- $cn := printf "%s.%s.svc" (print .Values.controller.name "-validation") .Release.Namespace }}
+{{- $altNames := list ( print .Values.controller.name "-validation" ) ( printf "%s.%s" (print .Values.controller.name "-validation") .Release.Namespace ) ( printf "%s.%s.svc" (print .Values.controller.name "-validation") .Release.Namespace ) -}}
 {{- $ca := genCA (printf "%s-ca" (print .Values.controller.name "-validation")) (atoi (printf "%d" (int64 .Values.configmap.validation_hook_cert_validity))) -}}
-{{- $cert := genSignedCert $cn nil nil (atoi (printf "%d" (int64 .Values.configmap.validation_hook_cert_validity))) $ca -}}
+{{- $cert := genSignedCert $cn nil $altNames (atoi (printf "%d" (int64 .Values.configmap.validation_hook_cert_validity))) $ca -}}
 apiVersion: v1
 kind: Secret
 metadata:
