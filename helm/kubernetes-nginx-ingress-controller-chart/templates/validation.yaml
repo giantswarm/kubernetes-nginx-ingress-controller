@@ -27,7 +27,7 @@ metadata:
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 spec:
   ports:
-  - name: admission
+  - name: webhook
     port: 443
     protocol: TCP
     targetPort: 8080
