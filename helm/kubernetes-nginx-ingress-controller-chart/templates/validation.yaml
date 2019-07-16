@@ -61,5 +61,5 @@ webhooks:
       namespace: {{ .Values.namespace }}
       name: {{ .Values.controller.name }}-validation
       path: /extensions/v1beta1/ingress
-    caBundle: {{ $ca.Cert | b64enc -}}
+    caBundle: {{ $ca.Cert | b64enc }}
 {{- end }}
