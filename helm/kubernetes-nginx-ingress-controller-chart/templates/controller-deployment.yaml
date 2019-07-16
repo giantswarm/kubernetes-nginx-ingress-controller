@@ -48,7 +48,6 @@ spec:
         image: "{{ .Values.image.registry }}/{{ .Values.controller.image.repository }}:{{ .Values.controller.image.tag }}"
         args:
         - /nginx-ingress-controller
-        - --default-backend-service=$(POD_NAMESPACE)/{{ .Values.defaultBackend.name }}
         - --configmap=$(POD_NAMESPACE)/{{ .Values.controller.configmap.name }}
         - --annotations-prefix={{ index .Values.configmap "annotations-prefix" }}
         {{- if index .Values.configmap "default-ssl-certificate" }}

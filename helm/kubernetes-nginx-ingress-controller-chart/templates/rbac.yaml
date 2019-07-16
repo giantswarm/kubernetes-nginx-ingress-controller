@@ -157,25 +157,6 @@ rules:
   verbs:
   - use
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: {{ .Values.defaultBackend.name }}-psp-user
-  namespace: {{ .Values.namespace }}
-  labels:
-    app: {{ .Values.defaultBackend.name }}
-    giantswarm.io/service-type: "managed"
-    k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
-rules:
-- apiGroups:
-  - extensions
-  resources:
-  - podsecuritypolicies
-  resourceNames:
-  - {{ .Values.defaultBackend.name }}
-  verbs:
-  - use
----
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -191,22 +172,4 @@ subjects:
 roleRef:
   kind: ClusterRole
   name: {{ .Values.controller.name }}-psp-user
-  apiGroup: rbac.authorization.k8s.io
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: {{ .Values.defaultBackend.name }}-psp
-  namespace: {{ .Values.namespace }}
-  labels:
-    app: {{ .Values.defaultBackend.name }}
-    giantswarm.io/service-type: "managed"
-    k8s-app: {{ .Values.defaultBackend.k8sAppLabel }}
-subjects:
-- kind: ServiceAccount
-  name: {{ .Values.defaultBackend.name }}
-  namespace: {{ .Values.namespace }}
-roleRef:
-  kind: Role
-  name: {{ .Values.defaultBackend.name }}-psp-user
   apiGroup: rbac.authorization.k8s.io

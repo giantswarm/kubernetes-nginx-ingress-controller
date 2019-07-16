@@ -17,6 +17,8 @@ spec:
       protocol: TCP
     - port: 443
       protocol: TCP
+    - port: 8080
+      protocol: TCP
     - port: {{ .Values.controller.metricsPort }}
       protocol: TCP
   egress:
@@ -29,21 +31,5 @@ spec:
         cidr: 192.168.0.0/16
   policyTypes:
   - Egress
-  - Ingress
----
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  namespace: {{ .Values.defaultBackend.namespace }}
-  name: {{ .Values.defaultBackend.name }}
-spec:
-  podSelector:
-    matchLabels:
-      app: {{ .Values.defaultBackend.name }}
-  ingress:
-  - ports:
-    - port: {{ .Values.defaultBackend.port }}
-      protocol: TCP
-  policyTypes:
   - Ingress
 
