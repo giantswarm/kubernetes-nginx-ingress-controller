@@ -85,8 +85,8 @@ rules:
   - create
   - patch
 - apiGroups:
-  - "extensions"
-  - "networking.k8s.io"
+  - extensions
+  - networking.k8s.io
   resources:
   - ingresses/status
   verbs:
