@@ -101,6 +101,3 @@ spec:
         - name: https
           containerPort: 443
           protocol: TCP
-        - name: webhook
-          containerPort: 8080
-          protocol: TCP
