@@ -24,8 +24,8 @@ import (
 const (
 	testName = "basic"
 
-	chartName          = "kubernetes-nginx-ingress-controller"
-	controllerName     = "nginx-ingress-controller"
+	chartName      = "kubernetes-nginx-ingress-controller"
+	controllerName = "nginx-ingress-controller"
 )
 
 var (
