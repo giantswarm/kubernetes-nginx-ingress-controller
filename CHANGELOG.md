@@ -5,12 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.9.0]
+
+### Added
+
+- Upgrade nginx controller to use the latest version [0.25.0](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.25.0). Notable changes there:
+
+    - Support new [networking.k8s.io/v1beta1 package](https://github.com/kubernetes/ingress-nginx/pull/4127).
+
+    - Migration from Nginx to OpenResty 1.15.8.
+
+    - This version add a validation webhook controller for ingress resource validation but it has not been enabled yet as we found some issues during the testing process.
+
 ## [0.8.1]
 
 ### Changed
 
 - Allow all egress traffic via network policy.
-
 
 ## [0.8.0]
 
