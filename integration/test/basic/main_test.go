@@ -24,9 +24,8 @@ import (
 const (
 	testName = "basic"
 
-	chartName          = "kubernetes-nginx-ingress-controller"
-	controllerName     = "nginx-ingress-controller"
-	defaultBackendName = "default-http-backend"
+	chartName      = "kubernetes-nginx-ingress-controller"
+	controllerName = "nginx-ingress-controller"
 )
 
 var (
@@ -122,24 +121,6 @@ func init() {
 							"k8s-app":                    controllerName,
 						},
 						Replicas: 1,
-					},
-					{
-						Name:      defaultBackendName,
-						Namespace: metav1.NamespaceSystem,
-						DeploymentLabels: map[string]string{
-							"app":                        defaultBackendName,
-							"giantswarm.io/service-type": "managed",
-							"k8s-app":                    defaultBackendName,
-						},
-						MatchLabels: map[string]string{
-							"k8s-app": defaultBackendName,
-						},
-						PodLabels: map[string]string{
-							"app":                        defaultBackendName,
-							"giantswarm.io/service-type": "managed",
-							"k8s-app":                    defaultBackendName,
-						},
-						Replicas: 2,
 					},
 				},
 			},

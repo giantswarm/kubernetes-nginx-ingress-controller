@@ -17,7 +17,7 @@ controller:
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.23.0
+    tag: 0.25.0
 
   service:
     enabled: false
@@ -32,25 +32,6 @@ controller:
     requests:
       cpu: 500m
       memory: 350Mi
-
-defaultBackend:
-  name: default-http-backend
-  k8sAppLabel: default-http-backend
-  port: 8080
-
-  replicas: 1
-
-  image:
-    repository: giantswarm/defaultbackend
-    tag: 1.2
-
-  resources:
-    limits:
-      cpu: 10m
-      memory: 20Mi
-    requests:
-      cpu: 10m
-      memory: 20Mi
 
 global:
   controller:
