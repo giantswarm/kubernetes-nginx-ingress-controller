@@ -15,7 +15,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
     - Migration from Nginx to OpenResty 1.15.8.
 
-    - This version add a validation webhook controller for ingress resource validation but it has not been enabled yet as we found some issues during the testing process.
+    - This version adds a validation webhook controller for ingress resource validation but it has not been enabled yet. As we found some issues during the testing process.
 
 ## [0.8.1]
 
