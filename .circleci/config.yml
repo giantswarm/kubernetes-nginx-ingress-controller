@@ -46,6 +46,7 @@ jobs:
         at: .
 
     - run: ./architect publish --stable
+<<<<<<< HEAD
 
 workflows:
   version: 2
@@ -64,3 +65,5 @@ workflows:
               only: master
           requires:
           - deploy
+=======
+>>>>>>> master
