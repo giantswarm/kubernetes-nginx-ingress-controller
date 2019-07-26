@@ -46,3 +46,23 @@ jobs:
         at: .
 
     - run: ./architect publish --stable
+
+workflows:
+  version: 2
+  build_e2e:
+    jobs:
+      - build
+
+      - deploy:
+          filters:
+            branches:
+              only: master
+          requires:
+          - build
+
+      - publish_to_stable:
+          filters:
+            branches:
+              only: master
+          requires:
+          - deploy
