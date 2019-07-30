@@ -17,6 +17,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
     - This version adds a validation webhook controller for ingress resource validation but it has not been enabled yet. As we found some issues during the testing process.
 
+### Changed
+
+- Switch anti-affinity from `requiredDuringSchedulingIgnoredDuringExecution` to `preferredDuringSchedulingIgnoredDuringExecution`. With this we can run multiple nginx-ingress-controller pods on the same node when there are taints applied to other nodes.
+
 ## [0.8.1]
 
 ### Changed
