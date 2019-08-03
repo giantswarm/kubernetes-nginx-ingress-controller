@@ -1,3 +1,34 @@
+e2eTest: &e2eTest
+    machine: true
+    working_directory: /home/circleci/.go_workspace/src/github.com/giantswarm/kubernetes-nginx-ingress-controller
+    steps:
+    - checkout
+
+    - attach_workspace:
+        at: .
+
+    - run:
+        name: Get e2e-harness binary
+        command: |
+          wget -q $(curl -sS https://api.github.com/repos/giantswarm/e2e-harness/releases/latest | grep browser_download_url | head -n 1 | cut -d '"' -f 4)
+          chmod +x ./e2e-harness
+    - run: ./e2e-harness localkube
+
+    - run: ./e2e-harness setup --remote=false
+
+    - run:
+        name: Publish chart to CNR using a temporary channel for testing
+        command: ./architect publish --pipeline=false --channels=${CIRCLE_SHA1}-${TEST_NAME}
+
+    - run: ./e2e-harness test --test-dir=${TEST_DIR}
+
+    - run:
+        name: Finish with cleanup, no matter if the test succeeded or not
+        command: |
+          ./architect unpublish --channels=${CIRCLE_SHA1}-${TEST_NAME}
+          ./e2e-harness teardown
+        when: always
+
 version: 2
 jobs:
   build:
@@ -22,6 +53,12 @@ jobs:
         root: .
         paths:
         - ./architect
+
+  e2eTestBasic:
+    environment:
+      TEST_DIR: "integration/test/basic"
+      TEST_NAME: "basic"
+    <<: *e2eTest
 
   deploy:
     machine: true
@@ -53,12 +90,16 @@ workflows:
     jobs:
       - build
 
+      - e2eTestBasic:
+          requires:
+          - build
+
       - deploy:
           filters:
             branches:
               only: master
           requires:
-          - build
+          - e2eTestBasic
 
       - publish_to_stable:
           filters:
