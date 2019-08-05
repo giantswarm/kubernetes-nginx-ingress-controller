@@ -11,6 +11,7 @@ controller:
   metricsPort: 10254
 
   replicas: 1
+  maxUnavailable: 0
 
   configmap:
     name: ingress-nginx
