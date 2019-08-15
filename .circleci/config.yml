@@ -28,7 +28,7 @@ e2eTest: &e2eTest
         command: |
           docker run --rm --network host \
             -v $(pwd)/${TEST_DIR}:/e2e \
-            -v $(pwd):/go/src/github.com/giantswarm/kubernetes-nginx-ingress-controller \
+            -v $(pwd):/go/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
             -e E2E_KUBECONFIG=/e2e/kubeconfig \
             -e CIRCLE_SHA1=${CIRCLE_SHA1} \
             -w /go/src/github.com/giantswarm/kubernetes-nginx-ingress-controller \
