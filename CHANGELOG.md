@@ -7,16 +7,22 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [0.9.1]
 
-- Upgrade nginx controller to use the latest version [0.25.1](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.25.1). Notable changes there:
-    - Support new [networking.k8s.io/v1beta1 package](https://github.com/kubernetes/ingress-nginx/pull/4127).
+- Fix a security issue on nginx-ingress by using the latest version [0.25.1](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.25.1). 
+
+    - Patch release to fix several security issues were identified in nginx HTTP/2 implementation, which might cause excessive memory consumption and CPU usage (CVE-2019-9511, CVE-2019-9513, CVE-2019-9516).
+
 
 ## [0.9.0]
 
 ### Added
 
-- Fix a security issue on nginx-ingress by using the latest version [0.25.0](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.25.0). 
+- Upgrade nginx controller to use the latest version [0.25.0](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.25.0). Notable changes there:
 
-    - Patch release to fix several security issues were identified in nginx HTTP/2 implementation, which might cause excessive memory consumption and CPU usage (CVE-2019-9511, CVE-2019-9513, CVE-2019-9516).
+    - Support new [networking.k8s.io/v1beta1 package](https://github.com/kubernetes/ingress-nginx/pull/4127).
+
+    - Migration from Nginx to OpenResty 1.15.8.
+
+    - This version adds a validation webhook controller for ingress resource validation but it has not been enabled yet. As we found some issues during the testing process.
 
 ### Changed
 
