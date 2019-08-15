@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.9.1]
+
+- Fix a security issue on nginx-ingress by using the latest version [0.25.1](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.25.1). 
+
+    - Patch release to fix several security issues were identified in nginx HTTP/2 implementation, which might cause excessive memory consumption and CPU usage (CVE-2019-9511, CVE-2019-9513, CVE-2019-9516).
+
+
 ## [0.9.0]
 
 ### Added

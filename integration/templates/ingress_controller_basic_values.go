@@ -18,7 +18,7 @@ controller:
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.25.0
+    tag: 0.25.1
 
   service:
     enabled: true
