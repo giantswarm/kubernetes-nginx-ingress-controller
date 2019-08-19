@@ -1,4 +1,4 @@
-{{- if .Values.configmap.autoscaling.enabled }}
+{{- if .Values.configmap.hpa-enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -13,15 +13,15 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: {{ .Values.controller.name }}
-  minReplicas: {{ index .Values.configmap.autoscaling "min-replicas" }}
-  maxReplicas: {{ index .Values.configmap.autoscaling "max-replicas" }}
+  minReplicas: {{ .Values.configmap.hpa-min-replicas" }}
+  maxReplicas: {{ .Values.configmap.hpa-max-replicas" }}
   metrics:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ index .Values.configmap.autoscaling "target-cpu-utilization-percentage" }}
+        targetAverageUtilization: {{ .Values.configmap.hpa-target-cpu-utilization-percentage" }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ index .Values.configmap.autoscaling "target-memory-utilization-percentage" }}
+        targetAverageUtilization: {{ .Values.configmap.hpa-target-memory-utilization-percentage" }}
 {{- end }}
