@@ -1,4 +1,4 @@
-{{- if .Values.configmap.hpa-enabled }}
+{{- if index .Values.configmap.hpa-enabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
