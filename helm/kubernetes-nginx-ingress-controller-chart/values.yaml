@@ -17,13 +17,6 @@ configmap:
   worker-processes: "4"
   use-forwarded-headers: "true"
 
-  autoscaling:
-    enabled: false
-    min-replicas: 2
-    max-replicas: 15
-    target-cpu-utilization-percentage: 50
-    target-memory-utilization-percentage: 50
-
   # optional settings that can be set.
   enable-underscores-in-headers: ""
   large-client-header-buffers: ""
@@ -32,6 +25,13 @@ configmap:
   proxy-buffers: ""
   use-proxy-protocol: ""
   vts-default-filter-key: ""
+  
+  # optional hpa settings
+  hpa-enabled: false
+  hpa-min-replicas: 2
+  hpa-max-replicas: 15
+  hpa-target-cpu-utilization-percentage: 50
+  hpa-target-memory-utilization-percentage: 50
 
   # command args options
   annotations-prefix: nginx.ingress.kubernetes.io
