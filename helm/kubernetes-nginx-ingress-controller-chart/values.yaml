@@ -31,7 +31,7 @@ configmap:
   hpa-min-replicas: 2
   hpa-max-replicas: 15
   hpa-target-cpu-utilization-percentage: 50
-  hpa-memory-utilization-percentage: 50
+  hpa-target-memory-utilization-percentage: 50
 
   # command args options
   annotations-prefix: nginx.ingress.kubernetes.io
