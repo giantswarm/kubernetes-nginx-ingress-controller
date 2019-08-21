@@ -29,7 +29,7 @@ configmap:
   # optional hpa settings
   hpa-enabled: false
   hpa-min-replicas: 2
-  hpa-max-replicas: 15
+  hpa-max-replicas: 11
   hpa-target-cpu-utilization-percentage: 50
   hpa-target-memory-utilization-percentage: 50
 
