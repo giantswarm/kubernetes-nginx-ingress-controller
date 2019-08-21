@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: v0.25.1
 description: A Helm chart for the nginx ingress-controller
 name: kubernetes-nginx-ingress-controller-chart
-version: 0.9.1-[[ .SHA ]]
+version: 0.10.0-[[ .SHA ]]
