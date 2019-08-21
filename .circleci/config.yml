@@ -38,6 +38,7 @@ e2eTest: &e2eTest
         name: Export logs
         command: |
           ./e2ectl logs export --logs-dir=kind/logs
+        when: always
 
     - store_artifacts:
         path: kind/logs
