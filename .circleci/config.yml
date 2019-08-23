@@ -16,7 +16,7 @@ e2eTest: &e2eTest
     - run:
         name: Init cluster
         command: |
-          ./e2ectl cluster create --worker-count=3
+          ./e2ectl cluster create
           cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/kubeconfig
 
     - run:
