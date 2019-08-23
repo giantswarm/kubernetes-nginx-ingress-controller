@@ -35,10 +35,7 @@ controller:
 
   service:
     enabled: false
-
-defaultBackend:
-  name: "temp-default-http-backend"
-
+    
 helm:
   tillerNamespace: "giantswarm"
 

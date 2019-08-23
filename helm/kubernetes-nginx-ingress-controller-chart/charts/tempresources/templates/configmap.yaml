@@ -48,9 +48,6 @@ data:
           "enabled": false,
         },
       },
-      "defaultBackend": {
-        "name": "{{ .Values.defaultBackend.name }}"
-      },
       "global": {
         "controller": {
           "useProxyProtocol": {{ .Values.global.controller.useProxyProtocol }}

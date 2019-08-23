@@ -25,6 +25,10 @@ spec:
     nodePort: {{ .Values.controller.service.nodePorts.https }}
     protocol: TCP
     targetPort: 443
+  - name: metrics
+    port: {{ .Values.controller.metricsPort }}
+    protocol: TCP
+    targetPort: metrics
   selector:
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 {{-  end }}
