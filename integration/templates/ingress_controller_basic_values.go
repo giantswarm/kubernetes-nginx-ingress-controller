@@ -10,7 +10,7 @@ controller:
   k8sAppLabel: nginx-ingress-controller
   metricsPort: 10254
 
-  replicas: 1
+  replicas: 3
   maxUnavailable: 0
 
   configmap:
