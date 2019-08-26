@@ -55,6 +55,10 @@ required = [
   name = "github.com/giantswarm/helmclient"
 
 [[constraint]]
+  branch = "master"
+  name = "github.com/giantswarm/k8sclient"
+
+[[constraint]]
   name = "k8s.io/api"
   version = "kubernetes-1.13.2"
 
@@ -69,7 +73,3 @@ required = [
 [prune]
   go-tests = true
   unused-packages = true
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/giantswarm/k8sclient"
