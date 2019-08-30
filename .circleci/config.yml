@@ -16,7 +16,7 @@ e2eTest: &e2eTest
     - run:
         name: Init cluster
         command: |
-          ./e2ectl cluster create
+          ./e2ectl cluster create --worker-count=3
           cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/kubeconfig
 
     - run:
@@ -33,6 +33,16 @@ e2eTest: &e2eTest
             -e CIRCLE_SHA1=${CIRCLE_SHA1} \
             -w /go/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
             golang:1 go test -v -tags k8srequired ./${E2E_TEST_DIR}/
+
+    - run:
+        name: Export logs
+        command: |
+          ./e2ectl logs export --logs-dir=kind/logs
+        when: always
+
+    - store_artifacts:
+        path: kind/logs
+        destination: logs
 
     - run:
         name: Finish with cleanup, no matter if the test succeeded or not

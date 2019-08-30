@@ -30,6 +30,8 @@ spec:
         releasetime: {{ $.Release.Time }}
         scheduler.alpha.kubernetes.io/critical-pod: ''
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
+        prometheus.io/port: "{{ .Values.controller.metricsPort }}"
+        prometheus.io/scrape: "true"
     spec:
       affinity:
         podAntiAffinity:

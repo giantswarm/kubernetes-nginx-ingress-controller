@@ -72,28 +72,6 @@ controller:
   userID: 33
   groupID: 33
 
-defaultBackend:
-  name: default-http-backend
-  k8sAppLabel: default-http-backend
-  port: 8080
-
-  replicas: 2
-
-  image:
-    repository: giantswarm/defaultbackend
-    tag: 1.2
-
-  resources:
-    limits:
-      cpu: 10m
-      memory: 20Mi
-    requests:
-      cpu: 10m
-      memory: 20Mi
-
-  userID: 33
-  groupID: 33
-
 image:
   registry: quay.io
 
