@@ -8,6 +8,8 @@ metadata:
     k8s-app: {{ .Values.controller.k8sAppLabel }}
 spec:
   privileged: false
+  allowedCapabilities:
+  - NET_BIND_SERVICE
   runAsUser:
     rule: MustRunAsNonRoot
   seLinux:

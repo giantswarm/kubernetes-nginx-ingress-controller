@@ -13,6 +13,10 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ## [0.10.0]
 
+### Added
+
+- Add `NET_BIND_SERVICE` capability for ingress-controller psp.
+
 ### Changed
 
 - Reduce max replicas for HPA from 15 to 11 based on a recommendation from upstream.
