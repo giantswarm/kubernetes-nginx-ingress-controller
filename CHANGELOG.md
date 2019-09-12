@@ -1,3 +1,8 @@
+# THIS REPOSITORY IS DEPRECATED.
+
+Use [nginx-ingress-controller-app](https://github.com/giantswarm/nginx-ingress-controller-app) for further development.
+
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
