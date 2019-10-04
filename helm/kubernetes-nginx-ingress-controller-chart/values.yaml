@@ -33,6 +33,10 @@ configmap:
   hpa-target-cpu-utilization-percentage: 50
   hpa-target-memory-utilization-percentage: 50
 
+  # optional validation webhook
+  validation_hook_enable: true
+  validation_hook_cert_validity: 365 #days
+
   # command args options
   annotations-prefix: nginx.ingress.kubernetes.io
   default-ssl-certificate: ""
@@ -50,7 +54,7 @@ controller:
 
   image:
     repository: giantswarm/nginx-ingress-controller
-    tag: 0.25.1
+    tag: 0.26.1
 
   rbac:
 
