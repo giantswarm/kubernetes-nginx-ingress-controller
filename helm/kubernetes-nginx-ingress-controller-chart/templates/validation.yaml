@@ -1,0 +1,62 @@
+{{- if .Values.configmap.validation_hook_enable }}
+{{- $cn := printf "%s.%s.svc" (print .Values.controller.name "-validation") .Release.Namespace }}
+{{- $altNames := list ( print .Values.controller.name "-validation" ) ( printf "%s.%s" (print .Values.controller.name "-validation") .Release.Namespace ) ( printf "%s.%s.svc" (print .Values.controller.name "-validation") .Release.Namespace ) -}}
+{{- $ca := genCA (printf "%s.%s.svc" (print .Values.controller.name "-validation") .Release.Namespace) (atoi (printf "%d" (int64 .Values.configmap.validation_hook_cert_validity))) -}}
+{{- $cert := genSignedCert $cn nil $altNames (atoi (printf "%d" (int64 .Values.configmap.validation_hook_cert_validity))) $ca -}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.controller.name }}-validation
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.controller.name }}
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
+type: Opaque
+data:
+  cert.pem: {{ $cert.Cert | b64enc }}
+  key.pem: {{ $cert.Key | b64enc }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.controller.name }}-validation
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.controller.name }}
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
+spec:
+  ports:
+  - name: webhook
+    port: 443
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: {{ .Values.controller.name }}
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ .Values.controller.name }}-validation
+  labels:
+    app: {{ .Values.controller.name }}
+    k8s-app: {{ .Values.controller.k8sAppLabel }}
+webhooks:
+- name: validate.nginx.ingress.kubernetes.io
+  rules:
+  - apiGroups:
+    - extensions
+    apiVersions:
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - ingresses
+  failurePolicy: Fail
+  clientConfig:
+    service:
+      namespace: {{ .Values.namespace }}
+      name: {{ .Values.controller.name }}-validation
+      path: /extensions/v1beta1/ingress
+    caBundle: {{ $ca.Cert | b64enc }}
+{{- end }}

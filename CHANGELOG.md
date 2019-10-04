@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.11.0]
+
+### Added
+
+- Upgrade nginx controller to use the latest version [0.26.1](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.26.1). It is patch version that fix a bug introduced in the major upgrade. Notable changes there:
+
+    - Major version [0.26.0](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.26.0) comes with lots of improvements and enhancements. 
+
 ## [0.10.1]
 
 ### Changed
