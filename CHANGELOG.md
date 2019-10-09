@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.11.0]
+
+### Breaking Changes
+
+- Upgrade nginx controller to use the latest version [0.26.1](https://github.com/kubernetes/ingress-nginx/releases/tag/nginx-0.26.1).  
+**This version includes the following breaking changes**:
+   - The variable $the_real_ip variable was removed from template and default log_format.
+   - The default value of configmap setting proxy-add-original-uri-header is now "false".
+   - When the setting proxy-add-original-uri-header is "true", the ingress controller adds a new header X-Original-Uri with the value of NGINX variable $request_uri.
+   - In most of the cases this is not an issue but with request with long URLs it could lead to unexpected errors in the application defined in the Ingress serviceName, like issue 4593 - 431 Request Header Fields Too Large
+
 ## [0.10.1]
 
 ### Changed
