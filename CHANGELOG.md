@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project's packages adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
 ## [1.0.0]
 
 ### Changed
@@ -15,6 +16,12 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
    - The default value of configmap setting proxy-add-original-uri-header is now "false".
    - When the setting proxy-add-original-uri-header is "true", the ingress controller adds a new header X-Original-Uri with the value of NGINX variable $request_uri.
    - In most of the cases this is not an issue but with request with long URLs it could lead to unexpected errors in the application defined in the Ingress serviceName, like issue 4593 - 431 Request Header Fields Too Large
+
+## [0.10.2]
+
+### Removed
+
+- Remove migration subcharts that are no longer required.
 
 ## [0.10.1]
 
