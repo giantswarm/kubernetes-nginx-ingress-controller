@@ -79,8 +79,6 @@ global:
   controller:
     tempReplicas: 2
     useProxyProtocol: false
-  migration:
-    enabled: false
 
 test:
   image:

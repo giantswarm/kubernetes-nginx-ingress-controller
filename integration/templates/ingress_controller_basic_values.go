@@ -37,8 +37,6 @@ controller:
 global:
   controller:
     useProxyProtocol: false
-  migration:
-    enabled: false
 
 image:
   registry: quay.io
