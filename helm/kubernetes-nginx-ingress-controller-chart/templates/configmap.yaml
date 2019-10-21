@@ -20,7 +20,7 @@ data:
 
   {{- if index .Values.configmap "http-snippet" }}
   http-snippet: |
-  {{- range (.Values.configmap.http-snippet | trimAll "\n " |  split "\n") }}
+  {{- range ((index .Values.configmap "http-snippet") | trimAll "\n " |  split "\n") }}
     {{ . }}
   {{- end }}
   {{- end }}
