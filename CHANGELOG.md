@@ -10,7 +10,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ### Changed
 
-- Add optional status endpoint in port `18080` to enable instana to scrape nginx stats.
+- Add optional http snippet parameter to extend nginx http configuration.
 
 ## [1.0.0]
 
