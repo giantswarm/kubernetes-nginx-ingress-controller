@@ -19,6 +19,7 @@ configmap:
 
   # optional settings that can be set.
   enable-underscores-in-headers: ""
+  http-snippet: ""
   large-client-header-buffers: ""
   log-format-upstream: ""
   proxy-buffers-size: ""
@@ -36,9 +37,6 @@ configmap:
   # command args options
   annotations-prefix: nginx.ingress.kubernetes.io
   default-ssl-certificate: ""
-
-  # enable status endpoint for instance
-  status_ep_enabled: false
 
 controller:
   name: nginx-ingress-controller

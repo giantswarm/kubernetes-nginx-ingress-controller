@@ -6,20 +6,6 @@ metadata:
   labels:
     giantswarm.io/service-type: "managed"
     k8s-addon: ingress-nginx.addons.k8s.io
-    {{- if .Values.configmap.status_ep_enabled }}
-    http-snippet: |
-      server {
-        listen 18080;
-
-        location /nginx_status {
-          stub_status on;
-        }
-
-        location / {
-          return 404;
-        }
-      }
-    {{- end }}
 data:
 
   disable-access-log: "{{ index .Values.configmap "disable-access-log" }}"
@@ -31,6 +17,13 @@ data:
   # Disables setting a 'Strict-Transport-Security' header, which can be harmful.
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "{{ .Values.configmap.hsts }}"
+
+  {{- if index .Values.configmap "http-snippet" }}
+  http-snippet: |
+  {{- range (.Values.configmap.http-snippet | trimAll "\n " |  split "\n") }}
+    {{ . }}
+  {{- end }}
+  {{- end }}
 
   {{- if index .Values.configmap "large-client-header-buffers" }}
   large-client-header-buffers: "{{ index .Values.configmap "large-client-header-buffers" }}"
