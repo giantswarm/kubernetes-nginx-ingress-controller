@@ -37,6 +37,9 @@ configmap:
   annotations-prefix: nginx.ingress.kubernetes.io
   default-ssl-certificate: ""
 
+  # enable status endpoint for instance
+  status_ep_enabled: false
+
 controller:
   name: nginx-ingress-controller
   k8sAppLabel: nginx-ingress-controller

@@ -6,12 +6,26 @@ metadata:
   labels:
     giantswarm.io/service-type: "managed"
     k8s-addon: ingress-nginx.addons.k8s.io
+    {{- if .Values.configmap.status_ep_enabled }}
+    http-snippet: |
+      server {
+        listen 18080;
+
+        location /nginx_status {
+          stub_status on;
+        }
+
+        location / {
+          return 404;
+        }
+      }
+    {{- end }}
 data:
 
   disable-access-log: "{{ index .Values.configmap "disable-access-log" }}"
   {{- if index .Values.configmap "enable-underscores-in-headers" }}
   enable-underscores-in-headers: "{{ index .Values.configmap "enable-underscores-in-headers" }}"
-  {{- end}}
+  {{- end }}
   enable-vts-status: "{{ index .Values.configmap "enable-vts-status" }}"
   error-log-level: "{{ index .Values.configmap "error-log-level" }}"
   # Disables setting a 'Strict-Transport-Security' header, which can be harmful.
