@@ -10,6 +10,7 @@ and this project's packages adheres to [Semantic Versioning](http://semver.org/s
 
 ### Changed
 
+- Add option for setting `http2-max-field-size` via values.yaml.
 - Add optional http snippet parameter to extend nginx http configuration.
 
 ## [1.0.0]

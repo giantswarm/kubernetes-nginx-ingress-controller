@@ -20,6 +20,7 @@ configmap:
   # optional settings that can be set.
   enable-underscores-in-headers: ""
   http-snippet: ""
+  http2-max-field-size: ""
   large-client-header-buffers: ""
   log-format-upstream: ""
   proxy-buffers-size: ""

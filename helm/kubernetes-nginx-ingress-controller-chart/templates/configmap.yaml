@@ -14,6 +14,11 @@ data:
   {{- end }}
   enable-vts-status: "{{ index .Values.configmap "enable-vts-status" }}"
   error-log-level: "{{ index .Values.configmap "error-log-level" }}"
+  
+  {{- if index .Values.configmap "http2-max-field-size" }}
+  http2-max-field-size: "{{ index .Values.configmap "http2-max-field-size" }}"
+  {{- end }}
+  
   # Disables setting a 'Strict-Transport-Security' header, which can be harmful.
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "{{ .Values.configmap.hsts }}"
@@ -27,23 +32,23 @@ data:
 
   {{- if index .Values.configmap "large-client-header-buffers" }}
   large-client-header-buffers: "{{ index .Values.configmap "large-client-header-buffers" }}"
-  {{- end}}
+  {{- end }}
 
   {{- if index .Values.configmap "log-format-upstream" }}
   log-format-upstream: "{{ index .Values.configmap "log-format-upstream" }}"
-  {{- end}}
+  {{- end }}
   
   {{- if index .Values.configmap "proxy-buffers-size" }}
   proxy-buffers-size: "{{ index .Values.configmap "proxy-buffers-size" }}"
-  {{- end}}
+  {{- end }}
 
   {{- if index .Values.configmap "proxy-buffers" }}
   proxy-buffers: "{{ index .Values.configmap "proxy-buffers" }}"
-  {{- end}}
+  {{- end }}
 
   {{- if index .Values.configmap "use-forwarded-headers" }}
   use-forwarded-headers: "{{ index .Values.configmap "use-forwarded-headers" }}"
-  {{- end}}
+  {{- end }}
 
   # Increase hash table size to allow more server names for stability reasons
   server-name-hash-bucket-size: "{{ index .Values.configmap "server-name-hash-bucket-size" }}"
@@ -61,4 +66,4 @@ data:
 
   {{- if index .Values.configmap "vts-default-filter-key" }}
   vts-default-filter-key: "{{ index .Values.configmap "vts-default-filter-key" }}"
-  {{- end}}
+  {{- end }}
