@@ -23,6 +23,13 @@ data:
   # See https://github.com/kubernetes/ingress-nginx/issues/549#issuecomment-291894246
   hsts: "{{ .Values.configmap.hsts }}"
 
+  {{- if index .Values.configmap "http-snippet" }}
+  http-snippet: |
+  {{- range ((index .Values.configmap "http-snippet") | trimAll "\n " |  split "\n") }}
+    {{ . }}
+  {{- end }}
+  {{- end }}
+
   {{- if index .Values.configmap "large-client-header-buffers" }}
   large-client-header-buffers: "{{ index .Values.configmap "large-client-header-buffers" }}"
   {{- end }}
