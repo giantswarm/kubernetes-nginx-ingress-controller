@@ -1,4 +1,6 @@
-[![CircleCI](https://circleci.com/gh/giantswarm/kubernetes-nginx-ingress-controller.svg?style=shield&circle-token=beb2d4248f0f227ce6618f71b2c35e841b903c04)](https://circleci.com/gh/giantswarm/kubernetes-nginx-ingress-controller)
+# THIS REPOSITORY IS DEPRECATED.
+
+Use [nginx-ingress-controller-app](https://github.com/giantswarm/nginx-ingress-controller-app) for further development.
 
 # kubernetes-nginx-ingress-controller
 
